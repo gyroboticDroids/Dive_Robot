@@ -11,6 +11,11 @@ public class TestMotors extends OpMode {
     private DcMotor rearLeft;
     private DcMotor rearRight;
 
+    private DcMotor vertSlide1;
+    private DcMotor vertSlide2;
+
+    private DcMotor horizontalSlide;
+
     @Override
     public void init()
     {
@@ -18,6 +23,11 @@ public class TestMotors extends OpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRightMotor");
         rearLeft = hardwareMap.get(DcMotor.class, "rearLeftMotor");
         rearRight = hardwareMap.get(DcMotor.class, "rearRightMotor");
+
+        vertSlide1 = hardwareMap.get(DcMotor.class, "vertSlide1");
+        vertSlide2 = hardwareMap.get(DcMotor.class, "vertSlide2");
+
+        horizontalSlide = hardwareMap.get(DcMotor.class, "horizontalSlide");
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -28,6 +38,10 @@ public class TestMotors extends OpMode {
     @Override
     public void loop()
     {
+        //User info
+        telemetry.addLine("Controls: \nA B X Y + gamepad 1 left stick y to move drive motors \nGamepad 1 right stick y for vertical slides " +
+                "\nTo move horizontal slides use gamepad 1 left stick x \n");
+
         if(gamepad1.a)
         {
             frontLeft.setPower(gamepad1.left_stick_y);
@@ -63,5 +77,10 @@ public class TestMotors extends OpMode {
         {
             rearRight.setPower(0);
         }
+
+        vertSlide1.setPower(gamepad1.right_stick_y);
+        vertSlide2.setPower(-gamepad1.right_stick_y);
+
+        horizontalSlide.setPower(gamepad1.left_stick_x);
     }
 }
