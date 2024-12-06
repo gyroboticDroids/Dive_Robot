@@ -2,7 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "TestMotors")
 public class TestMotors extends OpMode {
@@ -15,6 +18,16 @@ public class TestMotors extends OpMode {
     private DcMotor vertSlide2;
 
     private DcMotor horizontalSlide;
+
+    private Servo specimenExtension;
+
+    private Servo intake;
+    private Servo outake;
+
+    private CRServo hangLeft;
+    private CRServo hangRight;
+
+    float extensionControls = 0;
 
     @Override
     public void init()
@@ -29,6 +42,11 @@ public class TestMotors extends OpMode {
 
         horizontalSlide = hardwareMap.get(DcMotor.class, "horizontalSlide");
 
+        specimenExtension = hardwareMap.get(Servo.class, "extension");
+
+        outake = hardwareMap.get(Servo.class, "outake");
+        intake = hardwareMap.get(Servo.class, "intake");
+
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -40,7 +58,7 @@ public class TestMotors extends OpMode {
     {
         //User info
         telemetry.addLine("Controls: \nA B X Y + gamepad 1 left stick y to move drive motors \nGamepad 1 right stick y for vertical slides " +
-                "\nTo move horizontal slides use gamepad 1 left stick x \n");
+                "\nGamepad 1 left stick x to move horizontal slides \nGamepad 1 triggers for extension slides \n ");
 
         if(gamepad1.a)
         {
@@ -82,5 +100,18 @@ public class TestMotors extends OpMode {
         vertSlide2.setPower(-gamepad1.right_stick_y);
 
         horizontalSlide.setPower(gamepad1.left_stick_x);
+
+        extensionControls += (gamepad1.right_trigger - gamepad1.left_trigger) / 100;
+        extensionControls = Math.min(Math.max(extensionControls ,1), -1);
+
+        specimenExtension.setPosition(extensionControls);
+
+        telemetry.addData("Horizontal slide pos", horizontalSlide.getCurrentPosition());
+        telemetry.addData("Vertical slide pos", vertSlide2.getCurrentPosition());
+        telemetry.addData("Extension slide pos", specimenExtension.getPosition());
+        telemetry.addData("Intake servo pos", intake.getPosition());
+        telemetry.addData("Outake servo pos", outake.getPosition());
+
+        telemetry.update();
     }
 }
