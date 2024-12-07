@@ -19,7 +19,7 @@ public class Hardware {
     public Servo specimenExtension;
 
     public Servo intake;
-    public Servo outake;
+    public Servo outtake;
 
     public CRServo hangLeft;
     public CRServo hangRight;
@@ -38,7 +38,7 @@ public class Hardware {
 
             specimenExtension = hardwareMap.get(Servo.class, "extension");
 
-            outake = hardwareMap.get(Servo.class, "outake");
+            outtake = hardwareMap.get(Servo.class, "outake");
             intake = hardwareMap.get(Servo.class, "intake");
 
             frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
