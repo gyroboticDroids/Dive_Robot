@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import androidx.annotation.NonNull;
+
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -24,7 +26,7 @@ public class Hardware {
     public CRServo hangLeft;
     public CRServo hangRight;
 
-    public void ConfigureHardware(HardwareMap hardwareMap)
+    public void ConfigureHardware(@NonNull HardwareMap hardwareMap)
         {
             frontLeft = hardwareMap.get(DcMotor.class, "frontLeftMotor");
             frontRight = hardwareMap.get(DcMotor.class, "frontRightMotor");
