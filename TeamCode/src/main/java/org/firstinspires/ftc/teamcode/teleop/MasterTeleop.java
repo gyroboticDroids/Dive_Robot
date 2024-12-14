@@ -10,13 +10,12 @@ public class MasterTeleop extends OpMode {
     @Override
     public void init()
     {
-        drive = new Drive();
-        drive.Configure(hardwareMap);
+        drive = new Drive(hardwareMap, gamepad1);
     }
 
     @Override
     public void loop()
     {
-        drive.Update(gamepad1);
+        drive.Update();
     }
 }

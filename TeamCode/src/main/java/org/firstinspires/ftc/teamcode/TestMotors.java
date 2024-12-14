@@ -12,8 +12,7 @@ public class TestMotors extends OpMode {
     @Override
     public void init()
     {
-        hardware = new Hardware();
-        hardware.ConfigureHardware(hardwareMap);
+        hardware = new Hardware(hardwareMap);
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Drive {
     private Hardware hardware;
+    private Gamepad gamepad;
 
     double y;
     double x;
@@ -17,13 +18,13 @@ public class Drive {
 
     double botHeading;
 
-    public void Configure(HardwareMap hardwareMap)
+    public Drive(HardwareMap hardwareMap, Gamepad gamepad1)
     {
-        hardware = new Hardware();
-        hardware.ConfigureHardware(hardwareMap);
+        hardware = new Hardware(hardwareMap);
+        gamepad = gamepad1;
     }
 
-    public void Update(Gamepad gamepad)
+    public void Update()
     {
         botHeading = hardware.pinpointDriver.getHeading();
 
