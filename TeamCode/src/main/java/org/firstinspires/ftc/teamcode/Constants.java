@@ -19,10 +19,12 @@ public class Constants {
 
     public static int VERT_SLIDES_SAMPLE = 1500;
     public static int VERT_SLIDES_SPECIMEN = 700;
-    public static int VERT_SLIDES_TRANSFER = 1500;
+    public static int VERT_SLIDES_TRANSFER = 0;
 
     public static double DRIVE_SPEED_MULTIPLIER = 1;
     public static double SLOW_SPEED_MULTIPLIER = 0.3;
+
+    public static double DRIVE_GAIN = 0.022;
 
     public float turnOffset = 0;
 }
