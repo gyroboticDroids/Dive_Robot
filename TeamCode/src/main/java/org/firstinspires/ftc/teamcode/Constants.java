@@ -25,6 +25,7 @@ public class Constants {
     public static double SLOW_SPEED_MULTIPLIER = 0.3;
 
     public static double TURN_P_GAIN = 0.022;
+    public static double VERT_SLIDES_P_GAIN = 0.022;
 
     public float turnOffset = 0;
 }

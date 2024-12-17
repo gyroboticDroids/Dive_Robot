@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -52,6 +53,14 @@ public class Hardware {
 
         outtake = hardwareMap.get(Servo.class, "outake");
         intake = hardwareMap.get(Servo.class, "intake");
+
+        vertSlide1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        vertSlide2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        vertSlide2.setDirection(DcMotor.Direction.REVERSE);
+
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        rearRight.setDirection(DcMotor.Direction.REVERSE);
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
