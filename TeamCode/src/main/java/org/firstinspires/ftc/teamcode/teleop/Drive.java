@@ -7,8 +7,8 @@ import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Drive {
-    private Hardware hardware;
-    private Gamepad gamepad;
+    private final Hardware hardware;
+    private final Gamepad gamepad;
 
     double y;
     double x;
@@ -36,7 +36,7 @@ public class Drive {
 
     private void Input(Gamepad gpad)
     {
-        double multiplier = (gpad.right_stick_x + gpad.right_stick_y > 0)? Constants.SLOW_SPEED_MULTIPLIER:Constants.DRIVE_SPEED_MULTIPLIER;
+        double multiplier = (Math.abs(gpad.right_stick_x) + Math.abs(gpad.right_stick_y) > 0)? Constants.SLOW_SPEED_MULTIPLIER:Constants.DRIVE_SPEED_MULTIPLIER;
 
         y = -gpad.left_stick_y * multiplier;
         x = gpad.left_stick_x * multiplier;
@@ -89,8 +89,8 @@ public class Drive {
             error += 360;
         }
 
-        turnPower = Constants.DRIVE_GAIN * error;
+        turnPower = Constants.TURN_P_GAIN * error;
 
-        turnPower = Math.min(Math.max())
+        turnPower = Math.min(Math.max(turnPower, -0.4), 0.4);
     }
 }
