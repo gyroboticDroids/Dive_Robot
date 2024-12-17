@@ -28,9 +28,7 @@ public class Outtake {
                 hardware.pivot.setPosition(Constants.PIVOT_TRANSFER);
                 hardware.wrist.setPosition(Constants.WRIST_TRANSFER);
                 break;
-        }
-        switch (state)
-        {
+
             case "specimen":
                 hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
                 hardware.pivot.setPosition(Constants.PIVOT_SPECIMEN);
