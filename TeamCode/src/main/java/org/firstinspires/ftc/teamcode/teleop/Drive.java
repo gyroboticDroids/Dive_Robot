@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -14,9 +13,12 @@ public class Drive {
     double y;
     double x;
     double rx;
-    boolean resetHeading;
 
+    boolean resetHeading;
     double botHeading;
+    double targetHeading = 0;
+
+    double turnPower;
 
     public Drive(HardwareMap hardwareMap, Gamepad gamepad1)
     {
@@ -38,8 +40,12 @@ public class Drive {
 
         y = -gpad.left_stick_y * multiplier;
         x = gpad.left_stick_x * multiplier;
-        rx = (gpad.right_trigger - gpad.left_trigger) * multiplier;
+        rx = (gpad.right_trigger - gpad.left_trigger) * 5 * multiplier;
         resetHeading = gpad.back;
+
+        targetHeading = (gpad.y)? 0:(gpad.x)? -90: (gpad.a)? -135: (gpad.b)? 90:targetHeading;
+
+        targetHeading += rx;
     }
 
     private void Movement()
@@ -54,18 +60,37 @@ public class Drive {
 
         rotX = rotX * 1.1;  // Counteract imperfect strafing
 
+        AutoTurn();
+
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
         // but only if at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
-        double frontLeftPower = (rotY + rotX + rx) / denominator;
-        double backLeftPower = (rotY - rotX + rx) / denominator;
-        double frontRightPower = (rotY - rotX - rx) / denominator;
-        double backRightPower = (rotY + rotX - rx) / denominator;
+        double frontLeftPower = (rotY + rotX + turnPower) / denominator;
+        double backLeftPower = (rotY - rotX + turnPower) / denominator;
+        double frontRightPower = (rotY - rotX - turnPower) / denominator;
+        double backRightPower = (rotY + rotX - turnPower) / denominator;
 
         hardware.frontLeft.setPower(frontLeftPower);
         hardware.rearLeft.setPower(backLeftPower);
         hardware.frontRight.setPower(frontRightPower);
         hardware.rearRight.setPower(backRightPower);
+    }
+
+    public void AutoTurn()
+    {
+        double error = targetHeading - Math.toDegrees(botHeading);
+
+        if(error > 180)
+        {
+            error -= 360;
+        }
+        else if (error < -180) {
+            error += 360;
+        }
+
+        turnPower = Constants.DRIVE_GAIN * error;
+
+        turnPower = Math.min(Math.max())
     }
 }
