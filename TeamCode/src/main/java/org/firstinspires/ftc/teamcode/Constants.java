@@ -19,6 +19,7 @@ public class Constants {
 
     public static int VERT_SLIDES_SAMPLE = 1500;
     public static int VERT_SLIDES_SPECIMEN = 700;
+    public static int VERT_SLIDES_SPECIMEN_SCORING = 750;
     public static int VERT_SLIDES_TRANSFER = 0;
 
     public static double DRIVE_SPEED_MULTIPLIER = 1;
