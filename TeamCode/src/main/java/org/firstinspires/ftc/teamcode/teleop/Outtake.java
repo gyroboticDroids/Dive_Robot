@@ -22,14 +22,14 @@ public class Outtake {
         switch (state)
         {
             case "reset":
-                hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
+                hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
                 hardware.pivot.setPosition(Constants.PIVOT_TRANSFER);
                 hardware.wrist.setPosition(Constants.WRIST_TRANSFER);
                 break;
 
             case "retract":
                 hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
-                hardware.pivot.setPosition(Constants.PIVOT_TRANSFER);
+                hardware.pivot.setPosition(Constants.PIVOT_RETRACT);
                 hardware.wrist.setPosition(Constants.WRIST_TRANSFER);
                 break;
 

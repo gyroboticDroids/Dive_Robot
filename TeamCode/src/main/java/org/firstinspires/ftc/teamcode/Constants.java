@@ -8,6 +8,7 @@ public class Constants {
     public static double PIVOT_SPECIMEN = 0.75;
     public static double PIVOT_OFF_WALL = 0;
     public static double PIVOT_SAMPLE = 0.25;
+    public static double PIVOT_RETRACT = 0.5;
 
     public static double WRIST_TRANSFER = 0;
     public static double WRIST_SPECIMEN = 0.25;
