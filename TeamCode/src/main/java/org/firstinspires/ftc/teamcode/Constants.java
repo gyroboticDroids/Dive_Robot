@@ -14,6 +14,7 @@ public class Constants {
     public static double WRIST_SPECIMEN = 0.25;
     public static double WRIST_OFF_WALL = 0.75;
     public static double WRIST_SAMPLE = 1;
+    public static double WRIST_RETRACT = 0.5;
 
     public static double OUTTAKE_OPEN = 0.1;
     public static double OUTTAKE_CLOSED = 1;

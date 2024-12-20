@@ -30,10 +30,11 @@ public class Outtake {
             case "retract":
                 hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
                 hardware.pivot.setPosition(Constants.PIVOT_RETRACT);
-                hardware.wrist.setPosition(Constants.WRIST_TRANSFER);
+                hardware.wrist.setPosition(Constants.WRIST_RETRACT);
                 break;
 
             case "transfer":
+                hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
                 hardware.pivot.setPosition(Constants.PIVOT_TRANSFER);
                 hardware.wrist.setPosition(Constants.WRIST_TRANSFER);
                 break;
