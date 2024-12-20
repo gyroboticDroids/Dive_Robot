@@ -24,6 +24,13 @@ public class Constants {
     public static int VERT_SLIDES_SPECIMEN_SCORING = 750;
     public static int VERT_SLIDES_TRANSFER = 0;
 
+    public static double HANG1_DOWN = 0.8418;
+    public static double HANG2_DOWN = 0.2896;
+    public static double HANG1_UP = 0.4298;
+    public static double HANG2_UP = 0.7148;
+    public static double HANGING1 = 0.5902;
+    public static double HANGING2 = 0.5592;
+
     public static double DRIVE_SPEED_MULTIPLIER = 1;
     public static double SLOW_SPEED_MULTIPLIER = 0.3;
 

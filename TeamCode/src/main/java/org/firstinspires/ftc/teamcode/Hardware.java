@@ -30,8 +30,8 @@ public class Hardware {
     public Servo intake;
     public Servo outtake;
 
-    public CRServo hangLeft;
-    public CRServo hangRight;
+    public Servo hang1;
+    public Servo hang2;
 
     public GoBildaPinpointDriver pinpointDriver;
 
@@ -67,6 +67,9 @@ public class Hardware {
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        hang1 = hardwareMap.get(Servo.class, "hang1");
+        hang2 = hardwareMap.get(Servo.class, "hang2");
 
         pinpointDriver = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
         pinpointDriver.setOffsets(-12.0, -60.0); //these are tuned for 3110-0002-0001 Product Insight #1
