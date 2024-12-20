@@ -18,13 +18,16 @@ public class VerticalExtension {
 
     private boolean isActive;
 
-    private Timer sequenceTime;
+    private final Timer sequenceTime;
+
+    private final Outtake outtake;
 
     String state;
 
     public VerticalExtension (HardwareMap hardwareMap)
     {
         hardware = new Hardware(hardwareMap);
+        outtake = new Outtake(hardwareMap);
 
         sequenceTime = new Timer();
 
@@ -38,25 +41,32 @@ public class VerticalExtension {
         switch (state)
         {
             case "reset":
-                //TODO: close gripper
-                //TODO: add outtake class
+                outtake.SetState("reset");
 
                 hardware.specimenExtension.setPosition(Constants.EXTENSION_BACK);
                 VertSlidesControl(Constants.VERT_SLIDES_TRANSFER);
                 break;
 
             case "retract":
-                //TODO: open gripper and move arm back
+                outtake.SetState("retract");
 
                 if(sequenceTime.getElapsedTimeSeconds() > 0.5)
+                {
+                    SetState("retract slides");
+                }
+                break;
+
+            case "retract slides":
+                VertSlidesControl(Constants.VERT_SLIDES_TRANSFER);
+
+                if(hardware.vertSlide1.getCurrentPosition() < Constants.VERT_SLIDES_TRANSFER + 5)
                 {
                     SetState("reset");
                 }
                 break;
 
             case "transfer":
-                //TODO: open
-                //TODO: add arm moving down
+                outtake.SetState("transfer");
 
                 if(sequenceTime.getElapsedTimeSeconds() > 0.5)
                 {
@@ -65,24 +75,24 @@ public class VerticalExtension {
                 break;
 
             case "grip":
-                //TODO: grab and raise
+                outtake.SetState("grip");
                 break;
 
             case "score sample":
                 VertSlidesControl(Constants.VERT_SLIDES_SAMPLE);
-                //TODO: add arm moving over
 
+                outtake.SetState("score sample");
                 break;
 
             case "collect specimen":
-                //TODO: open
+                outtake.SetState("collect specimen");
 
                 hardware.specimenExtension.setPosition(Constants.EXTENSION_BACK);
                 VertSlidesControl(Constants.VERT_SLIDES_TRANSFER);
                 break;
 
             case "grab specimen":
-                //TODO: grab
+                outtake.SetState("grab");
 
                 if(sequenceTime.getElapsedTimeSeconds() > 0.5)
                 {
@@ -91,7 +101,7 @@ public class VerticalExtension {
                 break;
 
             case "transfer specimen":
-                //TODO: Add outtake movement here
+                outtake.SetState("transfer specimen");
 
                 hardware.specimenExtension.setPosition(Constants.EXTENSION_SPECIMEN);
                 VertSlidesControl(Constants.VERT_SLIDES_SPECIMEN);
