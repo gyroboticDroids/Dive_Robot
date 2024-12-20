@@ -25,6 +25,10 @@ public class Constants {
     public static int VERT_SLIDES_TRANSFER = 0;
     public static int VERT_SLIDES_HANG = 1700;
 
+    public static int HORIZONTAL_SLIDES_TRANSFER = 0;
+    public static int HORIZONTAL_SLIDES_EXTENDED = 0;
+
+
     public static double HANG1_DOWN = 0.8418;
     public static double HANG2_DOWN = 0.2896;
     public static double HANG1_UP = 0.4298;
