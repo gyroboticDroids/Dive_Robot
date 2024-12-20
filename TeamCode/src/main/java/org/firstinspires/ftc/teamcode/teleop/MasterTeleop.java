@@ -7,12 +7,18 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class MasterTeleop extends OpMode {
     Drive drive;
     VerticalExtension vertExtension;
+    Hang hang;
+
+    private boolean isHanging = false;
 
     @Override
     public void init()
     {
         drive = new Drive(hardwareMap, gamepad1);
         vertExtension = new VerticalExtension(hardwareMap);
+        hang = new Hang(hardwareMap);
+
+        hang.SetState("down");
     }
 
     @Override
@@ -20,6 +26,7 @@ public class MasterTeleop extends OpMode {
     {
         drive.Update();
         VertExtensionUpdate();
+        HangUpdate();
     }
 
     boolean isGrabbingSpecimen = false;
@@ -27,6 +34,11 @@ public class MasterTeleop extends OpMode {
 
     void VertExtensionUpdate()
     {
+        if(isHanging)
+        {
+            return;
+        }
+
         vertExtension.Update();
 
         isTransferringSpecimen = vertExtension.state == "transfer specimen";
@@ -62,5 +74,28 @@ public class MasterTeleop extends OpMode {
         }
 
         isGrabbingSpecimen = vertExtension.state == "collect specimen" && !gamepad2.a;
+    }
+
+    void HangUpdate()
+    {
+        hang.Update();
+
+        if(gamepad1.dpad_down)
+        {
+            isHanging = false;
+            hang.SetState("down");
+        }
+
+        if(gamepad1.dpad_up)
+        {
+            isHanging = true;
+            hang.SetState("up");
+        }
+
+        if(gamepad1.back)
+        {
+            isHanging = true;
+            hang.SetState("hanging");
+        }
     }
 }

@@ -125,7 +125,7 @@ public class VerticalExtension {
         Update();
     }
 
-    private void VertSlidesControl(double position)
+    public void VertSlidesControl(double position)
     {
         double error = position - hardware.vertSlide1.getCurrentPosition();
 
