@@ -50,6 +50,7 @@ public class Outtake {
 
 
             case "collect specimen":
+                hardware.pivot.setPosition(Constants.OUTTAKE_OPEN);
                 hardware.pivot.setPosition(Constants.PIVOT_OFF_WALL);
                 hardware.wrist.setPosition(Constants.WRIST_OFF_WALL);
                 break;
