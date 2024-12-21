@@ -53,16 +53,16 @@ public class VerticalExtension {
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    hardware.specimenExtension.setPosition(Constants.EXTENSION_BACK);
+                    hardware.specimenExtension.setPosition(Constants.EXTENSION_TRANSFER);
                 }
                 break;
 
-            case "retract slides":
-                VertSlidesControl(Constants.VERT_SLIDES_TRANSFER);
+            case "transfer intake":
+                outtake.SetState("transfer intake");
 
-                if(hardware.vertSlide1.getCurrentPosition() < Constants.VERT_SLIDES_TRANSFER + 5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    SetState("reset");
+                    hardware.specimenExtension.setPosition(Constants.EXTENSION_TRANSFER);
                 }
                 break;
 

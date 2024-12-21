@@ -48,10 +48,14 @@ public class Outtake {
                 }
                 break;
 
-            case "transfer":
-                hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
-                hardware.pivot.setPosition(Constants.PIVOT_TRANSFER);
-                hardware.wrist.setPosition(Constants.WRIST_TRANSFER);
+            case "transfer intake":
+                hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                {
+                    hardware.pivot.setPosition(Constants.PIVOT_RAISED);
+                    hardware.wrist.setPosition(Constants.WRIST_RAISED);
+                }
                 break;
 
             case "grip":
