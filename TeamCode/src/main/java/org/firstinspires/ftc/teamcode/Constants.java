@@ -11,12 +11,15 @@ public class Constants {
     public static double PIVOT_OFF_WALL = 0;
     public static double PIVOT_SAMPLE = 0.25;
     public static double PIVOT_START = 0.5;
+    public static double PIVOT_RAISE = 0.5;
 
     public static double WRIST_TRANSFER = 0;
     public static double WRIST_SPECIMEN = 0.25;
     public static double WRIST_OFF_WALL = 0.75;
     public static double WRIST_SAMPLE = 1;
     public static double WRIST_START = 0.5;
+    public static double WRIST_RAISE = 0.5;
+
 
     public static double OUTTAKE_OPEN = 0.1;
     public static double OUTTAKE_CLOSED = 1;
@@ -29,8 +32,10 @@ public class Constants {
     public static int VERT_SLIDES_TRANSFER = 0;
     public static int VERT_SLIDES_HANG = 1700;
 
-    public static int HORIZONTAL_SLIDES_TRANSFER = 0;
-    public static int HORIZONTAL_SLIDES_EXTENDED = 0;
+    public static int HORIZONTAL_SLIDES_START = 0;
+    public static int HORIZONTAL_SLIDES_TRANSFER = 50;
+    public static int HORIZONTAL_SLIDES_OUT = 100;
+    public static int HORIZONTAL_SLIDES_HALFWAY = 700;
 
 
     public static double HANG1_DOWN = 0.8418;

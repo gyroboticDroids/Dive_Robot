@@ -27,7 +27,11 @@ public class Hardware {
     public Servo pivot;
     public Servo wrist;
 
-    public Servo intake;
+    public Servo intakePivot;
+
+    public Servo intake1;
+    public Servo intake2;
+
     public Servo outtake;
 
     public Servo hang1;
@@ -52,8 +56,11 @@ public class Hardware {
         pivot = hardwareMap.get(Servo.class, "pivot");
         wrist = hardwareMap.get(Servo.class, "wrist");
 
-        outtake = hardwareMap.get(Servo.class, "outake");
-        intake = hardwareMap.get(Servo.class, "intake");
+        intakePivot = hardwareMap.get(Servo.class, "intakePivot");
+
+        outtake = hardwareMap.get(Servo.class, "outtake");
+        intake1 = hardwareMap.get(Servo.class, "intake1");
+        intake2 = hardwareMap.get(Servo.class, "intake2");
 
         vertSlide1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
