@@ -36,23 +36,39 @@ public class HorizontalExtension {
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    horizontalPosition(Constants.HORIZONTAL_SLIDES_START);
+                    horizontalPosition = Constants.HORIZONTAL_SLIDES_START;
                 }
                 break;
 
             case "intake sub ready":
-                horizontalPosition(Constants.HORIZONTAL_SLIDES_OUT);
 
+                horizontalPosition = Constants.HORIZONTAL_SLIDES_OUT;
+                if(horizontalPosition > Constants.HORIZONTAL_SLIDES_TRANSFER)
+                {
+                    hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
+                }
                 break;
             case "intake":
 
+                hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_DOWN);
                 break;
+
             case "transfer":
 
+                hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_TRANSFER);
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                {
+                    horizontalPosition = Constants.HORIZONTAL_SLIDES_START;
+                }
                 break;
+
             case "reject":
+                hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
 
                 break;
+
+
         }
     }
     public void SetState(String s)

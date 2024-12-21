@@ -27,8 +27,8 @@ public class Constants {
 
     public static double INTAKE_PIVOT_START = 0;
     public static double INTAKE_PIVOT_TRANSFER = 0.2;
-    public static double INTAKE_PIVOT_INTERMEDIATE = 0.;
-    public static double INTAKE_PIVOT_DOWN = 0;
+    public static double INTAKE_PIVOT_INTERMEDIATE = 0.5;
+    public static double INTAKE_PIVOT_DOWN = 1;
 
     public static int VERT_SLIDES_SAMPLE_LOW = 1500;
     public static int VERT_SLIDES_SAMPLE_HIGH = 1500;
@@ -38,6 +38,7 @@ public class Constants {
     public static int VERT_SLIDES_SPECIMEN_INCREASE = 50;
     public static int VERT_SLIDES_TRANSFER = 0;
     public static int VERT_SLIDES_HANG = 1700;
+    public static int VERT_SLIDES_MAX_LIMIT = 2000;
 
     public static int HORIZONTAL_SLIDES_START = 0;
     public static int HORIZONTAL_SLIDES_TRANSFER = 50;
