@@ -11,9 +11,11 @@ public class VerticalExtension {
 
     private boolean isActive;
 
-    private final Timer sequenceTime;
+    private final Timer actionTimer;
 
     private final Outtake outtake;
+
+    double vertPosition = 0;
 
     String state;
 
@@ -22,13 +24,15 @@ public class VerticalExtension {
         hardware = new Hardware(hardwareMap);
         outtake = new Outtake(hardwareMap);
 
-        sequenceTime = new Timer();
+        actionTimer = new Timer();
 
         SetState("start");
     }
 
     public void Update()
     {
+        VertSlidesUpdate();
+
         isActive = hardware.vertSlide1.isBusy();
 
         switch (state)
@@ -36,32 +40,36 @@ public class VerticalExtension {
             case "start":
                 outtake.SetState("start");
 
-                hardware.specimenExtension.setPosition(Constants.EXTENSION_BACK);
-                VertSlidesControl(Constants.VERT_SLIDES_TRANSFER);
-                break;
-
-            case "retract":
-                outtake.SetState("retract");
-
-                if(sequenceTime.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    SetState("retract slides");
+                    hardware.specimenExtension.setPosition(Constants.EXTENSION_BACK);
                 }
                 break;
 
-            case "retract slides":
-                VertSlidesControl(Constants.VERT_SLIDES_TRANSFER);
+            case "transfer intake ready":
 
-                if(hardware.vertSlide1.getCurrentPosition() < Constants.VERT_SLIDES_TRANSFER + 5)
+                vertPosition = Constants.VERT_SLIDES_TRANSFER;
+                outtake.SetState("transfer intake ready");
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    SetState("reset");
+                    hardware.specimenExtension.setPosition(Constants.EXTENSION_TRANSFER);
+                }
+                break;
+
+            case "transfer intake":
+                outtake.SetState("transfer intake");
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                {
+                    hardware.specimenExtension.setPosition(Constants.EXTENSION_TRANSFER);
                 }
                 break;
 
             case "transfer":
                 outtake.SetState("transfer");
 
-                if(sequenceTime.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     SetState("grip");
                 }
@@ -87,7 +95,7 @@ public class VerticalExtension {
             case "grab specimen":
                 outtake.SetState("grab");
 
-                if(sequenceTime.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     SetState("transfer specimen");
                 }
@@ -103,7 +111,7 @@ public class VerticalExtension {
             case "score specimen":
                 VertSlidesControl(Constants.VERT_SLIDES_SPECIMEN_SCORING);
 
-                if(sequenceTime.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     SetState("retract");
                 }
@@ -113,12 +121,12 @@ public class VerticalExtension {
     }
     public void SetState(String s)
     {
-        sequenceTime.resetTimer();
+        actionTimer.resetTimer();
         state = s;
         Update();
     }
 
-    public void VertSlidesControl(double position)
+    public void VertSlidesUpdate()
     {
         double error = position - hardware.vertSlide1.getCurrentPosition();
 
