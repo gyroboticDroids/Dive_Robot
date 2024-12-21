@@ -24,11 +24,16 @@ public class Constants {
     public static double OUTTAKE_OPEN = 0.1;
     public static double OUTTAKE_CLOSED = 1;
 
+    public static double INTAKE_PIVOT_START = 0;
+    public static double INTAKE_PIVOT_TRANSFER = 0;
+    public static double INTAKE_PIVOT_DOWN = 0;
+
     public static int VERT_SLIDES_SAMPLE_LOW = 1500;
     public static int VERT_SLIDES_SAMPLE_HIGH = 1500;
     public static int VERT_SLIDES_SPECIMEN_COLLECT = 700;
     public static int VERT_SLIDES_SPECIMEN_LOW_SCORING = 750;
     public static int VERT_SLIDES_SPECIMEN_HIGH_SCORING = 1300;
+    public static int VERT_SLIDES_SPECIMEN_INCREASE = 50;
     public static int VERT_SLIDES_TRANSFER = 0;
     public static int VERT_SLIDES_HANG = 1700;
 
@@ -36,7 +41,6 @@ public class Constants {
     public static int HORIZONTAL_SLIDES_TRANSFER = 50;
     public static int HORIZONTAL_SLIDES_OUT = 100;
     public static int HORIZONTAL_SLIDES_HALFWAY = 700;
-
 
     public static double HANG1_DOWN = 0.8418;
     public static double HANG2_DOWN = 0.2896;

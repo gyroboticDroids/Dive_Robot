@@ -29,8 +29,8 @@ public class Hardware {
 
     public Servo intakePivot;
 
-    public Servo intake1;
-    public Servo intake2;
+    public CRServo intake1;
+    public CRServo intake2;
 
     public Servo outtake;
 
@@ -59,8 +59,9 @@ public class Hardware {
         intakePivot = hardwareMap.get(Servo.class, "intakePivot");
 
         outtake = hardwareMap.get(Servo.class, "outtake");
-        intake1 = hardwareMap.get(Servo.class, "intake1");
-        intake2 = hardwareMap.get(Servo.class, "intake2");
+
+        intake1 = hardwareMap.get(CRServo.class, "intake1");
+        intake2 = hardwareMap.get(CRServo.class, "intake2");
 
         vertSlide1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
