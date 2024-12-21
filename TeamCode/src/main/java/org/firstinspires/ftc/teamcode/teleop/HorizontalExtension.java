@@ -9,10 +9,9 @@ import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 public class HorizontalExtension {
 
     private final Hardware hardware;
-
-    private boolean isActive;
-
     private final Timer actionTimer;
+
+    private String lastState;
 
     double horizontalPosition = 0;
 
@@ -28,7 +27,6 @@ public class HorizontalExtension {
     }
 
     public void Update() {
-        isActive = hardware.horizontalSlide.isBusy();
 
         switch (state) {
             case "start":
@@ -37,6 +35,7 @@ public class HorizontalExtension {
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     horizontalPosition = Constants.HORIZONTAL_SLIDES_START;
+
                 }
                 break;
 
@@ -67,16 +66,24 @@ public class HorizontalExtension {
                 hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
 
                 break;
-
-
         }
+
+        lastState = state;
     }
+
+    public void Intake()
+    {
+        hardware.intake1.setPower(Constants.INTAKE_SPEED);
+        hardware.intake2.setPower(Constants.INTAKE_SPEED);
+    }
+
     public void SetState(String s)
     {
         actionTimer.resetTimer();
         state = s;
         Update();
     }
+
     public void HorizontalSlidesUpdate()
     {
         double error = horizontalPosition - hardware.horizontalSlide.getCurrentPosition();
@@ -86,10 +93,5 @@ public class HorizontalExtension {
 
         hardware.horizontalSlide.setPower(motorPower);
 
-    }
-
-    public boolean IsActive()
-    {
-        return isActive;
     }
 }
