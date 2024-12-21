@@ -5,6 +5,7 @@ public class Constants {
     public static double EXTENSION_TRANSFER = 0;
     public static double EXTENSION_SPECIMEN_COLLECT = 1;
     public static double EXTENSION_SPECIMEN_SCORE = 1;
+    public static double EXTENSION_SAMPLE_SCORE = 0;
 
     public static double PIVOT_TRANSFER = 1;
     public static double PIVOT_SPECIMEN = 0.75;
@@ -54,6 +55,7 @@ public class Constants {
 
     public static double TURN_P_GAIN = 0.022;
     public static double VERT_SLIDES_P_GAIN = 0.022;
+    public static double HORIZONTAL_SLIDES_P_GAIN = 0.022;
 
     public float turnOffset = 0;
 }
