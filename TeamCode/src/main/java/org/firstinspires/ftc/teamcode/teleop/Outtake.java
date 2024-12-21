@@ -34,8 +34,6 @@ public class Outtake {
                 break;
 
             case "transfer intake ready":
-                hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
-
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     hardware.pivot.setPosition(Constants.PIVOT_TRANSFER);
@@ -46,6 +44,10 @@ public class Outtake {
                 {
                     hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
                 }
+                else
+                {
+                    hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+                }
                 break;
 
             case "transfer intake":
@@ -53,35 +55,49 @@ public class Outtake {
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    hardware.pivot.setPosition(Constants.PIVOT_RAISED);
-                    hardware.wrist.setPosition(Constants.WRIST_RAISED);
+                    hardware.pivot.setPosition(Constants.PIVOT_RAISE);
+                    hardware.wrist.setPosition(Constants.WRIST_RAISE);
                 }
                 break;
 
-            case "grip":
-                hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+            case "grab specimen ready":
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                {
+                    hardware.pivot.setPosition(Constants.PIVOT_OFF_WALL);
+                    hardware.wrist.setPosition(Constants.WRIST_OFF_WALL);
+                }
+
+                if(actionTimer.getElapsedTimeSeconds() > 1)
+                {
+                    hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
+                }
+                else
+                {
+                    hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+                }
                 break;
+
+            case "score specimen ready":
+                hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                {
+                    hardware.pivot.setPosition(Constants.PIVOT_SPECIMEN);
+                    hardware.wrist.setPosition(Constants.WRIST_SPECIMEN);
+                }
+                break;
+
 
             case "score sample":
                 hardware.pivot.setPosition(Constants.PIVOT_SAMPLE);
                 hardware.wrist.setPosition(Constants.WRIST_SAMPLE);
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.75)
+                {
+                    hardware.pivot.setPosition(Constants.OUTTAKE_OPEN);
+                }
                 break;
-
-
-            case "collect specimen":
-                hardware.pivot.setPosition(Constants.OUTTAKE_OPEN);
-                hardware.pivot.setPosition(Constants.PIVOT_OFF_WALL);
-                hardware.wrist.setPosition(Constants.WRIST_OFF_WALL);
-                break;
-
-            case "transfer specimen":
-                hardware.pivot.setPosition(Constants.PIVOT_SPECIMEN);
-                hardware.wrist.setPosition(Constants.WRIST_SPECIMEN);
-                break;
-
         }
-
-
     }
 
     public void SetState(String s)

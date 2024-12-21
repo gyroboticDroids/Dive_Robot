@@ -20,6 +20,8 @@ public class Drive {
 
     double turnPower;
 
+    public boolean driveBack = false;
+
     public Drive(HardwareMap hardwareMap, Gamepad gamepad1)
     {
         hardware = new Hardware(hardwareMap);
@@ -28,6 +30,14 @@ public class Drive {
 
     public void Update()
     {
+        if(driveBack)
+        {
+            hardware.frontLeft.setPower(frontLeftPower);
+            hardware.rearLeft.setPower(backLeftPower);
+            hardware.frontRight.setPower(frontRightPower);
+            hardware.rearRight.setPower(backRightPower);
+        }
+
         botHeading = hardware.pinpointDriver.getHeading();
 
         Input(gamepad);
