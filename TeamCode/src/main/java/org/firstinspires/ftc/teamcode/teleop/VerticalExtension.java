@@ -8,12 +8,12 @@ import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 public class VerticalExtension {
     private final Hardware hardware;
+    private final Outtake outtake;
 
     private boolean isActive;
+    private boolean driveBack = false;
 
     private final Timer actionTimer;
-
-    private final Outtake outtake;
 
     double vertPosition = 0;
 
@@ -119,13 +119,14 @@ public class VerticalExtension {
 
                 hardware.specimenExtension.setPosition(Constants.EXTENSION_SAMPLE_SCORE);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.75)
                 {
-
+                    driveBack = true;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 1.5)
                 {
+                    driveBack = false;
                     SetState("transfer intake ready");
                 }
                 break;
@@ -153,5 +154,10 @@ public class VerticalExtension {
     public boolean IsActive()
     {
         return isActive;
+    }
+
+    public boolean IsDriveBack()
+    {
+        return driveBack;
     }
 }

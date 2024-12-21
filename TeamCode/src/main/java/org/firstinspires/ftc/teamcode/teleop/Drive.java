@@ -32,10 +32,12 @@ public class Drive {
     {
         if(driveBack)
         {
-            hardware.frontLeft.setPower(frontLeftPower);
-            hardware.rearLeft.setPower(backLeftPower);
-            hardware.frontRight.setPower(frontRightPower);
-            hardware.rearRight.setPower(backRightPower);
+            hardware.frontLeft.setPower(Constants.DRIVE_BACK_POWER);
+            hardware.rearLeft.setPower(Constants.DRIVE_BACK_POWER);
+            hardware.frontRight.setPower(Constants.DRIVE_BACK_POWER);
+            hardware.rearRight.setPower(Constants.DRIVE_BACK_POWER);
+
+            return;
         }
 
         botHeading = hardware.pinpointDriver.getHeading();
