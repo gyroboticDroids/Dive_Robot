@@ -48,8 +48,10 @@ public class Outtake {
                 break;
 
             case "transfer intake ready":
-
-                vertPosition = Constants.VERT_SLIDES_TRANSFER;
+                if(!(lastState == "transfer intake ready"))
+                {
+                    vertPosition = Constants.VERT_SLIDES_TRANSFER;
+                }
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
@@ -82,7 +84,10 @@ public class Outtake {
                 break;
 
             case "grab specimen ready":
-                vertPosition = Constants.VERT_SLIDES_SPECIMEN_COLLECT;
+                if(!(lastState == "grab specimen ready"))
+                {
+                    vertPosition = Constants.VERT_SLIDES_SPECIMEN_COLLECT;
+                }
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
@@ -103,7 +108,10 @@ public class Outtake {
                 break;
 
             case "score specimen ready low":
-                lastVertConstant = vertPosition = Constants.VERT_SLIDES_SPECIMEN_LOW_SCORING;
+                if(!(lastState == "score specimen ready low"))
+                {
+                    lastVertConstant = vertPosition = Constants.VERT_SLIDES_SPECIMEN_LOW_SCORING;
+                }
 
                 hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
 
@@ -116,7 +124,10 @@ public class Outtake {
                 break;
 
             case "score specimen ready high":
-                lastVertConstant = vertPosition = Constants.VERT_SLIDES_SPECIMEN_HIGH_SCORING;
+                if(!(lastState == "score specimen ready high"))
+                {
+                    lastVertConstant = vertPosition = Constants.VERT_SLIDES_SPECIMEN_HIGH_SCORING;
+                }
 
                 hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
 
@@ -135,11 +146,17 @@ public class Outtake {
                 break;
 
             case "score sample ready low":
-                vertPosition = Constants.VERT_SLIDES_SAMPLE_LOW;
+                if(!(lastState == "score sample ready low"))
+                {
+                    vertPosition = Constants.VERT_SLIDES_SAMPLE_LOW;
+                }
                 break;
 
             case "score sample ready high":
-                vertPosition = Constants.VERT_SLIDES_SAMPLE_HIGH;
+                if(!(lastState == "score sample ready high"))
+                {
+                    vertPosition = Constants.VERT_SLIDES_SAMPLE_HIGH;
+                }
                 break;
 
             case "score sample":
