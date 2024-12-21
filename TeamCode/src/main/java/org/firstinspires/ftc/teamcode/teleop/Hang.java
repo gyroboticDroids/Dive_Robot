@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 public class Hang {
     private final Hardware hardware;
-    private final VerticalExtension vertExtension;
+    private final Outtake vertExtension;
 
     String state;
 
@@ -17,7 +17,7 @@ public class Hang {
     public Hang(HardwareMap hardwareMap)
     {
         hardware = new Hardware(hardwareMap);
-        vertExtension = new VerticalExtension(hardwareMap);
+        vertExtension = new Outtake(hardwareMap);
 
         hangTimer = new Timer();
     }
