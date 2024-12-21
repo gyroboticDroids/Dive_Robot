@@ -4,17 +4,20 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 public class Outtake {
     private final Hardware hardware;
 
     String state;
 
+    private final Timer actionTimer;
+
     public Outtake (HardwareMap hardwareMap)
     {
-
         hardware = new Hardware(hardwareMap);
 
+        actionTimer = new Timer();
     }
     public void Update()
     {
@@ -22,14 +25,27 @@ public class Outtake {
         {
             case "start":
                 hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
-                hardware.pivot.setPosition(Constants.PIVOT_START);
-                hardware.wrist.setPosition(Constants.WRIST_START);
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                {
+                    hardware.pivot.setPosition(Constants.PIVOT_START);
+                    hardware.wrist.setPosition(Constants.WRIST_START);
+                }
                 break;
 
-            case "retract":
-                hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
-                hardware.pivot.setPosition(Constants.PIVOT_START);
-                hardware.wrist.setPosition(Constants.WRIST_START);
+            case "transfer intake ready":
+                hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                {
+                    hardware.pivot.setPosition(Constants.PIVOT_TRANSFER);
+                    hardware.wrist.setPosition(Constants.WRIST_TRANSFER);
+                }
+
+                if(actionTimer.getElapsedTimeSeconds() > 1)
+                {
+                    hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
+                }
                 break;
 
             case "transfer":
@@ -66,6 +82,7 @@ public class Outtake {
 
     public void SetState(String s)
     {
+        actionTimer.resetTimer();
         state = s;
         Update();
     }

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 public class Constants {
     public static double EXTENSION_BACK = 0;
+    public static double EXTENSION_TRANSFER = 0;
     public static double EXTENSION_SPECIMEN_COLLECT = 1;
     public static double EXTENSION_SPECIMEN_SCORE = 1;
 
