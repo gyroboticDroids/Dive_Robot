@@ -1,17 +1,10 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import android.renderscript.ScriptGroup;
-
-import com.qualcomm.robotcore.hardware.AnalogInput;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
-
-import java.sql.Time;
 
 public class VerticalExtension {
     private final Hardware hardware;
@@ -31,7 +24,7 @@ public class VerticalExtension {
 
         sequenceTime = new Timer();
 
-        SetState("reset");
+        SetState("start");
     }
 
     public void Update()
@@ -40,8 +33,8 @@ public class VerticalExtension {
 
         switch (state)
         {
-            case "reset":
-                outtake.SetState("reset");
+            case "start":
+                outtake.SetState("start");
 
                 hardware.specimenExtension.setPosition(Constants.EXTENSION_BACK);
                 VertSlidesControl(Constants.VERT_SLIDES_TRANSFER);
@@ -103,8 +96,8 @@ public class VerticalExtension {
             case "transfer specimen":
                 outtake.SetState("transfer specimen");
 
-                hardware.specimenExtension.setPosition(Constants.EXTENSION_SPECIMEN);
-                VertSlidesControl(Constants.VERT_SLIDES_SPECIMEN);
+                hardware.specimenExtension.setPosition(Constants.EXTENSION_SPECIMEN_SCORE);
+                VertSlidesControl(Constants.VERT_SLIDES_SPECIMEN_COLLECT);
                 break;
 
             case "score specimen":
