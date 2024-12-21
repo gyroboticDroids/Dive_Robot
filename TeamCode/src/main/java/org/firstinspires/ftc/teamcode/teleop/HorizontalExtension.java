@@ -12,7 +12,7 @@ public class HorizontalExtension {
 
     private boolean isActive;
 
-    private final Timer sequenceTime;
+    private final Timer actionTimer;
 
     double horizontalPosition = 0;
 
@@ -22,7 +22,7 @@ public class HorizontalExtension {
     {
         hardware = new Hardware(hardwareMap);
 
-        sequenceTime = new Timer();
+        actionTimer = new Timer();
 
         SetState("start");
     }
@@ -32,42 +32,38 @@ public class HorizontalExtension {
 
         switch (state) {
             case "start":
-//                Intake Pivot Up
-//
-//                Horizontal Back
                 hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_START);
 
-        }
-        switch (state) {
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                {
+                    horizontalPosition(Constants.HORIZONTAL_SLIDES_START);
+                }
+                break;
+
             case "intake sub ready":
+                horizontalPosition(Constants.HORIZONTAL_SLIDES_OUT);
 
-
-        }
-        switch (state) {
+                break;
             case "intake":
 
-
-        }
-        switch (state) {
+                break;
             case "transfer":
 
-
-        }
-        switch (state) {
+                break;
             case "reject":
 
-
+                break;
         }
     }
     public void SetState(String s)
     {
-        sequenceTime.resetTimer();
+        actionTimer.resetTimer();
         state = s;
         Update();
     }
     public void HorizontalSlidesUpdate()
     {
-        double error = position - hardware.horizontalSlide.getCurrentPosition();
+        double error = horizontalPosition - hardware.horizontalSlide.getCurrentPosition();
 
         double motorPower = error * Constants.HORIZONTAL_SLIDES_P_GAIN;
         motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);

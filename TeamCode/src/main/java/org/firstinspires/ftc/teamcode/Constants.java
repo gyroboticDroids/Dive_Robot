@@ -26,7 +26,8 @@ public class Constants {
     public static double OUTTAKE_CLOSED = 1;
 
     public static double INTAKE_PIVOT_START = 0;
-    public static double INTAKE_PIVOT_TRANSFER = 0;
+    public static double INTAKE_PIVOT_TRANSFER = 0.2;
+    public static double INTAKE_PIVOT_INTERMEDIATE = 0.;
     public static double INTAKE_PIVOT_DOWN = 0;
 
     public static int VERT_SLIDES_SAMPLE_LOW = 1500;
