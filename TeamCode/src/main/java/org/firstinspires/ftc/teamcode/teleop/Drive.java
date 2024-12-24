@@ -20,6 +20,8 @@ public class Drive {
 
     double turnPower;
 
+    double turnOffset = 0;
+
     public boolean driveBack = false;
 
     public Drive(HardwareMap hardwareMap, Gamepad gamepad1)
@@ -30,6 +32,8 @@ public class Drive {
 
     public void Update()
     {
+        hardware.pinpointDriver.update();
+
         if(driveBack)
         {
             hardware.frontLeft.setPower(Constants.DRIVE_BACK_POWER);
@@ -40,7 +44,7 @@ public class Drive {
             return;
         }
 
-        botHeading = hardware.pinpointDriver.getHeading();
+        botHeading = hardware.pinpointDriver.getHeading() - turnOffset;
 
         Input(gamepad);
         Movement();
@@ -50,20 +54,22 @@ public class Drive {
     {
         double multiplier = (Math.abs(gpad.right_stick_x) + Math.abs(gpad.right_stick_y) > 0)? Constants.SLOW_SPEED_MULTIPLIER:Constants.DRIVE_SPEED_MULTIPLIER;
 
-        y = -gpad.left_stick_y * multiplier;
-        x = gpad.left_stick_x * multiplier;
-        rx = (gpad.right_trigger - gpad.left_trigger) * 5 * multiplier;
+        y = gpad.left_stick_y * multiplier;
+        x = -gpad.left_stick_x * multiplier;
+        rx = (gpad.left_trigger - gpad.right_trigger) * 1 * multiplier;
         resetHeading = gpad.back;
 
-        targetHeading = (gpad.y)? 0:(gpad.x)? -90: (gpad.a)? -135: (gpad.b)? 90:targetHeading;
+        targetHeading = (gpad.y)? 0:(gpad.x)? 90: (gpad.a)? -45: (gpad.b)? -90:targetHeading;
 
         targetHeading += rx;
     }
 
     private void Movement()
     {
-        if (resetHeading) {
-            hardware.pinpointDriver.resetPosAndIMU();
+        if (resetHeading)
+        {
+            turnOffset = hardware.pinpointDriver.getHeading();
+            targetHeading = 0;
         }
 
         // Rotate the movement direction counter to the bot's rotation
@@ -77,7 +83,7 @@ public class Drive {
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
         // but only if at least one is out of the range [-1, 1]
-        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(rx), 1);
+        double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(turnPower), 1);
         double frontLeftPower = (rotY + rotX + turnPower) / denominator;
         double backLeftPower = (rotY - rotX + turnPower) / denominator;
         double frontRightPower = (rotY - rotX - turnPower) / denominator;

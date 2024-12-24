@@ -25,8 +25,13 @@ public class MasterTeleop extends OpMode {
     public void loop()
     {
         drive.Update();
+
+        telemetry.addData("rx", drive.rx);
+        telemetry.addData("target heading", drive.targetHeading);
+        telemetry.addData("current heading", Math.toDegrees(drive.botHeading));
         //VertExtensionUpdate();
         //HangUpdate();
+        telemetry.update();
     }
 
     void VertExtensionUpdate()

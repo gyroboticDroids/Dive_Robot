@@ -58,15 +58,15 @@ public class TestMotors extends OpMode {
             hardware.rearRight.setPower(0);
         }
 
-        hardware.vertSlide1.setPower(gamepad1.right_stick_y);
-        hardware.vertSlide2.setPower(-gamepad1.right_stick_y);
+        //hardware.vertSlide1.setPower(gamepad1.right_stick_y);
+        //hardware.vertSlide2.setPower(-gamepad1.right_stick_y);
 
-        hardware.horizontalSlide.setPower(gamepad1.left_stick_x);
+        //hardware.horizontalSlide.setPower(gamepad1.left_stick_x);
 
-        extensionControls += (gamepad1.right_trigger - gamepad1.left_trigger) / 100;
-        extensionControls = Math.min(Math.max(extensionControls ,1), -1);
+        //extensionControls += (gamepad1.right_trigger - gamepad1.left_trigger) / 100;
+        //extensionControls = Math.min(Math.max(extensionControls ,1), -1);
 
-        hardware.specimenExtension.setPosition(extensionControls);
+        //hardware.specimenExtension.setPosition(extensionControls);
 
         telemetry.addData("Horizontal slide pos", hardware.horizontalSlide.getCurrentPosition());
         telemetry.addData("Vertical slide pos", hardware.vertSlide2.getCurrentPosition());
