@@ -15,18 +15,18 @@ public class MasterTeleop extends OpMode {
     public void init()
     {
         drive = new Drive(hardwareMap, gamepad1);
-        vertExtension = new Outtake(hardwareMap);
-        hang = new Hang(hardwareMap);
+        //vertExtension = new Outtake(hardwareMap);
+        //hang = new Hang(hardwareMap);
 
-        hang.SetState("down");
+        //hang.SetState("down");
     }
 
     @Override
     public void loop()
     {
         drive.Update();
-        VertExtensionUpdate();
-        HangUpdate();
+        //VertExtensionUpdate();
+        //HangUpdate();
     }
 
     void VertExtensionUpdate()

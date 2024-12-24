@@ -34,7 +34,6 @@ public class Hang {
             case "up":
                 hardware.hang1.setPosition(Constants.HANG1_UP);
                 hardware.hang2.setPosition(Constants.HANG2_UP);
-                vertExtension.VertSlidesControl(Constants.VERT_SLIDES_HANG);
                 break;
 
             case "hanging":
@@ -50,7 +49,6 @@ public class Hang {
             case "hanging lvl 3":
                 hardware.hang1.setPosition(Constants.HANG1_DOWN);
                 hardware.hang2.setPosition(Constants.HANG2_DOWN);
-                vertExtension.VertSlidesControl(Constants.VERT_SLIDES_TRANSFER);
                 break;
         }
     }
