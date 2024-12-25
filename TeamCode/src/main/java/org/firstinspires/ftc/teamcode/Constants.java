@@ -38,11 +38,12 @@ public class Constants {
     public static int VERT_SLIDES_SPECIMEN_LOW_SCORING = 750;
     public static int VERT_SLIDES_SPECIMEN_HIGH_SCORING = 1300;
     public static int VERT_SLIDES_SPECIMEN_INCREASE = 50;
-    public static int VERT_SLIDES_TRANSFER = 0;
+    public static int VERT_SLIDES_START = 0;
     public static int VERT_SLIDES_HANG = 1700;
-    public static int VERT_SLIDES_MAX_LIMIT = 2000;
+    public static int VERT_SLIDES_MAX_LIMIT = 2715;
 
     public static int HORIZONTAL_SLIDES_START = 0;
+    public static int HORIZONTAL_SLIDES_MAX = 745;
     public static int HORIZONTAL_SLIDES_TRANSFER = 50;
     public static int HORIZONTAL_SLIDES_OUT = 100;
     public static int HORIZONTAL_SLIDES_HALFWAY = 700;

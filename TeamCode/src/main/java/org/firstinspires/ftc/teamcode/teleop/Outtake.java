@@ -50,7 +50,7 @@ public class Outtake {
             case "transfer intake ready":
                 if(!(lastState == "transfer intake ready"))
                 {
-                    vertPosition = Constants.VERT_SLIDES_TRANSFER;
+                    vertPosition = Constants.VERT_SLIDES_START;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
@@ -191,8 +191,10 @@ public class Outtake {
 
     public void VertSlidesManual(double position)
     {
-        vertPosition += position * 0.001;
+        vertPosition += position * 10;
     }
+
+    double motorPower;
 
     public void VertSlidesUpdate()
     {
@@ -200,7 +202,7 @@ public class Outtake {
 
         double error = vertPosition - hardware.vertSlide1.getCurrentPosition();
 
-        double motorPower = error * Constants.VERT_SLIDES_P_GAIN;
+        motorPower = error * Constants.VERT_SLIDES_P_GAIN;
         motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
 
         hardware.vertSlide1.setPower(motorPower);
@@ -210,5 +212,10 @@ public class Outtake {
     public boolean IsDriveBack()
     {
         return driveBack;
+    }
+
+    public int GetVertSlidePos()
+    {
+        return hardware.vertSlide1.getCurrentPosition();
     }
 }

@@ -63,10 +63,19 @@ public class Hardware {
         intake1 = hardwareMap.get(CRServo.class, "intake1");
         intake2 = hardwareMap.get(CRServo.class, "intake2");
 
+        hang1 = hardwareMap.get(Servo.class, "hang1");
+        hang2 = hardwareMap.get(Servo.class, "hang2");
+
+
         vertSlide1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        vertSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        vertSlide1.setDirection(DcMotor.Direction.REVERSE);
 
         vertSlide2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        vertSlide2.setDirection(DcMotor.Direction.REVERSE);
+        vertSlide2.setDirection(DcMotor.Direction.FORWARD);
+
+        horizontalSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        horizontalSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         rearRight.setDirection(DcMotor.Direction.REVERSE);
@@ -75,9 +84,6 @@ public class Hardware {
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        hang1 = hardwareMap.get(Servo.class, "hang1");
-        hang2 = hardwareMap.get(Servo.class, "hang2");
 
         pinpointDriver = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
         pinpointDriver.setOffsets(-12.0, -60.0); //these are tuned for 3110-0002-0001 Product Insight #1
