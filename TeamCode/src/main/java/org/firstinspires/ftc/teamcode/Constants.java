@@ -30,7 +30,9 @@ public class Constants {
     public static double INTAKE_PIVOT_INTERMEDIATE = 0.5;
     public static double INTAKE_PIVOT_DOWN = 1;
 
-    public static double INTAKE_SPEED = 0.6;
+    public static double INTAKE_FORWARD = 0.6;
+    public static double INTAKE_STOP = 0;
+    public static double INTAKE_REVERSE = -0.6;
 
     public static int VERT_SLIDES_SAMPLE_LOW = 1500;
     public static int VERT_SLIDES_SAMPLE_HIGH = 1500;

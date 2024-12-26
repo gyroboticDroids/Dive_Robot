@@ -6,7 +6,9 @@ import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
-public class HorizontalExtension {
+import java.util.Objects;
+
+public class Intake {
 
     private final Hardware hardware;
     private final Timer actionTimer;
@@ -17,7 +19,7 @@ public class HorizontalExtension {
 
     String state;
 
-    public HorizontalExtension (HardwareMap hardwareMap)
+    public Intake (HardwareMap hardwareMap)
     {
         hardware = new Hardware(hardwareMap);
 
@@ -32,6 +34,8 @@ public class HorizontalExtension {
             case "start":
                 hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_START);
 
+                IntakeSpeed(Constants.INTAKE_STOP);
+
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     horizontalPosition = Constants.HORIZONTAL_SLIDES_START;
@@ -42,17 +46,21 @@ public class HorizontalExtension {
             case "intake sub ready":
 
                 horizontalPosition = Constants.HORIZONTAL_SLIDES_OUT;
+
                 if(horizontalPosition > Constants.HORIZONTAL_SLIDES_TRANSFER)
                 {
                     hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
+                    IntakeSpeed(Constants.INTAKE_FORWARD);
                 }
                 break;
             case "intake":
+                IntakeSpeed(Constants.INTAKE_FORWARD);
 
                 hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_DOWN);
                 break;
 
             case "transfer":
+                IntakeSpeed(Constants.INTAKE_STOP);
 
                 hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_TRANSFER);
 
@@ -63,18 +71,21 @@ public class HorizontalExtension {
                 break;
 
             case "reject":
-                hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
-
+                if (Objects.equals(lastState, "intake sub ready"))
+                {
+                    IntakeSpeed(Constants.INTAKE_REVERSE);
+                    hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
+                }
                 break;
         }
 
         lastState = state;
     }
 
-    public void Intake()
+    public void IntakeSpeed(double speed)
     {
-        hardware.intake1.setPower(Constants.INTAKE_SPEED);
-        hardware.intake2.setPower(Constants.INTAKE_SPEED);
+        hardware.intake1.setPower(speed);
+        hardware.intake2.setPower(speed);
     }
 
     public void SetState(String s)
@@ -82,6 +93,11 @@ public class HorizontalExtension {
         actionTimer.resetTimer();
         state = s;
         Update();
+    }
+
+    public void HorizontalSlidesManual(double position)
+    {
+        horizontalPosition += position * 10;
     }
 
     public void HorizontalSlidesUpdate()
