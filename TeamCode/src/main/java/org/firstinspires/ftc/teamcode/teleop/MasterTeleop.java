@@ -145,6 +145,51 @@ public class MasterTeleop extends OpMode {
         }
     }
 
+    void IntakeUpdate()
+    {
+        if (isHanging)
+        {
+            return;
+        }
+
+        if (gamepad2.back)
+        {
+            intake.SetState("start");
+        }
+
+        if (gamepad2.right_trigger >  0.1)
+        {
+            intake.SetState("intake sub ready");
+        }
+
+        if (gamepad2.right_bumper)
+        {
+            intake.SetState("intake sub ready");
+        }
+
+        if (gamepad2.left_bumper)
+        {
+            intake.SetState("intake transfer");
+        }
+
+        if (gamepad2.dpad_down)
+        {
+            intake.SetState("intake");
+        }
+
+        if (gamepad2.dpad_up)
+        {
+            intake.SetState("reject");
+        }
+
+        if(Objects.equals(intake.state, "intake sub ready"))
+        {
+            intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
+        }
+
+        intake.HorizontalSlidesUpdate();
+    }
+
     void HangUpdate()
     {
 
