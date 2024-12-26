@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 import java.util.Objects;
@@ -29,6 +30,7 @@ public class Intake {
     }
 
     public void Update() {
+        HorizontalSlidesUpdate();
 
         switch (state) {
             case "start":
@@ -39,20 +41,22 @@ public class Intake {
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     horizontalPosition = Constants.HORIZONTAL_SLIDES_START;
-
                 }
                 break;
 
             case "intake sub ready":
+                if (!Objects.equals(lastState, "intake sub ready"))
+                {
+                    horizontalPosition = Constants.HORIZONTAL_SLIDES_OUT;
+                }
 
-                horizontalPosition = Constants.HORIZONTAL_SLIDES_OUT;
-
-                if(horizontalPosition > Constants.HORIZONTAL_SLIDES_TRANSFER)
+                if(horizontalPosition > Constants.HORIZONTAL_SLIDES_OUT - 20)
                 {
                     hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
                     IntakeSpeed(Constants.INTAKE_FORWARD);
                 }
                 break;
+
             case "intake":
                 IntakeSpeed(Constants.INTAKE_FORWARD);
 
@@ -66,7 +70,7 @@ public class Intake {
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    horizontalPosition = Constants.HORIZONTAL_SLIDES_START;
+                    horizontalPosition = Constants.HORIZONTAL_SLIDES_TRANSFER;
                 }
                 break;
 
@@ -102,12 +106,13 @@ public class Intake {
 
     public void HorizontalSlidesUpdate()
     {
+        horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, Constants.HORIZONTAL_SLIDES_MAX);
+
         double error = horizontalPosition - hardware.horizontalSlide.getCurrentPosition();
 
         double motorPower = error * Constants.HORIZONTAL_SLIDES_P_GAIN;
         motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
 
         hardware.horizontalSlide.setPower(motorPower);
-
     }
 }
