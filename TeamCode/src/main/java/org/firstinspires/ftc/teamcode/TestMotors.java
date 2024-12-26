@@ -4,10 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
+import org.firstinspires.ftc.teamcode.teleop.Outtake;
 
 @TeleOp(name = "TestMotors")
 public class TestMotors extends OpMode {
     private Hardware hardware;
+    private Outtake outtake;
 
     float extensionControls = 0;
 
@@ -15,6 +17,7 @@ public class TestMotors extends OpMode {
     public void init()
     {
         hardware = new Hardware(hardwareMap);
+        outtake = new Outtake(hardwareMap);
     }
 
     double horizontalPosition = 0;
@@ -65,7 +68,7 @@ public class TestMotors extends OpMode {
         //hardware.vertSlide2.setPower(-gamepad1.right_stick_y);
 
 
-        horizontalPosition += -gamepad2.left_stick_y;
+        horizontalPosition -= gamepad2.left_stick_y;
 
         horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, Constants.HORIZONTAL_SLIDES_MAX);
 
@@ -82,6 +85,8 @@ public class TestMotors extends OpMode {
 
         //hardware.horizontalSlide.setPower(gamepad1.left_stick_x);
 
+        outtake.VertSlidesUpdate();
+        outtake.VertSlidesManual(-gamepad1.left_stick_y);
         //extensionControls += (gamepad1.right_trigger - gamepad1.left_trigger) / 100;
         //extensionControls = Math.min(Math.max(extensionControls ,1), -1);
 
