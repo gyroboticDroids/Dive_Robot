@@ -50,7 +50,7 @@ public class Intake {
                     horizontalPosition = Constants.HORIZONTAL_SLIDES_OUT;
                 }
 
-                if(horizontalPosition > Constants.HORIZONTAL_SLIDES_OUT - 20)
+                if(horizontalPosition > Constants.HORIZONTAL_SLIDES_OUT - 10)
                 {
                     hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
                     IntakeSpeed(Constants.INTAKE_FORWARD);
@@ -63,6 +63,8 @@ public class Intake {
                 IntakeSpeed(Constants.INTAKE_FORWARD);
 
                 hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_DOWN);
+
+                horizontalPosition = MathFunctions.clamp(horizontalPosition, Constants.HORIZONTAL_SLIDES_OUT, Constants.HORIZONTAL_SLIDES_MAX);
                 break;
 
             case "transfer":
@@ -77,11 +79,10 @@ public class Intake {
                 break;
 
             case "reject":
-                if (Objects.equals(lastState, "intake sub ready"))
-                {
-                    IntakeSpeed(Constants.INTAKE_REVERSE);
-                    hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
-                }
+                IntakeSpeed(Constants.INTAKE_REVERSE);
+                hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
+
+                horizontalPosition = MathFunctions.clamp(horizontalPosition, Constants.HORIZONTAL_SLIDES_OUT, Constants.HORIZONTAL_SLIDES_MAX);
                 break;
         }
 
