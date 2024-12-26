@@ -169,7 +169,7 @@ public class Outtake {
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.75)
                 {
-                    hardware.pivot.setPosition(Constants.OUTTAKE_OPEN);
+                    hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
 
                     driveBack = true;
                 }
