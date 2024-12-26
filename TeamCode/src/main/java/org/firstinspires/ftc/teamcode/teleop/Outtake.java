@@ -7,6 +7,8 @@ import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
+import java.util.Objects;
+
 public class Outtake {
     private final Hardware hardware;
     private final Timer actionTimer;
@@ -15,7 +17,7 @@ public class Outtake {
 
     private String lastState;
 
-    private double vertPosition = 0;
+    double vertPosition = 0;
 
     String state;
 
@@ -28,7 +30,7 @@ public class Outtake {
         SetState("start");
     }
 
-    double lastVertConstant = 0;
+    private double lastVertConstant = 0;
 
     public void Update()
     {
@@ -48,7 +50,7 @@ public class Outtake {
                 break;
 
             case "transfer intake ready":
-                if(!(lastState == "transfer intake ready"))
+                if(!Objects.equals(lastState, "transfer intake ready"))
                 {
                     vertPosition = Constants.VERT_SLIDES_START;
                 }
@@ -84,7 +86,7 @@ public class Outtake {
                 break;
 
             case "grab specimen ready":
-                if(!(lastState == "grab specimen ready"))
+                if(!Objects.equals(lastState, "grab specimen ready"))
                 {
                     vertPosition = Constants.VERT_SLIDES_SPECIMEN_COLLECT;
                 }
@@ -108,7 +110,7 @@ public class Outtake {
                 break;
 
             case "score specimen ready low":
-                if(!(lastState == "score specimen ready low"))
+                if(!Objects.equals(lastState, "score specimen ready low"))
                 {
                     lastVertConstant = vertPosition = Constants.VERT_SLIDES_SPECIMEN_LOW_SCORING;
                 }
@@ -124,7 +126,7 @@ public class Outtake {
                 break;
 
             case "score specimen ready high":
-                if(!(lastState == "score specimen ready high"))
+                if(!Objects.equals(lastState, "score specimen ready high"))
                 {
                     lastVertConstant = vertPosition = Constants.VERT_SLIDES_SPECIMEN_HIGH_SCORING;
                 }
@@ -146,14 +148,14 @@ public class Outtake {
                 break;
 
             case "score sample ready low":
-                if(!(lastState == "score sample ready low"))
+                if(!Objects.equals(lastState, "score sample ready low"))
                 {
                     vertPosition = Constants.VERT_SLIDES_SAMPLE_LOW;
                 }
                 break;
 
             case "score sample ready high":
-                if(!(lastState == "score sample ready high"))
+                if(!Objects.equals(lastState, "score sample ready high"))
                 {
                     vertPosition = Constants.VERT_SLIDES_SAMPLE_HIGH;
                 }
