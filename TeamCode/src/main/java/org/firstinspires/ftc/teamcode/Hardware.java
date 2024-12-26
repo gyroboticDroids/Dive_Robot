@@ -66,16 +66,17 @@ public class Hardware {
         hang1 = hardwareMap.get(Servo.class, "hang1");
         hang2 = hardwareMap.get(Servo.class, "hang2");
 
-
-        vertSlide1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         vertSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        vertSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         vertSlide1.setDirection(DcMotor.Direction.REVERSE);
 
         vertSlide2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         vertSlide2.setDirection(DcMotor.Direction.FORWARD);
 
-        horizontalSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         horizontalSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        horizontalSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        horizontalSlide.setDirection(DcMotorSimple.Direction.FORWARD);
+
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         rearRight.setDirection(DcMotor.Direction.REVERSE);

@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
+
 @TeleOp(name = "TestMotors")
 public class TestMotors extends OpMode {
     private Hardware hardware;
@@ -15,6 +17,7 @@ public class TestMotors extends OpMode {
         hardware = new Hardware(hardwareMap);
     }
 
+    double horizontalPosition = 0;
     @Override
     public void loop()
     {
@@ -61,6 +64,22 @@ public class TestMotors extends OpMode {
         //hardware.vertSlide1.setPower(gamepad1.right_stick_y);
         //hardware.vertSlide2.setPower(-gamepad1.right_stick_y);
 
+
+        horizontalPosition += -gamepad2.left_stick_y;
+
+        horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, Constants.HORIZONTAL_SLIDES_MAX);
+
+        telemetry.addData("gamepad control", horizontalPosition);
+
+        double error = horizontalPosition - hardware.horizontalSlide.getCurrentPosition();
+
+        double motorPower = error * Constants.HORIZONTAL_SLIDES_P_GAIN;
+        motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
+
+        telemetry.addData("motor power", motorPower);
+
+        hardware.horizontalSlide.setPower(motorPower);
+
         //hardware.horizontalSlide.setPower(gamepad1.left_stick_x);
 
         //extensionControls += (gamepad1.right_trigger - gamepad1.left_trigger) / 100;
@@ -71,7 +90,8 @@ public class TestMotors extends OpMode {
         telemetry.addData("Horizontal slide pos", hardware.horizontalSlide.getCurrentPosition());
         telemetry.addData("Vertical slide pos", hardware.vertSlide1.getCurrentPosition());
         telemetry.addData("Extension slide pos", hardware.specimenExtension.getPosition());
-        telemetry.addData("Outake servo pos", hardware.outtake.getPosition());
+        telemetry.addData("Horizontal slide power", hardware.horizontalSlide.getPower());
+        telemetry.addData("Outtake servo pos", hardware.outtake.getPosition());
 
         telemetry.update();
     }
