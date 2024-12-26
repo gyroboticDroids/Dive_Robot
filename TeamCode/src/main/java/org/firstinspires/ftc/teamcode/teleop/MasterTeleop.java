@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import java.util.Objects;
+
 @TeleOp(name = "Master Tele-op", group = "Tele-op")
 public class MasterTeleop extends OpMode {
     Drive drive;
@@ -38,17 +40,109 @@ public class MasterTeleop extends OpMode {
         telemetry.update();
     }
 
+    String lastState;
+    int yPresses = 0;
+    boolean yIsPressed = false;
+
     void OuttakeUpdate()
     {
-        //if(isHanging)
-        //{
-        //    return;
-        //}
+        if(isHanging)
+        {
+            return;
+        }
 
-        //drive.driveBack = vertExtension.IsDriveBack();
+        drive.driveBack = outtake.IsDriveBack();
+
+        if(gamepad2.start)
+        {
+            outtake.SetState("start");
+        }
+
+        if(!Objects.equals(lastState, "transfer"))
+        {
+            if(gamepad2.a && Objects.equals(lastState, "sample score"))
+            {
+                outtake.SetState("score sample");
+            }
+
+            if(gamepad2.a && Objects.equals(lastState, "specimen score"))
+            {
+                outtake.SetState("score specimen");
+            }
+        }
+
+        if(gamepad2.y && Objects.equals(lastState, "sample"))
+        {
+            if(yPresses < 2)
+            {
+                outtake.SetState("score sample ready high");
+            }
+            else
+            {
+                outtake.SetState("score sample ready low");
+            }
+        }
+
+        if(gamepad2.y && Objects.equals(lastState, "specimen"))
+        {
+            if(yPresses < 2)
+            {
+                outtake.SetState("score specimen ready high");
+            }
+            else
+            {
+                outtake.SetState("score specimen ready low");
+            }
+        }
+
+        if(gamepad2.y && !yIsPressed)
+        {
+            yIsPressed = true;
+            yPresses++;
+        }
+        else
+        {
+            yIsPressed = false;
+        }
+
+        if(gamepad2.a)
+        {
+            yPresses = 0;
+        }
+
+        if(gamepad2.b)
+        {
+            outtake.SetState("grab specimen ready");
+        }
+
+        if(gamepad2.x)
+        {
+            outtake.SetState("transfer intake");
+        }
 
         outtake.VertSlidesUpdate();
         outtake.VertSlidesManual(-gamepad2.left_stick_y);
+
+        if(Objects.equals(outtake.state, "transfer intake"))
+        {
+            lastState = "sample";
+        }
+        else if (Objects.equals(outtake.state, "score sample ready high") || Objects.equals(outtake.state, "score sample ready low"))
+        {
+            lastState = "sample score";
+        }
+        else if (Objects.equals(outtake.state, "grab specimen ready"))
+        {
+            lastState = "specimen";
+        }
+        else if (Objects.equals(outtake.state, "score specimen ready high") || Objects.equals(outtake.state, "score specimen ready low"))
+        {
+            lastState = "specimen score";
+        }
+        else if (Objects.equals(outtake.state, "transfer intake ready"))
+        {
+            lastState = "transfer";
+        }
     }
 
     void HangUpdate()
