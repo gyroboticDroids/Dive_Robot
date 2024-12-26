@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
+
 import java.util.Objects;
 
 @TeleOp(name = "Master Tele-op", group = "Tele-op")
@@ -11,6 +13,8 @@ public class MasterTeleop extends OpMode {
     Outtake outtake;
     Intake intake;
     Hang hang;
+
+    Timer teleopTimer;
 
     private boolean isHanging = false;
 
@@ -22,22 +26,51 @@ public class MasterTeleop extends OpMode {
         intake = new Intake(hardwareMap);
         hang = new Hang(hardwareMap);
 
+        teleopTimer = new Timer();
+        teleopTimer.resetTimer();
+
         hang.SetState("start");
     }
+
+    boolean isRumble = false;
 
     @Override
     public void loop()
     {
-        drive.Update();
+        if(teleopTimer.getElapsedTimeSeconds() >= 90 && !isRumble)
+        {
+            gamepad1.rumble(1000);
+            gamepad2.rumble(1000);
 
-        telemetry.addData("rx", drive.rx);
-        telemetry.addData("target heading", drive.targetHeading);
-        telemetry.addData("current heading", Math.toDegrees(drive.botHeading));
-        telemetry.addData("vert slides pos", outtake.GetVertSlidePos());
-        telemetry.addData("vert slides power", outtake.motorPower);
+            isRumble = true;
+        }
+
+        drive.Update();
         IntakeUpdate();
         OuttakeUpdate();
         HangUpdate();
+
+        telemetry.addData("match time", teleopTimer.getElapsedTimeSeconds());
+        telemetry.addLine();
+
+        telemetry.addLine("-------------------Drive---------------------");
+        telemetry.addData("rx", drive.rx);
+        telemetry.addData("target heading", drive.targetHeading);
+        telemetry.addData("current heading", Math.toDegrees(drive.botHeading));
+
+        telemetry.addLine("-------------------Outtake-------------------");
+        telemetry.addData("outtake state", outtake.state);
+        telemetry.addData("vert slides pos", outtake.GetVertSlidePos());
+        telemetry.addData("drive back", outtake.IsDriveBack());
+
+        telemetry.addLine("-------------------Intake--------------------");
+        telemetry.addData("intake state", intake.state);
+        telemetry.addData("horizontal slides pos", intake.GetHorizontalSlidePos());
+
+        telemetry.addLine("-------------------Hang----------------------");
+        telemetry.addData("hang state", hang.state);
+        telemetry.addData("hanging", isHanging);
+
         telemetry.update();
     }
 

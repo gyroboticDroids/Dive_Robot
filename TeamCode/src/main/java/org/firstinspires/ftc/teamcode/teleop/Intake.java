@@ -117,4 +117,9 @@ public class Intake {
 
         hardware.horizontalSlide.setPower(motorPower);
     }
+
+    public int GetHorizontalSlidePos()
+    {
+        return hardware.horizontalSlide.getCurrentPosition();
+    }
 }
