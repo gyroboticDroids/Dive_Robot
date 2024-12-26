@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class MasterTeleop extends OpMode {
     Drive drive;
     Outtake outtake;
+    Intake intake;
     Hang hang;
 
     private boolean isHanging = false;
@@ -16,6 +17,7 @@ public class MasterTeleop extends OpMode {
     {
         drive = new Drive(hardwareMap, gamepad1);
         outtake = new Outtake(hardwareMap);
+        intake = new Intake(hardwareMap);
         //hang = new Hang(hardwareMap);
 
         //hang.SetState("down");
