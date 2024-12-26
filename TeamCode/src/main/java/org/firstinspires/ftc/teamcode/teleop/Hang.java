@@ -48,6 +48,11 @@ public class Hang {
             case "lvl 2":
                 hardware.hang1.setPosition(Constants.HANGING1);
                 hardware.hang2.setPosition(Constants.HANGING2);
+
+                if(hangTimer.getElapsedTimeSeconds() > 2)
+                {
+                    SetState("lvl 3");
+                }
                 break;
 
             case "lvl 3":

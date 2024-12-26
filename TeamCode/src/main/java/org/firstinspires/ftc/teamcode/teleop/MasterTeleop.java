@@ -20,9 +20,9 @@ public class MasterTeleop extends OpMode {
         drive = new Drive(hardwareMap, gamepad1);
         outtake = new Outtake(hardwareMap);
         intake = new Intake(hardwareMap);
-        //hang = new Hang(hardwareMap);
+        hang = new Hang(hardwareMap);
 
-        //hang.SetState("down");
+        hang.SetState("start");
     }
 
     @Override
@@ -190,6 +190,20 @@ public class MasterTeleop extends OpMode {
 
     void HangUpdate()
     {
+        isHanging = !Objects.equals(hang.state, "start");
 
+        if(gamepad1.dpad_down)
+        {
+            hang.SetState("start");
+        }
+        else if (gamepad1.dpad_up)
+        {
+            hang.SetState("hang ready");
+        }
+
+        if(Objects.equals(hang.state, "hang ready") && gamepad1.start)
+        {
+            hang.SetState("lvl 2");
+        }
     }
 }
