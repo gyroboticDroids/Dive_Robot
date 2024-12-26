@@ -54,6 +54,8 @@ public class Intake {
                 {
                     hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
                     IntakeSpeed(Constants.INTAKE_FORWARD);
+
+                    horizontalPosition = MathFunctions.clamp(horizontalPosition, Constants.HORIZONTAL_SLIDES_OUT, Constants.HORIZONTAL_SLIDES_MAX);
                 }
                 break;
 

@@ -35,8 +35,9 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("current heading", Math.toDegrees(drive.botHeading));
         telemetry.addData("vert slides pos", outtake.GetVertSlidePos());
         telemetry.addData("vert slides power", outtake.motorPower);
+        IntakeUpdate();
         OuttakeUpdate();
-        //HangUpdate();
+        HangUpdate();
         telemetry.update();
     }
 
@@ -157,32 +158,29 @@ public class MasterTeleop extends OpMode {
             intake.SetState("start");
         }
 
-        if (gamepad2.right_trigger >  0.1)
-        {
-            intake.SetState("intake sub ready");
-        }
-
-        if (gamepad2.right_bumper)
+        if (gamepad2.right_trigger > 0.1 || gamepad2.right_bumper)
         {
             intake.SetState("intake sub ready");
         }
 
         if (gamepad2.left_bumper)
         {
-            intake.SetState("intake transfer");
+            intake.SetState("transfer");
         }
 
-        if (gamepad2.dpad_down)
+        if(!(Objects.equals(intake.state, "transfer") || Objects.equals(intake.state, "start")))
         {
-            intake.SetState("intake");
+            if (gamepad2.dpad_down)
+            {
+                intake.SetState("intake");
+            }
+            else if (gamepad2.dpad_up)
+            {
+                intake.SetState("reject");
+            }
         }
 
-        if (gamepad2.dpad_up)
-        {
-            intake.SetState("reject");
-        }
-
-        if(Objects.equals(intake.state, "intake sub ready"))
+        if(!(Objects.equals(intake.state, "transfer") || Objects.equals(intake.state, "start")))
         {
             intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
         }
