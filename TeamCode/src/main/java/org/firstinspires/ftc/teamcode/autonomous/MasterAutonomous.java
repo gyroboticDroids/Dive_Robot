@@ -364,8 +364,43 @@ public class MasterAutonomous extends OpMode {
             case 27:
                 if(pathTimer.getElapsedTimeSeconds() > 1)
                 {
-                    follower.followPath(toBar);
+                    follower.followPath(toBar, true);
                     setPathState(100);
+                }
+                break;
+
+            case 30:
+                follower.followPath(toBasket1, true);
+                setPathState(31);
+                break;
+
+            case 31:
+                outtake.SetState("score sample ready high");
+                setPathState(32);
+                break;
+
+            case 32:
+                outtake.SetState("score sample");
+                setPathState(33);
+                break;
+
+            case 33:
+                follower.followPath(toBasket2, true);
+                outtake.SetState("transfer intake");
+                setPathState(34);
+                break;
+
+            case 34:
+                follower.followPath(toBasket2, true);
+                outtake.SetState("transfer intake");
+                setPathState(35);
+                break;
+
+            case 35:
+                if(!follower.isBusy())
+                {
+                    follower.followPath(toBar, true);
+                    setPathState(36);
                 }
                 break;
 
