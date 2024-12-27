@@ -104,7 +104,7 @@ public class Intake {
 
     public void HorizontalSlidesManual(double position)
     {
-        horizontalPosition += position * 10;
+        horizontalPosition += position;
     }
 
     public void HorizontalSlidesUpdate()

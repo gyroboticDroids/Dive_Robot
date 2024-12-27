@@ -28,14 +28,16 @@ public class MasterTeleop extends OpMode {
         hang = new Hang(hardwareMap);
 
         teleopTimer = new Timer();
-
-        hang.SetState("start");
     }
 
     @Override
     public void start()
     {
         teleopTimer.resetTimer();
+
+        outtake.SetState("start");
+        intake.SetState("start");
+        hang.SetState("start");
     }
 
     @Override
