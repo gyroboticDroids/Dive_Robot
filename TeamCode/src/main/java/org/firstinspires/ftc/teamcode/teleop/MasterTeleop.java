@@ -215,7 +215,7 @@ public class MasterTeleop extends OpMode {
         {
             hang.SetState("hang ready");
         }
-        else if(Objects.equals(hang.state, "hang ready") && gamepad1.start)
+        else if(gamepad1.start && Objects.equals(hang.state, "hang ready"))
         {
             hang.SetState("lvl 2");
         }
