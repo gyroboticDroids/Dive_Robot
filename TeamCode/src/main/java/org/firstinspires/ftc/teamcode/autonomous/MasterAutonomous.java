@@ -101,7 +101,7 @@ public class MasterAutonomous extends OpMode {
             startPos++;
             isPressed = true;
         }
-        else
+        else if(!gamepad1.dpad_left && !gamepad1.dpad_right)
         {
             isPressed = false;
         }
@@ -182,7 +182,7 @@ public class MasterAutonomous extends OpMode {
                 if(scoreSpecimens)
                     setPathState(30);
                 if(scoreSamples)
-                    setPathState(10);
+                    setPathState(5);
                 break;
 
             case 1:
@@ -207,17 +207,29 @@ public class MasterAutonomous extends OpMode {
                 }
                 break;
 
+            case 5:
+                follower.followPath(toBasket1, true);
+                setPathState(6);
+                break;
+
+            case 6:
+                outtake.SetState("score sample ready high");
+
+                if(!follower.isBusy())
+                {
+                    outtake.SetState("score sample");
+                    setPathState(11);
+                }
+                break;
+
             case 10:
                 follower.followPath(toBasket1, true);
                 setPathState(11);
                 break;
 
             case 11:
-                outtake.SetState("score sample ready high");
-
                 if(!follower.isBusy())
                 {
-                    outtake.SetState("score sample");
                     intake.SetState("intake sub ready");
                     setPathState(12);
                 }

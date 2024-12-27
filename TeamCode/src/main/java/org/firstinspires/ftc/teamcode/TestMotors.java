@@ -94,6 +94,7 @@ public class TestMotors extends OpMode {
 
         telemetry.addData("Horizontal slide pos", hardware.horizontalSlide.getCurrentPosition());
         telemetry.addData("Vertical slide pos", hardware.vertSlide1.getCurrentPosition());
+        telemetry.addData("Vertical slide power", hardware.vertSlide1.getPower());
         telemetry.addData("Extension slide pos", hardware.specimenExtension.getPosition());
         telemetry.addData("Horizontal slide power", hardware.horizontalSlide.getPower());
         telemetry.addData("Outtake servo pos", hardware.outtake.getPosition());

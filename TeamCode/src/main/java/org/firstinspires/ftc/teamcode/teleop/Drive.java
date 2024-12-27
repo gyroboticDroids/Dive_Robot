@@ -56,7 +56,7 @@ public class Drive {
 
         y = gpad.left_stick_y * multiplier;
         x = -gpad.left_stick_x * multiplier;
-        rx = (gpad.left_trigger - gpad.right_trigger) * 1 * multiplier;
+        rx = (gpad.left_trigger - gpad.right_trigger) * multiplier;
         resetHeading = gpad.back;
 
         targetHeading = (gpad.y)? 0:(gpad.x)? 90: (gpad.a)? -45: (gpad.b)? -90:targetHeading;
@@ -108,7 +108,6 @@ public class Drive {
         }
 
         turnPower = Constants.TURN_P_GAIN * error;
-
         turnPower = Math.min(Math.max(turnPower, -0.4), 0.4);
     }
 }

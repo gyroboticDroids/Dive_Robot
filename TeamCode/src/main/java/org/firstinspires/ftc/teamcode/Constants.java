@@ -62,7 +62,7 @@ public class Constants {
     public static double DRIVE_BACK_POWER = 0.3;
 
     public static double TURN_P_GAIN = 0.022;
-    public static double VERT_SLIDES_P_GAIN = 0.022;
+    public static double VERT_SLIDES_P_GAIN = 0.031;
     public static double HORIZONTAL_SLIDES_P_GAIN = 0.022;
 
     public float turnOffset = 0;

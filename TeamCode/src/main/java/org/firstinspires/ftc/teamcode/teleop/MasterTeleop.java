@@ -17,6 +17,7 @@ public class MasterTeleop extends OpMode {
     Timer teleopTimer;
 
     private boolean isHanging = false;
+    private boolean isRumble = false;
 
     @Override
     public void init()
@@ -27,12 +28,15 @@ public class MasterTeleop extends OpMode {
         hang = new Hang(hardwareMap);
 
         teleopTimer = new Timer();
-        teleopTimer.resetTimer();
 
         hang.SetState("start");
     }
 
-    boolean isRumble = false;
+    @Override
+    public void start()
+    {
+        teleopTimer.resetTimer();
+    }
 
     @Override
     public void loop()
@@ -50,22 +54,23 @@ public class MasterTeleop extends OpMode {
         OuttakeUpdate();
         HangUpdate();
 
-        telemetry.addData("match time", teleopTimer.getElapsedTimeSeconds());
+        telemetry.addData("time remaining", 120 - teleopTimer.getElapsedTimeSeconds());
         telemetry.addLine();
 
         telemetry.addLine("-------------------Drive---------------------");
-        telemetry.addData("rx", drive.rx);
         telemetry.addData("target heading", drive.targetHeading);
         telemetry.addData("current heading", Math.toDegrees(drive.botHeading));
 
         telemetry.addLine("-------------------Outtake-------------------");
         telemetry.addData("outtake state", outtake.state);
-        telemetry.addData("vert slides pos", outtake.GetVertSlidePos());
+        telemetry.addData("vert setpoint pos", outtake.vertPosition);
+        telemetry.addData("vert fdbk pos", outtake.GetVertSlidePos());
         telemetry.addData("drive back", outtake.IsDriveBack());
 
         telemetry.addLine("-------------------Intake--------------------");
         telemetry.addData("intake state", intake.state);
-        telemetry.addData("horizontal slides pos", intake.GetHorizontalSlidePos());
+        telemetry.addData("horizontal setpoint pos", intake.horizontalPosition);
+        telemetry.addData("horizontal fdbk pos", intake.GetHorizontalSlidePos());
 
         telemetry.addLine("-------------------Hang----------------------");
         telemetry.addData("hang state", hang.state);
