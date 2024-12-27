@@ -80,7 +80,6 @@ public class MasterTeleop extends OpMode {
     }
 
     String lastState;
-    int yPresses = 0;
     boolean yIsPressed = false;
 
     void OuttakeUpdate()
@@ -137,7 +136,7 @@ public class MasterTeleop extends OpMode {
             yIsPressed = true;
             yPresses++;
         }
-        else
+        else if(!gamepad2.y)
         {
             yIsPressed = false;
         }
