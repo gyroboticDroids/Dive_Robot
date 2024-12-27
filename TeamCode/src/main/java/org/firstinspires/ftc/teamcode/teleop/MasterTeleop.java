@@ -79,8 +79,9 @@ public class MasterTeleop extends OpMode {
         telemetry.update();
     }
 
-    String lastState;
+    String lastOuttakeState;
     boolean yIsPressed = false;
+    boolean xIsPressed = false;
 
     void OuttakeUpdate()
     {
@@ -89,80 +90,77 @@ public class MasterTeleop extends OpMode {
             return;
         }
 
-        if(gamepad2.start)
+        if(gamepad2.start && Objects.equals(lastOuttakeState, "transfer intake ready"))
         {
             outtake.SetState("start");
         }
-
-        if(!Objects.equals(lastState, "transfer"))
+        else if (gamepad2.x && !xIsPressed && (Objects.equals(lastOuttakeState, "start") || Objects.equals(lastOuttakeState, "grab specimen ready")))
         {
-            if(gamepad2.a && Objects.equals(lastState, "sample score"))
-            {
-                outtake.SetState("score sample");
-            }
-
-            if(gamepad2.a && Objects.equals(lastState, "specimen score"))
-            {
-                outtake.SetState("score specimen");
-            }
+            outtake.SetState("transfer intake ready");
+            xIsPressed = true;
         }
-
-        if(gamepad2.y && Objects.equals(lastState, "sample"))
+        else if (gamepad2.x && !xIsPressed && Objects.equals(lastOuttakeState, "transfer intake ready"))
         {
-            if(yPresses < 2)
-            {
-                outtake.SetState("score sample ready high");
-            }
-            else
-            {
-                outtake.SetState("score sample ready low");
-            }
+            outtake.SetState("transfer intake");
+            xIsPressed = true;
         }
-
-        if(gamepad2.y && Objects.equals(lastState, "specimen"))
+        else if(!gamepad2.x)
         {
-            if(yPresses < 2)
-            {
-                outtake.SetState("score specimen ready high");
-            }
-            else
-            {
-                outtake.SetState("score specimen ready low");
-            }
+            xIsPressed = false;
         }
-
-        if(gamepad2.y && !yIsPressed)
+        else if (gamepad2.b && (Objects.equals(lastOuttakeState, "transfer intake ready") || Objects.equals(lastOuttakeState, "transfer intake")
+                || Objects.equals(lastOuttakeState, "start")))
         {
+            outtake.SetState("grab specimen ready");
+        }
+        else if(gamepad2.y && !yIsPressed && (Objects.equals(lastOuttakeState, "grab specimen ready") || Objects.equals(lastOuttakeState, "score specimen ready low")))
+        {
+            outtake.SetState("score specimen ready high");
             yIsPressed = true;
-            yPresses++;
+        }
+        else if(gamepad2.y && !yIsPressed && Objects.equals(lastOuttakeState, "score specimen ready high"))
+        {
+            outtake.SetState("score specimen ready low");
+            yIsPressed = true;
+        }
+        else if(gamepad2.y && !yIsPressed && (Objects.equals(lastOuttakeState, "transfer intake") || Objects.equals(lastOuttakeState, "score sample ready low")))
+        {
+            outtake.SetState("score sample ready high");
+            yIsPressed = true;
+        }
+        else if(gamepad2.y && !yIsPressed && Objects.equals(lastOuttakeState, "score sample ready high"))
+        {
+            outtake.SetState("score sample ready low");
+            yIsPressed = true;
         }
         else if(!gamepad2.y)
         {
             yIsPressed = false;
         }
-
-        if(gamepad2.a)
+        else if(gamepad2.a && (Objects.equals(lastOuttakeState, "score sample ready high") || Objects.equals(lastOuttakeState, "score sample ready low")))
         {
-            yPresses = 0;
+            outtake.SetState("score sample");
+        }
+        else if(gamepad2.a && (Objects.equals(lastOuttakeState, "score specimen ready high") || Objects.equals(lastOuttakeState, "score specimen ready low")))
+        {
+            outtake.SetState("score score specimen");
+        }
+        else if(Objects.equals(lastOuttakeState, "score sample ready high") || Objects.equals(lastOuttakeState, "score sample ready low")
+                || Objects.equals(lastOuttakeState, "score specimen ready high") || Objects.equals(lastOuttakeState, "score specimen ready low")
+                || Objects.equals(lastOuttakeState, "start"))
+        {
+            outtake.VertSlidesManual(-gamepad2.left_stick_y);
         }
 
-        if(gamepad2.b)
-        {
-            outtake.SetState("grab specimen ready");
-        }
-
-        if(gamepad2.x)
-        {
-            outtake.SetState("transfer intake");
-        }
-
+        outtake.Update();
         outtake.VertSlidesUpdate();
-        outtake.VertSlidesManual(-gamepad2.left_stick_y);
 
         drive.driveBack = outtake.IsDriveBack();
 
-        lastState = outtake.state;
+        lastOuttakeState = outtake.state;
     }
+
+    String lastIntakeState;
 
     void IntakeUpdate()
     {
@@ -171,39 +169,38 @@ public class MasterTeleop extends OpMode {
             return;
         }
 
-        if (gamepad2.back)
+        if (gamepad2.back && Objects.equals(lastIntakeState, "transfer"))
         {
             intake.SetState("start");
         }
-
-        if (gamepad2.right_trigger > 0.1 || gamepad2.right_bumper)
-        {
-            intake.SetState("intake sub ready");
-        }
-
-        if (gamepad2.left_bumper)
+        else if (gamepad2.left_bumper && (Objects.equals(lastIntakeState, "intake sub ready") || Objects.equals(lastIntakeState, "start")
+                || Objects.equals(lastIntakeState, "intake")))
         {
             intake.SetState("transfer");
         }
-
-        if(!(Objects.equals(intake.state, "transfer") || Objects.equals(intake.state, "start")))
+        else if ((gamepad2.right_trigger > 0.1 || gamepad2.right_bumper) && (Objects.equals(lastIntakeState, "transfer")
+                || Objects.equals(lastIntakeState, "start") || Objects.equals(lastIntakeState, "intake")))
         {
-            if (gamepad2.dpad_down)
-            {
-                intake.SetState("intake");
-            }
-            else if (gamepad2.dpad_up)
-            {
-                intake.SetState("reject");
-            }
+            intake.SetState("intake sub ready");
         }
-
-        if(!(Objects.equals(intake.state, "transfer") || Objects.equals(intake.state, "start")))
+        else if (gamepad2.dpad_down && (Objects.equals(lastIntakeState, "intake sub ready") || Objects.equals(lastIntakeState, "reject")))
+        {
+            intake.SetState("intake");
+        }
+        else if (gamepad2.dpad_up && (Objects.equals(lastIntakeState, "intake sub ready") || Objects.equals(lastIntakeState, "intake")))
+        {
+            intake.SetState("reject");
+        }
+        else if (Objects.equals(lastIntakeState, "intake sub ready") || Objects.equals(lastIntakeState, "intake")
+                || Objects.equals(lastIntakeState, "reject"))
         {
             intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
         }
 
+        intake.Update();
         intake.HorizontalSlidesUpdate();
+
+        lastIntakeState = intake.state;
     }
 
     void HangUpdate()
@@ -214,12 +211,11 @@ public class MasterTeleop extends OpMode {
         {
             hang.SetState("start");
         }
-        else if (gamepad1.dpad_up)
+        else if (gamepad1.dpad_up && Objects.equals(lastOuttakeState, "start") && Objects.equals(lastIntakeState, "start"))
         {
             hang.SetState("hang ready");
         }
-
-        if(Objects.equals(hang.state, "hang ready") && gamepad1.start)
+        else if(Objects.equals(hang.state, "hang ready") && gamepad1.start)
         {
             hang.SetState("lvl 2");
         }

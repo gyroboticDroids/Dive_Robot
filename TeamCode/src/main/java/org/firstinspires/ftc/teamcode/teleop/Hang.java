@@ -37,7 +37,7 @@ public class Hang {
             case "hang ready":
                 if(!Objects.equals(lastState, "hang ready"))
                 {
-                    outtake.vertPosition = Constants.VERT_SLIDES_HANG;
+                    outtake.vertPosition = Constants.OUTTAKE_SLIDES_HANG;
                 }
                 outtake.VertSlidesUpdate();
 
@@ -61,7 +61,7 @@ public class Hang {
 
                 if(!Objects.equals(lastState, "lvl 3"))
                 {
-                    outtake.vertPosition = Constants.VERT_SLIDES_START;
+                    outtake.vertPosition = Constants.OUTTAKE_SLIDES_START;
                 }
                 outtake.VertSlidesUpdate();
                 break;

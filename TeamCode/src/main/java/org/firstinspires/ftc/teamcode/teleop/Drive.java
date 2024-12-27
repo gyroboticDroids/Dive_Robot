@@ -52,7 +52,7 @@ public class Drive {
 
     private void Input(Gamepad gpad)
     {
-        double multiplier = (Math.abs(gpad.right_stick_x) + Math.abs(gpad.right_stick_y) > 0)? Constants.SLOW_SPEED_MULTIPLIER:Constants.DRIVE_SPEED_MULTIPLIER;
+        double multiplier = (Math.abs(gpad.right_stick_x) + Math.abs(gpad.right_stick_y) > 0)? Constants.DRIVE_SLOW_SPEED_MULTIPLIER :Constants.DRIVE_SPEED_MULTIPLIER;
 
         y = gpad.left_stick_y * multiplier;
         x = -gpad.left_stick_x * multiplier;
@@ -107,7 +107,7 @@ public class Drive {
             error += 360;
         }
 
-        turnPower = Constants.TURN_P_GAIN * error;
+        turnPower = Constants.DRIVE_TURN_P_GAIN * error;
         turnPower = Math.min(Math.max(turnPower, -0.4), 0.4);
     }
 }

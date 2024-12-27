@@ -70,13 +70,13 @@ public class TestMotors extends OpMode {
 
         horizontalPosition -= gamepad2.left_stick_y;
 
-        horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, Constants.HORIZONTAL_SLIDES_MAX);
+        horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, Constants.INTAKE_SLIDES_MAX);
 
         telemetry.addData("gamepad control", horizontalPosition);
 
         double error = horizontalPosition - hardware.intakeSlide.getCurrentPosition();
 
-        double motorPower = error * Constants.HORIZONTAL_SLIDES_P_GAIN;
+        double motorPower = error * Constants.INTAKE_SLIDES_P_GAIN;
         motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
 
         telemetry.addData("motor power", motorPower);
