@@ -74,14 +74,14 @@ public class TestMotors extends OpMode {
 
         telemetry.addData("gamepad control", horizontalPosition);
 
-        double error = horizontalPosition - hardware.horizontalSlide.getCurrentPosition();
+        double error = horizontalPosition - hardware.intakeSlide.getCurrentPosition();
 
         double motorPower = error * Constants.HORIZONTAL_SLIDES_P_GAIN;
         motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
 
         telemetry.addData("motor power", motorPower);
 
-        hardware.horizontalSlide.setPower(motorPower);
+        hardware.intakeSlide.setPower(motorPower);
 
         //hardware.horizontalSlide.setPower(gamepad1.left_stick_x);
 
@@ -92,12 +92,12 @@ public class TestMotors extends OpMode {
 
         //hardware.specimenExtension.setPosition(extensionControls);
 
-        telemetry.addData("Horizontal slide pos", hardware.horizontalSlide.getCurrentPosition());
-        telemetry.addData("Vertical slide pos", hardware.vertSlide1.getCurrentPosition());
-        telemetry.addData("Vertical slide power", hardware.vertSlide1.getPower());
-        telemetry.addData("Extension slide pos", hardware.specimenExtension.getPosition());
-        telemetry.addData("Horizontal slide power", hardware.horizontalSlide.getPower());
-        telemetry.addData("Outtake servo pos", hardware.outtake.getPosition());
+        telemetry.addData("Horizontal slide pos", hardware.intakeSlide.getCurrentPosition());
+        telemetry.addData("Vertical slide pos", hardware.outtakeSlide1.getCurrentPosition());
+        telemetry.addData("Vertical slide power", hardware.outtakeSlide1.getPower());
+        telemetry.addData("Extension slide pos", hardware.outtakeExtension.getPosition());
+        telemetry.addData("Horizontal slide power", hardware.intakeSlide.getPower());
+        telemetry.addData("Outtake servo pos", hardware.outtakeClaw.getPosition());
 
         telemetry.update();
     }

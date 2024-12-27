@@ -108,7 +108,7 @@ public class MasterAutonomous extends OpMode {
 
         startPos = (int) MathFunctions.clamp(startPos, 0, 3);
 
-        telemetry.addData("Start Position Index: ", startPos);
+        telemetry.addData("Start Position Index", startPos);
         telemetry.update();
     }
 
@@ -168,8 +168,6 @@ public class MasterAutonomous extends OpMode {
 
         toBar = new Path(new BezierCurve(new Point(basketSample3), new Point(new Pose(basketSample3.getX(), touchBar.getY())), new Point(touchBar)));
         toBar.setLinearHeadingInterpolation(basketSample3.getHeading(), touchBar.getHeading());
-
-        setPathState(0);
     }
 
     private void AutoPathUpdate()

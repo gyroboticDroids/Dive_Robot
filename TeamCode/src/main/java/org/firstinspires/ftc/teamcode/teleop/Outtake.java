@@ -39,13 +39,13 @@ public class Outtake {
         switch (state)
         {
             case "start":
-                hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+                hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLOSED);
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    hardware.specimenExtension.setPosition(Constants.EXTENSION_START);
-                    hardware.pivot.setPosition(Constants.PIVOT_START);
-                    hardware.wrist.setPosition(Constants.WRIST_START);
+                    hardware.outtakeExtension.setPosition(Constants.EXTENSION_START);
+                    hardware.outtakePivot.setPosition(Constants.PIVOT_START);
+                    hardware.outtakeWrist.setPosition(Constants.WRIST_START);
                 }
                 break;
 
@@ -57,31 +57,31 @@ public class Outtake {
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    hardware.specimenExtension.setPosition(Constants.EXTENSION_TRANSFER);
+                    hardware.outtakeExtension.setPosition(Constants.EXTENSION_TRANSFER);
 
-                    hardware.pivot.setPosition(Constants.PIVOT_TRANSFER);
-                    hardware.wrist.setPosition(Constants.WRIST_TRANSFER);
+                    hardware.outtakePivot.setPosition(Constants.PIVOT_TRANSFER);
+                    hardware.outtakeWrist.setPosition(Constants.WRIST_TRANSFER);
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 1)
                 {
-                    hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
+                    hardware.outtakeClaw.setPosition(Constants.OUTTAKE_OPEN);
                 }
                 else
                 {
-                    hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+                    hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLOSED);
                 }
                 break;
 
             case "transfer intake":
-                hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+                hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLOSED);
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    hardware.specimenExtension.setPosition(Constants.EXTENSION_TRANSFER);
+                    hardware.outtakeExtension.setPosition(Constants.EXTENSION_TRANSFER);
 
-                    hardware.pivot.setPosition(Constants.PIVOT_RAISE);
-                    hardware.wrist.setPosition(Constants.WRIST_RAISE);
+                    hardware.outtakePivot.setPosition(Constants.PIVOT_RAISE);
+                    hardware.outtakeWrist.setPosition(Constants.WRIST_RAISE);
                 }
                 break;
 
@@ -93,19 +93,19 @@ public class Outtake {
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    hardware.specimenExtension.setPosition(Constants.EXTENSION_SPECIMEN_COLLECT);
+                    hardware.outtakeExtension.setPosition(Constants.EXTENSION_SPECIMEN_COLLECT);
 
-                    hardware.pivot.setPosition(Constants.PIVOT_OFF_WALL);
-                    hardware.wrist.setPosition(Constants.WRIST_OFF_WALL);
+                    hardware.outtakePivot.setPosition(Constants.PIVOT_OFF_WALL);
+                    hardware.outtakeWrist.setPosition(Constants.WRIST_OFF_WALL);
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 1)
                 {
-                    hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
+                    hardware.outtakeClaw.setPosition(Constants.OUTTAKE_OPEN);
                 }
                 else
                 {
-                    hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+                    hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLOSED);
                 }
                 break;
 
@@ -115,13 +115,13 @@ public class Outtake {
                     lastVertConstant = vertPosition = Constants.VERT_SLIDES_SPECIMEN_LOW_SCORING;
                 }
 
-                hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+                hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLOSED);
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    hardware.specimenExtension.setPosition(Constants.EXTENSION_SPECIMEN_SCORE);
-                    hardware.pivot.setPosition(Constants.PIVOT_SPECIMEN);
-                    hardware.wrist.setPosition(Constants.WRIST_SPECIMEN);
+                    hardware.outtakeExtension.setPosition(Constants.EXTENSION_SPECIMEN_SCORE);
+                    hardware.outtakePivot.setPosition(Constants.PIVOT_SPECIMEN);
+                    hardware.outtakeWrist.setPosition(Constants.WRIST_SPECIMEN);
                 }
                 break;
 
@@ -131,13 +131,13 @@ public class Outtake {
                     lastVertConstant = vertPosition = Constants.VERT_SLIDES_SPECIMEN_HIGH_SCORING;
                 }
 
-                hardware.outtake.setPosition(Constants.OUTTAKE_CLOSED);
+                hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLOSED);
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    hardware.specimenExtension.setPosition(Constants.EXTENSION_SPECIMEN_SCORE);
-                    hardware.pivot.setPosition(Constants.PIVOT_SPECIMEN);
-                    hardware.wrist.setPosition(Constants.WRIST_SPECIMEN);
+                    hardware.outtakeExtension.setPosition(Constants.EXTENSION_SPECIMEN_SCORE);
+                    hardware.outtakePivot.setPosition(Constants.PIVOT_SPECIMEN);
+                    hardware.outtakeWrist.setPosition(Constants.WRIST_SPECIMEN);
                 }
                 break;
 
@@ -162,14 +162,14 @@ public class Outtake {
                 break;
 
             case "score sample":
-                hardware.pivot.setPosition(Constants.PIVOT_SAMPLE);
-                hardware.wrist.setPosition(Constants.WRIST_SAMPLE);
+                hardware.outtakePivot.setPosition(Constants.PIVOT_SAMPLE);
+                hardware.outtakeWrist.setPosition(Constants.WRIST_SAMPLE);
 
-                hardware.specimenExtension.setPosition(Constants.EXTENSION_SAMPLE_SCORE);
+                hardware.outtakeExtension.setPosition(Constants.EXTENSION_SAMPLE_SCORE);
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.75)
                 {
-                    hardware.outtake.setPosition(Constants.OUTTAKE_OPEN);
+                    hardware.outtakeClaw.setPosition(Constants.OUTTAKE_OPEN);
 
                     driveBack = true;
                 }
@@ -202,13 +202,13 @@ public class Outtake {
     {
         vertPosition = MathFunctions.clamp(vertPosition, 0, Constants.VERT_SLIDES_MAX_LIMIT);
 
-        double error = vertPosition - hardware.vertSlide1.getCurrentPosition();
+        double error = vertPosition - hardware.outtakeSlide1.getCurrentPosition();
 
         motorPower = error * Constants.VERT_SLIDES_P_GAIN;
         motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
 
-        hardware.vertSlide1.setPower(motorPower);
-        hardware.vertSlide2.setPower(motorPower);
+        hardware.outtakeSlide1.setPower(motorPower);
+        hardware.outtakeSlide2.setPower(motorPower);
     }
 
     public boolean IsDriveBack()
@@ -218,6 +218,6 @@ public class Outtake {
 
     public int GetVertSlidePos()
     {
-        return hardware.vertSlide1.getCurrentPosition();
+        return hardware.outtakeSlide1.getCurrentPosition();
     }
 }

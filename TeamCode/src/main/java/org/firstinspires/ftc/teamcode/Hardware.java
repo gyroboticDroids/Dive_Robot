@@ -9,71 +9,42 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.GoBildaPinpointDriver;
 
 public class Hardware {
+    //Drive
     public DcMotor frontLeft;
     public DcMotor frontRight;
     public DcMotor rearLeft;
     public DcMotor rearRight;
 
-    public DcMotor vertSlide1;
-    public DcMotor vertSlide2;
+    public GoBildaPinpointDriver pinpointDriver;
 
-    public DcMotor horizontalSlide;
+    //Outtake
+    public DcMotor outtakeSlide1;
+    public DcMotor outtakeSlide2;
 
-    public Servo specimenExtension;
+    public Servo outtakeExtension;
+    public Servo outtakePivot;
+    public Servo outtakeWrist;
+    public Servo outtakeClaw;
 
-    public Servo pivot;
-    public Servo wrist;
+    //Intake
+    public DcMotor intakeSlide;
 
     public Servo intakePivot;
 
     public CRServo intake1;
     public CRServo intake2;
 
-    public Servo outtake;
-
+    //Hang
     public Servo hang1;
     public Servo hang2;
 
-    public GoBildaPinpointDriver pinpointDriver;
-
     public Hardware(HardwareMap hardwareMap)
     {
+        //Drive
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         rearLeft = hardwareMap.get(DcMotor.class, "rearLeft");
         rearRight = hardwareMap.get(DcMotor.class, "rearRight");
-
-        vertSlide1 = hardwareMap.get(DcMotor.class, "vertSlide1");
-        vertSlide2 = hardwareMap.get(DcMotor.class, "vertSlide2");
-
-        horizontalSlide = hardwareMap.get(DcMotor.class, "horizontalSlide");
-
-        specimenExtension = hardwareMap.get(Servo.class, "extension");
-
-        pivot = hardwareMap.get(Servo.class, "pivot");
-        wrist = hardwareMap.get(Servo.class, "wrist");
-
-        intakePivot = hardwareMap.get(Servo.class, "intakePivot");
-
-        outtake = hardwareMap.get(Servo.class, "outtake");
-
-        intake1 = hardwareMap.get(CRServo.class, "intake1");
-        intake2 = hardwareMap.get(CRServo.class, "intake2");
-
-        hang1 = hardwareMap.get(Servo.class, "hang1");
-        hang2 = hardwareMap.get(Servo.class, "hang2");
-
-        vertSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        vertSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        vertSlide1.setDirection(DcMotor.Direction.REVERSE);
-
-        vertSlide2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        vertSlide2.setDirection(DcMotor.Direction.FORWARD);
-
-        horizontalSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        horizontalSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        horizontalSlide.setDirection(DcMotorSimple.Direction.FORWARD);
-
 
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         rearRight.setDirection(DcMotor.Direction.REVERSE);
@@ -89,5 +60,34 @@ public class Hardware {
         pinpointDriver.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.REVERSED);
 
         pinpointDriver.resetPosAndIMU();
+
+        //Outtake
+        outtakeSlide1 = hardwareMap.get(DcMotor.class, "vertSlide1");
+        outtakeSlide2 = hardwareMap.get(DcMotor.class, "vertSlide2");
+        outtakeExtension = hardwareMap.get(Servo.class, "extension");
+        outtakePivot = hardwareMap.get(Servo.class, "pivot");
+        outtakeWrist = hardwareMap.get(Servo.class, "wrist");
+        outtakeClaw = hardwareMap.get(Servo.class, "outtake");
+
+        outtakeSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        outtakeSlide1.setDirection(DcMotor.Direction.REVERSE);
+
+        outtakeSlide2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        outtakeSlide2.setDirection(DcMotor.Direction.FORWARD);
+
+        //Intake
+        intakeSlide = hardwareMap.get(DcMotor.class, "horizontalSlide");
+        intakePivot = hardwareMap.get(Servo.class, "intakePivot");
+        intake1 = hardwareMap.get(CRServo.class, "intake1");
+        intake2 = hardwareMap.get(CRServo.class, "intake2");
+
+        intakeSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intakeSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeSlide.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        //Hang
+        hang1 = hardwareMap.get(Servo.class, "hang1");
+        hang2 = hardwareMap.get(Servo.class, "hang2");
     }
 }

@@ -50,8 +50,8 @@ public class MasterTeleop extends OpMode {
         }
 
         drive.Update();
-        IntakeUpdate();
         OuttakeUpdate();
+        IntakeUpdate();
         HangUpdate();
 
         telemetry.addData("time remaining", 120 - teleopTimer.getElapsedTimeSeconds());
@@ -89,8 +89,6 @@ public class MasterTeleop extends OpMode {
         {
             return;
         }
-
-        drive.driveBack = outtake.IsDriveBack();
 
         if(gamepad2.start)
         {
@@ -162,26 +160,9 @@ public class MasterTeleop extends OpMode {
         outtake.VertSlidesUpdate();
         outtake.VertSlidesManual(-gamepad2.left_stick_y);
 
-        if(Objects.equals(outtake.state, "transfer intake"))
-        {
-            lastState = "sample";
-        }
-        else if (Objects.equals(outtake.state, "score sample ready high") || Objects.equals(outtake.state, "score sample ready low"))
-        {
-            lastState = "sample score";
-        }
-        else if (Objects.equals(outtake.state, "grab specimen ready"))
-        {
-            lastState = "specimen";
-        }
-        else if (Objects.equals(outtake.state, "score specimen ready high") || Objects.equals(outtake.state, "score specimen ready low"))
-        {
-            lastState = "specimen score";
-        }
-        else if (Objects.equals(outtake.state, "transfer intake ready"))
-        {
-            lastState = "transfer";
-        }
+        drive.driveBack = outtake.IsDriveBack();
+
+        lastState = outtake.state;
     }
 
     void IntakeUpdate()
