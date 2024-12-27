@@ -16,7 +16,7 @@ public class Intake {
 
     private String lastState;
 
-    double horizontalPosition = 0;
+    public double horizontalPosition = 0;
 
     String state;
 
