@@ -94,12 +94,15 @@ public class Outtake {
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     hardware.outtakeExtension.setPosition(Constants.OUTTAKE_EXTENSION_SPECIMEN_COLLECT);
+                }
 
+                if(actionTimer.getElapsedTimeSeconds() > 1)
+                {
                     hardware.outtakePivot.setPosition(Constants.OUTTAKE_PIVOT_OFF_WALL);
                     hardware.outtakeWrist.setPosition(Constants.OUTTAKE_WRIST_OFF_WALL);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1)
+                if(actionTimer.getElapsedTimeSeconds() > 1.5)
                 {
                     hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLAW_OPEN);
                 }
