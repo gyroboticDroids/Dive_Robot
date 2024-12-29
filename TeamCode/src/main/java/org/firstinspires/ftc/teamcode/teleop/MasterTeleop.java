@@ -145,7 +145,7 @@ public class MasterTeleop extends OpMode {
         }
         else if(gamepad2.a && (Objects.equals(lastOuttakeState, "score specimen ready high") || Objects.equals(lastOuttakeState, "score specimen ready low")))
         {
-            outtake.SetState("score score specimen");
+            outtake.SetState("score specimen");
         }
         else if(Objects.equals(lastOuttakeState, "score sample ready high") || Objects.equals(lastOuttakeState, "score sample ready low")
                 || Objects.equals(lastOuttakeState, "score specimen ready high") || Objects.equals(lastOuttakeState, "score specimen ready low")
