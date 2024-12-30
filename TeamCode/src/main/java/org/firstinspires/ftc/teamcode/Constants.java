@@ -63,10 +63,10 @@ public class Constants {
     public static double INTAKE_REVERSE = -1;
 
     //Hang
-    public static double HANG1_DOWN = 0.8418;
-    public static double HANG2_DOWN = 0.2896;
-    public static double HANG1_UP = 0.4298;
-    public static double HANG2_UP = 0.7148;
-    public static double HANGING1 = 0.5902;
-    public static double HANGING2 = 0.5592;
+    public static double HANG_RIGHT_DOWN = 0.8418;
+    public static double HANG_LEFT_DOWN = 0.2896;
+    public static double HANG_RIGHT_UP = 0.4298;
+    public static double HANG_LEFT_UP = 0.7148;
+    public static double HANGING_RIGHT = 0.5902;
+    public static double HANGING_LEFT = 0.5592;
 }
