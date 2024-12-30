@@ -79,6 +79,11 @@ public class Intake {
                 hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_DOWN);
 
                 horizontalPosition = MathFunctions.clamp(horizontalPosition, Constants.INTAKE_SLIDES_OUT, Constants.INTAKE_SLIDES_MAX);
+
+                if((actionTimer.getElapsedTimeSeconds() > 0.5))
+                {
+                    isBusy = false;
+                }
                 break;
 
             case "transfer":
@@ -102,6 +107,11 @@ public class Intake {
                 hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
 
                 horizontalPosition = MathFunctions.clamp(horizontalPosition, Constants.INTAKE_SLIDES_OUT, Constants.INTAKE_SLIDES_MAX);
+
+                if((actionTimer.getElapsedTimeSeconds() > 0.5))
+                {
+                    isBusy = false;
+                }
                 break;
         }
 
