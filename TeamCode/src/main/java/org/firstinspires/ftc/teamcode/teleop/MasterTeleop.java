@@ -72,11 +72,13 @@ public class MasterTeleop extends OpMode {
 
         telemetry.addLine("-------------------Intake--------------------");
         telemetry.addData("intake state", intake.state);
+        telemetry.addData("intake busy", intake.IsBusy());
         telemetry.addData("horizontal spt pos", intake.horizontalPosition);
         telemetry.addData("horizontal fdbk pos", intake.GetHorizontalSlidePos());
 
         telemetry.addLine("-------------------Hang----------------------");
         telemetry.addData("hang state", hang.state);
+        telemetry.addData("hang busy", hang.IsBusy());
         telemetry.addData("hanging", isHanging);
 
         telemetry.update();
