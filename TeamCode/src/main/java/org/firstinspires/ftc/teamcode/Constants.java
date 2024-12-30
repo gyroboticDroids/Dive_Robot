@@ -51,6 +51,7 @@ public class Constants {
     public static int INTAKE_SLIDES_MAX = 745;
     public static int INTAKE_SLIDES_TRANSFER = 50;
     public static int INTAKE_SLIDES_OUT = 100;
+    public static int INTAKE_SLIDES_ACCURACY = 10;
     public static int INTAKE_SLIDES_HALFWAY = 700;
     public static double INTAKE_SLIDES_P_GAIN = 0.022;
 
