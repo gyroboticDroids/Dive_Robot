@@ -22,7 +22,7 @@ public class Drive {
 
     double turnOffset = 0;
 
-    public boolean driveBack = false;
+    private boolean driveBack = false;
 
     public Drive(HardwareMap hardwareMap, Gamepad gamepad1)
     {
@@ -109,5 +109,13 @@ public class Drive {
 
         turnPower = Constants.DRIVE_TURN_P_GAIN * error;
         turnPower = Math.min(Math.max(turnPower, -0.4), 0.4);
+    }
+
+    public boolean isDriveBack() {
+        return driveBack;
+    }
+
+    public void setDriveBack(boolean driveBack) {
+        this.driveBack = driveBack;
     }
 }

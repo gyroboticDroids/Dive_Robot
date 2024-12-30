@@ -189,11 +189,11 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 2:
-                outtake.SetState("score specimen ready high");
+                outtake.setState("score specimen ready high");
 
                 if(!follower.isBusy())
                 {
-                    outtake.SetState("score specimen");
+                    outtake.setState("score specimen");
                     setPathState(3);
                 }
                 break;
@@ -211,11 +211,11 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 6:
-                outtake.SetState("score sample ready high");
+                outtake.setState("score sample ready high");
 
                 if(!follower.isBusy())
                 {
-                    outtake.SetState("score sample");
+                    outtake.setState("score sample");
                     setPathState(11);
                 }
                 break;
@@ -254,7 +254,7 @@ public class MasterAutonomous extends OpMode {
                 if(intake.GetHorizontalSlidePos() < Constants.INTAKE_SLIDES_TRANSFER + 10)
                 {
                     follower.followPath(toBasket2, true);
-                    outtake.SetState("transfer intake");
+                    outtake.setState("transfer intake");
                     setPathState(15);
                 }
                 break;
@@ -262,7 +262,7 @@ public class MasterAutonomous extends OpMode {
             case 15:
                 if(!follower.isBusy())
                 {
-                    outtake.SetState("score sample ready high");
+                    outtake.setState("score sample ready high");
                     intake.SetState("intake sub ready");
                     setPathState(16);
                 }
@@ -271,7 +271,7 @@ public class MasterAutonomous extends OpMode {
             case 16:
                 if(pathTimer.getElapsedTimeSeconds() > 2)
                 {
-                    outtake.SetState("score sample");
+                    outtake.setState("score sample");
                     intake.SetState("intake");
                     intake.horizontalPosition = Constants.INTAKE_SLIDES_MAX;
                     setPathState(17);
@@ -289,7 +289,7 @@ public class MasterAutonomous extends OpMode {
             case 18:
                 if(intake.GetHorizontalSlidePos() < Constants.INTAKE_SLIDES_TRANSFER + 10)
                 {
-                    outtake.SetState("transfer intake");
+                    outtake.setState("transfer intake");
                     setPathState(19);
                 }
                 break;
@@ -297,7 +297,7 @@ public class MasterAutonomous extends OpMode {
             case 19:
                 if(pathTimer.getElapsedTimeSeconds() > 1)
                 {
-                    outtake.SetState("score sample ready high");
+                    outtake.setState("score sample ready high");
                     setPathState(20);
                 }
                 break;
@@ -305,7 +305,7 @@ public class MasterAutonomous extends OpMode {
             case 20:
                 if(pathTimer.getElapsedTimeSeconds() > 1)
                 {
-                    outtake.SetState("score sample");
+                    outtake.setState("score sample");
                     setPathState(21);
                 }
                 break;
@@ -340,7 +340,7 @@ public class MasterAutonomous extends OpMode {
             case 24:
                 if(!follower.isBusy())
                 {
-                    outtake.SetState("transfer intake");
+                    outtake.setState("transfer intake");
                     setPathState(25);
                 }
                 break;
@@ -348,7 +348,7 @@ public class MasterAutonomous extends OpMode {
             case 25:
                 if(pathTimer.getElapsedTimeSeconds() > 1)
                 {
-                    outtake.SetState("score sample ready high");
+                    outtake.setState("score sample ready high");
                     setPathState(26);
                 }
                 break;
@@ -356,7 +356,7 @@ public class MasterAutonomous extends OpMode {
             case 26:
                 if(pathTimer.getElapsedTimeSeconds() > 1)
                 {
-                    outtake.SetState("score sample");
+                    outtake.setState("score sample");
                     setPathState(27);
                 }
                 break;
@@ -375,24 +375,24 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 31:
-                outtake.SetState("score sample ready high");
+                outtake.setState("score sample ready high");
                 setPathState(32);
                 break;
 
             case 32:
-                outtake.SetState("score sample");
+                outtake.setState("score sample");
                 setPathState(33);
                 break;
 
             case 33:
                 follower.followPath(toBasket2, true);
-                outtake.SetState("transfer intake");
+                outtake.setState("transfer intake");
                 setPathState(34);
                 break;
 
             case 34:
                 follower.followPath(toBasket2, true);
-                outtake.SetState("transfer intake");
+                outtake.setState("transfer intake");
                 setPathState(35);
                 break;
 

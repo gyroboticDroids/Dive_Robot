@@ -7,8 +7,6 @@ import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
-import java.util.Objects;
-
 public class Outtake {
     private final Hardware hardware;
     private final Timer actionTimer;
@@ -27,7 +25,7 @@ public class Outtake {
 
         actionTimer = new Timer();
 
-        SetState("start");
+        setState("start");
     }
 
     private double lastVertConstant = 0;
@@ -242,7 +240,7 @@ public class Outtake {
         VertSlidesUpdate();
         onsSetState = false;
     }
-    public void SetState(String s)
+    public void setState(String s)
     {
         isBusy = true;
         onsSetState = true;
