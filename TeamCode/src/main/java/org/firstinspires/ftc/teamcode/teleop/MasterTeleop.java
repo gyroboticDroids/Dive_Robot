@@ -120,17 +120,14 @@ public class MasterTeleop extends OpMode {
                 outtake.SetState("score specimen");
             } else if (Objects.equals(prevOuttakeState, "score sample") || Objects.equals(prevOuttakeState, "score specimen")) {
                 outtake.SetState("transfer intake ready");
+            } else if (Objects.equals(prevOuttakeState, "score sample ready high") || Objects.equals(prevOuttakeState, "score sample ready low")
+                    || Objects.equals(prevOuttakeState, "score specimen ready high") || Objects.equals(prevOuttakeState, "score specimen ready low")
+                    || Objects.equals(prevOuttakeState, "start")) {
+                outtake.VertSlidesManual(-gamepad2.left_stick_y);
             }
         }
 
-        if (Objects.equals(prevOuttakeState, "score sample ready high") || Objects.equals(prevOuttakeState, "score sample ready low")
-                || Objects.equals(prevOuttakeState, "score specimen ready high") || Objects.equals(prevOuttakeState, "score specimen ready low")
-                || Objects.equals(prevOuttakeState, "start")) {
-            outtake.VertSlidesManual(-gamepad2.left_stick_y);
-        }
-
         outtake.Update();
-        outtake.VertSlidesUpdate();
 
         drive.driveBack = outtake.IsDriveBack();
 
@@ -162,16 +159,13 @@ public class MasterTeleop extends OpMode {
                 intake.SetState("intake");
             } else if (gamepad2.dpad_up && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake"))) {
                 intake.SetState("reject");
+            } else if (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake")
+                    || Objects.equals(prevIntakeState, "reject")) {
+                intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
             }
         }
 
-        if (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake")
-                || Objects.equals(prevIntakeState, "reject")) {
-            intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
-        }
-
         intake.Update();
-        intake.HorizontalSlidesUpdate();
 
         prevIntakeState = intake.state;
     }
