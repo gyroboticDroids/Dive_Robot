@@ -6,8 +6,6 @@ import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
-import java.util.Objects;
-
 public class Hang {
     private final Hardware hardware;
     private final Outtake outtake;
@@ -87,5 +85,10 @@ public class Hang {
         hangTimer.resetTimer();
         state = s;
         Update();
+    }
+
+    public boolean IsBusy()
+    {
+        return isBusy;
     }
 }
