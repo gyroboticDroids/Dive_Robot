@@ -21,6 +21,7 @@ public class Constants {
     public static int OUTTAKE_SLIDES_HANG = 1700;
     public static int OUTTAKE_SLIDES_MAX_LIMIT = 2715;
     public static double OUTTAKE_SLIDES_P_GAIN = 0.031;
+    public static double OUTTAKE_SLIDES_ACCURACY = 20;
 
     public static double OUTTAKE_EXTENSION_START = 0;
     public static double OUTTAKE_EXTENSION_TRANSFER = 0;

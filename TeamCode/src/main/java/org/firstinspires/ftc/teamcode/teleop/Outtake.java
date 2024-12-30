@@ -14,6 +14,7 @@ public class Outtake {
     private final Timer actionTimer;
 
     private boolean driveBack = false;
+    private boolean isBusy = false;
 
     private String lastState;
 
@@ -39,6 +40,7 @@ public class Outtake {
         switch (state)
         {
             case "start":
+
                 hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLAW_CLOSED);
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
@@ -46,6 +48,10 @@ public class Outtake {
                     hardware.outtakeExtension.setPosition(Constants.OUTTAKE_EXTENSION_START);
                     hardware.outtakePivot.setPosition(Constants.OUTTAKE_PIVOT_START);
                     hardware.outtakeWrist.setPosition(Constants.OUTTAKE_WRIST_START);
+                }
+                if(actionTimer.getElapsedTimeSeconds() > 1)
+                {
+                    isBusy = false;
                 }
                 break;
 
@@ -71,6 +77,11 @@ public class Outtake {
                 {
                     hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLAW_CLOSED);
                 }
+
+                if(actionTimer.getElapsedTimeSeconds() > 1.5 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, Constants.OUTTAKE_SLIDES_ACCURACY))
+                {
+                    isBusy = false;
+                }
                 break;
 
             case "transfer intake":
@@ -82,6 +93,11 @@ public class Outtake {
 
                     hardware.outtakePivot.setPosition(Constants.OUTTAKE_PIVOT_RAISE);
                     hardware.outtakeWrist.setPosition(Constants.OUTTAKE_WRIST_RAISE);
+                }
+
+                if(actionTimer.getElapsedTimeSeconds() > 1)
+                {
+                    isBusy = false;
                 }
                 break;
 
@@ -110,6 +126,11 @@ public class Outtake {
                 {
                     hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLAW_CLOSED);
                 }
+
+                if(actionTimer.getElapsedTimeSeconds() > 2 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, Constants.OUTTAKE_SLIDES_ACCURACY))
+                {
+                    isBusy = false;
+                }
                 break;
 
             case "score specimen ready low":
@@ -125,6 +146,11 @@ public class Outtake {
                     hardware.outtakeExtension.setPosition(Constants.OUTTAKE_EXTENSION_SPECIMEN_SCORE);
                     hardware.outtakePivot.setPosition(Constants.OUTTAKE_PIVOT_SPECIMEN);
                     hardware.outtakeWrist.setPosition(Constants.OUTTAKE_WRIST_SPECIMEN);
+                }
+
+                if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, Constants.OUTTAKE_SLIDES_ACCURACY))
+                {
+                    isBusy = false;
                 }
                 break;
 
@@ -142,12 +168,20 @@ public class Outtake {
                     hardware.outtakePivot.setPosition(Constants.OUTTAKE_PIVOT_SPECIMEN);
                     hardware.outtakeWrist.setPosition(Constants.OUTTAKE_WRIST_SPECIMEN);
                 }
+
+                if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, Constants.OUTTAKE_SLIDES_ACCURACY))
+                {
+                    isBusy = false;
+                }
                 break;
 
             case "score specimen":
                 vertPosition = lastVertConstant + Constants.OUTTAKE_SLIDES_SPECIMEN_INCREASE;
 
-                SetState("transfer intake ready");
+                if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, Constants.OUTTAKE_SLIDES_ACCURACY))
+                {
+                    isBusy = false;
+                }
                 break;
 
             case "score sample ready low":
@@ -155,12 +189,22 @@ public class Outtake {
                 {
                     vertPosition = Constants.OUTTAKE_SLIDES_SAMPLE_LOW;
                 }
+
+                if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, Constants.OUTTAKE_SLIDES_ACCURACY))
+                {
+                    isBusy = false;
+                }
                 break;
 
             case "score sample ready high":
                 if(!Objects.equals(lastState, "score sample ready high"))
                 {
                     vertPosition = Constants.OUTTAKE_SLIDES_SAMPLE_HIGH;
+                }
+
+                if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, Constants.OUTTAKE_SLIDES_ACCURACY))
+                {
+                    isBusy = false;
                 }
                 break;
 
@@ -170,17 +214,19 @@ public class Outtake {
 
                 hardware.outtakeExtension.setPosition(Constants.OUTTAKE_EXTENSION_SAMPLE_SCORE);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.75)
+                if(actionTimer.getElapsedTimeSeconds() > 1.5)
+                {
+                    driveBack = false;
+                    if(actionTimer.getElapsedTimeSeconds() > 1.5 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, Constants.OUTTAKE_SLIDES_ACCURACY))
+                    {
+                        isBusy = false;
+                    }
+                }
+                else if(actionTimer.getElapsedTimeSeconds() > 0.75)
                 {
                     hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLAW_OPEN);
 
                     driveBack = true;
-                }
-
-                if(actionTimer.getElapsedTimeSeconds() > 1.5)
-                {
-                    driveBack = false;
-                    SetState("transfer intake ready");
                 }
                 break;
         }
@@ -189,6 +235,7 @@ public class Outtake {
     }
     public void SetState(String s)
     {
+        isBusy = true;
         actionTimer.resetTimer();
         state = s;
         Update();
@@ -217,6 +264,11 @@ public class Outtake {
     public boolean IsDriveBack()
     {
         return driveBack;
+    }
+
+    public boolean IsBusy()
+    {
+        return isBusy;
     }
 
     public int GetVertSlidePos()
