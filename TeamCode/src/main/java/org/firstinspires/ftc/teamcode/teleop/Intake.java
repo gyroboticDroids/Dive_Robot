@@ -91,8 +91,8 @@ public class Intake {
 
     public void IntakeSpeed(double speed)
     {
-        hardware.intake1.setPower(speed);
-        hardware.intake2.setPower(speed);
+        hardware.intakeRight.setPower(speed);
+        hardware.intakeLeft.setPower(speed);
     }
 
     public void SetState(String s)

@@ -31,12 +31,12 @@ public class Hardware {
 
     public Servo intakePivot;
 
-    public CRServo intake1;
-    public CRServo intake2;
+    public CRServo intakeRight;
+    public CRServo intakeLeft;
 
     //Hang
-    public Servo hang1;
-    public Servo hang2;
+    public Servo hangRight;
+    public Servo hangLeft;
 
     public Hardware(HardwareMap hardwareMap)
     {
@@ -67,7 +67,7 @@ public class Hardware {
         outtakeExtension = hardwareMap.get(Servo.class, "extension");
         outtakePivot = hardwareMap.get(Servo.class, "pivot");
         outtakeWrist = hardwareMap.get(Servo.class, "wrist");
-        outtakeClaw = hardwareMap.get(Servo.class, "outtake");
+        outtakeClaw = hardwareMap.get(Servo.class, "claw");
 
         outtakeSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -77,17 +77,17 @@ public class Hardware {
         outtakeSlide2.setDirection(DcMotor.Direction.FORWARD);
 
         //Intake
-        intakeSlide = hardwareMap.get(DcMotor.class, "horizontalSlide");
+        intakeSlide = hardwareMap.get(DcMotor.class, "extension");
         intakePivot = hardwareMap.get(Servo.class, "intakePivot");
-        intake1 = hardwareMap.get(CRServo.class, "intake1");
-        intake2 = hardwareMap.get(CRServo.class, "intake2");
+        intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
+        intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
 
         intakeSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intakeSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeSlide.setDirection(DcMotorSimple.Direction.FORWARD);
 
         //Hang
-        hang1 = hardwareMap.get(Servo.class, "hang1");
-        hang2 = hardwareMap.get(Servo.class, "hang2");
+        hangRight = hardwareMap.get(Servo.class, "hangRight");
+        hangLeft = hardwareMap.get(Servo.class, "hangLeft");
     }
 }

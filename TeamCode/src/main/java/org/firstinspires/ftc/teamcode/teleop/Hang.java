@@ -30,8 +30,8 @@ public class Hang {
         switch (state)
         {
             case "start":
-                hardware.hang1.setPosition(Constants.HANG1_DOWN);
-                hardware.hang2.setPosition(Constants.HANG2_DOWN);
+                hardware.hangRight.setPosition(Constants.HANG1_DOWN);
+                hardware.hangLeft.setPosition(Constants.HANG2_DOWN);
                 break;
 
             case "hang ready":
@@ -41,13 +41,13 @@ public class Hang {
                 }
                 outtake.VertSlidesUpdate();
 
-                hardware.hang1.setPosition(Constants.HANG1_UP);
-                hardware.hang2.setPosition(Constants.HANG2_UP);
+                hardware.hangRight.setPosition(Constants.HANG1_UP);
+                hardware.hangLeft.setPosition(Constants.HANG2_UP);
                 break;
 
             case "lvl 2":
-                hardware.hang1.setPosition(Constants.HANGING1);
-                hardware.hang2.setPosition(Constants.HANGING2);
+                hardware.hangRight.setPosition(Constants.HANGING1);
+                hardware.hangLeft.setPosition(Constants.HANGING2);
 
                 if(hangTimer.getElapsedTimeSeconds() > 2)
                 {
@@ -56,8 +56,8 @@ public class Hang {
                 break;
 
             case "lvl 3":
-                hardware.hang1.setPosition(Constants.HANG1_DOWN);
-                hardware.hang2.setPosition(Constants.HANG2_DOWN);
+                hardware.hangRight.setPosition(Constants.HANG1_DOWN);
+                hardware.hangLeft.setPosition(Constants.HANG2_DOWN);
 
                 if(!Objects.equals(lastState, "lvl 3"))
                 {
