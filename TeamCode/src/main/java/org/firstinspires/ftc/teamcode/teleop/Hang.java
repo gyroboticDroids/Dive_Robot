@@ -13,7 +13,8 @@ public class Hang {
     private final Outtake outtake;
 
     String state;
-    private String lastState;
+    private boolean onsSetState = false;
+    private boolean isBusy = false;
 
     Timer hangTimer;
 
@@ -32,10 +33,15 @@ public class Hang {
             case "start":
                 hardware.hangRight.setPosition(Constants.HANG_RIGHT_DOWN);
                 hardware.hangLeft.setPosition(Constants.HANG_LEFT_DOWN);
+
+                if(hangTimer.getElapsedTimeSeconds() > 2)
+                {
+                    isBusy = false;
+                }
                 break;
 
             case "hang ready":
-                if(!Objects.equals(lastState, "hang ready"))
+                if(onsSetState)
                 {
                     outtake.vertPosition = Constants.OUTTAKE_SLIDES_HANG;
                 }
@@ -43,6 +49,11 @@ public class Hang {
 
                 hardware.hangRight.setPosition(Constants.HANG_RIGHT_UP);
                 hardware.hangLeft.setPosition(Constants.HANG_LEFT_UP);
+
+                if(hangTimer.getElapsedTimeSeconds() > 2)
+                {
+                    isBusy = false;
+                }
                 break;
 
             case "lvl 2":
@@ -51,7 +62,7 @@ public class Hang {
 
                 if(hangTimer.getElapsedTimeSeconds() > 2)
                 {
-                    SetState("lvl 3");
+                    isBusy = false;
                 }
                 break;
 
@@ -59,7 +70,7 @@ public class Hang {
                 hardware.hangRight.setPosition(Constants.HANG_RIGHT_DOWN);
                 hardware.hangLeft.setPosition(Constants.HANG_LEFT_DOWN);
 
-                if(!Objects.equals(lastState, "lvl 3"))
+                if(onsSetState)
                 {
                     outtake.vertPosition = Constants.OUTTAKE_SLIDES_START;
                 }
@@ -67,10 +78,12 @@ public class Hang {
                 break;
         }
 
-        lastState = state;
+        onsSetState = false;
     }
 
     public void SetState(String s) {
+        onsSetState = true;
+        isBusy = true;
         hangTimer.resetTimer();
         state = s;
         Update();
