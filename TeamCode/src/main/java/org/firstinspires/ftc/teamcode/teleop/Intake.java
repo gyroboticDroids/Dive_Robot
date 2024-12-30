@@ -66,6 +66,11 @@ public class Intake {
 
                     horizontalPosition = MathFunctions.clamp(horizontalPosition, Constants.INTAKE_SLIDES_OUT, Constants.INTAKE_SLIDES_MAX);
                 }
+
+                if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition(), horizontalPosition, Constants.INTAKE_SLIDES_ACCURACY))
+                {
+                    isBusy = false;
+                }
                 break;
 
             case "intake":
