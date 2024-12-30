@@ -144,21 +144,24 @@ public class MasterTeleop extends OpMode {
             return;
         }
 
-        if (gamepad2.back && Objects.equals(prevIntakeState, "transfer")) {
-            intake.SetState("start");
-        } else if (gamepad2.left_bumper && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "start")
-                || Objects.equals(prevIntakeState, "intake"))) {
-            intake.SetState("transfer");
-        } else if ((gamepad2.right_trigger > 0.1 || gamepad2.right_bumper) && (Objects.equals(prevIntakeState, "transfer")
-                || Objects.equals(prevIntakeState, "start") || Objects.equals(prevIntakeState, "intake"))) {
-            intake.SetState("intake sub ready");
-        } else if (gamepad2.dpad_down && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "reject"))) {
-            intake.SetState("intake");
-        } else if (gamepad2.dpad_up && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake"))) {
-            intake.SetState("reject");
-        } else if (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake")
-                || Objects.equals(prevIntakeState, "reject")) {
-            intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
+        if(intake.IsBusy())
+        {
+            if (gamepad2.back && Objects.equals(prevIntakeState, "transfer")) {
+                intake.SetState("start");
+            } else if (gamepad2.left_bumper && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "start")
+                    || Objects.equals(prevIntakeState, "intake"))) {
+                intake.SetState("transfer");
+            } else if ((gamepad2.right_trigger > 0.1 || gamepad2.right_bumper) && (Objects.equals(prevIntakeState, "transfer")
+                    || Objects.equals(prevIntakeState, "start") || Objects.equals(prevIntakeState, "intake"))) {
+                intake.SetState("intake sub ready");
+            } else if (gamepad2.dpad_down && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "reject"))) {
+                intake.SetState("intake");
+            } else if (gamepad2.dpad_up && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake"))) {
+                intake.SetState("reject");
+            } else if (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake")
+                    || Objects.equals(prevIntakeState, "reject")) {
+                intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
+            }
         }
 
         intake.Update();

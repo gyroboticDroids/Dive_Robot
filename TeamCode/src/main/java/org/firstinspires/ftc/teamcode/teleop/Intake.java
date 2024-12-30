@@ -14,7 +14,8 @@ public class Intake {
     private final Hardware hardware;
     private final Timer actionTimer;
 
-    private String lastState;
+    private boolean onsSetState;
+    private boolean isBusy = false;
 
     public double horizontalPosition = 0;
 
@@ -40,12 +41,20 @@ public class Intake {
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    horizontalPosition = Constants.INTAKE_SLIDES_START;
+                    if (onsSetState)
+                    {
+                        horizontalPosition = Constants.INTAKE_SLIDES_START;
+                    }
+
+                    if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition(), horizontalPosition, Constants.INTAKE_SLIDES_ACCURACY))
+                    {
+                        isBusy = false;
+                    }
                 }
                 break;
 
             case "intake sub ready":
-                if (!Objects.equals(lastState, "intake sub ready"))
+                if (onsSetState)
                 {
                     horizontalPosition = Constants.INTAKE_SLIDES_OUT;
                 }
@@ -75,6 +84,11 @@ public class Intake {
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     horizontalPosition = Constants.INTAKE_SLIDES_TRANSFER;
+
+                    if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition(), horizontalPosition, Constants.INTAKE_SLIDES_ACCURACY))
+                    {
+                        isBusy = false;
+                    }
                 }
                 break;
 
@@ -86,7 +100,7 @@ public class Intake {
                 break;
         }
 
-        lastState = state;
+        onsSetState = false;
     }
 
     public void IntakeSpeed(double speed)
@@ -97,6 +111,8 @@ public class Intake {
 
     public void SetState(String s)
     {
+        onsSetState = true;
+        isBusy = true;
         actionTimer.resetTimer();
         state = s;
         Update();
@@ -122,5 +138,10 @@ public class Intake {
     public int GetHorizontalSlidePos()
     {
         return hardware.intakeSlide.getCurrentPosition();
+    }
+
+    public boolean IsBusy()
+    {
+        return isBusy;
     }
 }

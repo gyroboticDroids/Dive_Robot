@@ -17,8 +17,6 @@ public class Outtake {
     private boolean isBusy = false;
     private boolean onsSetState = false;
 
-    private String lastState;
-
     double vertPosition = 0;
 
     String state;
@@ -236,8 +234,6 @@ public class Outtake {
                 }
                 break;
         }
-
-        lastState = state;
         onsSetState = false;
     }
     public void SetState(String s)
