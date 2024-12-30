@@ -120,11 +120,13 @@ public class MasterTeleop extends OpMode {
                 outtake.SetState("score specimen");
             } else if (Objects.equals(prevOuttakeState, "score sample") || Objects.equals(prevOuttakeState, "score specimen")) {
                 outtake.SetState("transfer intake ready");
-            } else if (Objects.equals(prevOuttakeState, "score sample ready high") || Objects.equals(prevOuttakeState, "score sample ready low")
-                    || Objects.equals(prevOuttakeState, "score specimen ready high") || Objects.equals(prevOuttakeState, "score specimen ready low")
-                    || Objects.equals(prevOuttakeState, "start")) {
-                outtake.VertSlidesManual(-gamepad2.left_stick_y);
             }
+        }
+
+        if (Objects.equals(prevOuttakeState, "score sample ready high") || Objects.equals(prevOuttakeState, "score sample ready low")
+                || Objects.equals(prevOuttakeState, "score specimen ready high") || Objects.equals(prevOuttakeState, "score specimen ready low")
+                || Objects.equals(prevOuttakeState, "start")) {
+            outtake.VertSlidesManual(-gamepad2.left_stick_y);
         }
 
         outtake.Update();
@@ -160,10 +162,12 @@ public class MasterTeleop extends OpMode {
                 intake.SetState("intake");
             } else if (gamepad2.dpad_up && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake"))) {
                 intake.SetState("reject");
-            } else if (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake")
-                    || Objects.equals(prevIntakeState, "reject")) {
-                intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
             }
+        }
+
+        if (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake")
+                || Objects.equals(prevIntakeState, "reject")) {
+            intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
         }
 
         intake.Update();
@@ -176,14 +180,19 @@ public class MasterTeleop extends OpMode {
     {
         isHanging = !Objects.equals(hang.state, "start");
 
-        if (gamepad1.dpad_down) {
-            hang.SetState("start");
-        } else if (gamepad1.dpad_up && Objects.equals(prevOuttakeState, "start") && Objects.equals(prevIntakeState, "start")) {
-            hang.SetState("hang ready");
-        } else if (gamepad1.start && Objects.equals(hang.state, "hang ready")) {
-            hang.SetState("lvl 2");
-        }else if (Objects.equals(hang.state, "lvl 2")) {
-            hang.SetState("lvl 3");
+        if(hang.IsBusy())
+        {
+            if (gamepad1.dpad_down) {
+                hang.SetState("start");
+            } else if (gamepad1.dpad_up && Objects.equals(prevOuttakeState, "start") && Objects.equals(prevIntakeState, "start")) {
+                hang.SetState("hang ready");
+            } else if (gamepad1.start && Objects.equals(hang.state, "hang ready")) {
+                hang.SetState("lvl 2");
+            } else if (Objects.equals(hang.state, "lvl 2")) {
+                hang.SetState("lvl 3");
+            }
         }
+
+        hang.Update();
     }
 }
