@@ -15,6 +15,7 @@ public class Outtake {
 
     private boolean driveBack = false;
     private boolean isBusy = false;
+    private boolean onsSetState = false;
 
     private String lastState;
 
@@ -40,6 +41,10 @@ public class Outtake {
         switch (state)
         {
             case "start":
+                if(onsSetState)
+                {
+                    vertPosition = Constants.OUTTAKE_SLIDES_START;
+                }
 
                 hardware.outtakeClaw.setPosition(Constants.OUTTAKE_CLAW_CLOSED);
 
@@ -49,14 +54,15 @@ public class Outtake {
                     hardware.outtakePivot.setPosition(Constants.OUTTAKE_PIVOT_START);
                     hardware.outtakeWrist.setPosition(Constants.OUTTAKE_WRIST_START);
                 }
-                if(actionTimer.getElapsedTimeSeconds() > 1)
+
+                if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, Constants.OUTTAKE_SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
                 break;
 
             case "transfer intake ready":
-                if(!Objects.equals(lastState, "transfer intake ready"))
+                if(onsSetState)
                 {
                     vertPosition = Constants.OUTTAKE_SLIDES_START;
                 }
@@ -102,7 +108,7 @@ public class Outtake {
                 break;
 
             case "grab specimen ready":
-                if(!Objects.equals(lastState, "grab specimen ready"))
+                if(onsSetState)
                 {
                     vertPosition = Constants.OUTTAKE_SLIDES_SPECIMEN_COLLECT;
                 }
@@ -134,7 +140,7 @@ public class Outtake {
                 break;
 
             case "score specimen ready low":
-                if(!Objects.equals(lastState, "score specimen ready low"))
+                if(onsSetState)
                 {
                     lastVertConstant = vertPosition = Constants.OUTTAKE_SLIDES_SPECIMEN_LOW_SCORING;
                 }
@@ -155,7 +161,7 @@ public class Outtake {
                 break;
 
             case "score specimen ready high":
-                if(!Objects.equals(lastState, "score specimen ready high"))
+                if(onsSetState)
                 {
                     lastVertConstant = vertPosition = Constants.OUTTAKE_SLIDES_SPECIMEN_HIGH_SCORING;
                 }
@@ -176,7 +182,10 @@ public class Outtake {
                 break;
 
             case "score specimen":
-                vertPosition = lastVertConstant + Constants.OUTTAKE_SLIDES_SPECIMEN_INCREASE;
+                if(onsSetState)
+                {
+                    vertPosition = lastVertConstant + Constants.OUTTAKE_SLIDES_SPECIMEN_INCREASE;
+                }
 
                 if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, Constants.OUTTAKE_SLIDES_ACCURACY))
                 {
@@ -185,7 +194,7 @@ public class Outtake {
                 break;
 
             case "score sample ready low":
-                if(!Objects.equals(lastState, "score sample ready low"))
+                if(onsSetState)
                 {
                     vertPosition = Constants.OUTTAKE_SLIDES_SAMPLE_LOW;
                 }
@@ -197,7 +206,7 @@ public class Outtake {
                 break;
 
             case "score sample ready high":
-                if(!Objects.equals(lastState, "score sample ready high"))
+                if(onsSetState)
                 {
                     vertPosition = Constants.OUTTAKE_SLIDES_SAMPLE_HIGH;
                 }
@@ -217,10 +226,7 @@ public class Outtake {
                 if(actionTimer.getElapsedTimeSeconds() > 1.5)
                 {
                     driveBack = false;
-                    if(actionTimer.getElapsedTimeSeconds() > 1.5 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, Constants.OUTTAKE_SLIDES_ACCURACY))
-                    {
-                        isBusy = false;
-                    }
+                    isBusy = false;
                 }
                 else if(actionTimer.getElapsedTimeSeconds() > 0.75)
                 {
@@ -232,10 +238,12 @@ public class Outtake {
         }
 
         lastState = state;
+        onsSetState = false;
     }
     public void SetState(String s)
     {
         isBusy = true;
+        onsSetState = true;
         actionTimer.resetTimer();
         state = s;
         Update();
