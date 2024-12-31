@@ -2,23 +2,20 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.constants.DriveConstants;
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 public class Intake {
-
     private final Hardware hardware;
     private final Timer actionTimer;
 
     private boolean onsSetState;
     private boolean isBusy = false;
 
-    public double horizontalPosition = 0;
-
-    String state;
+    private double horizontalPosition = 0;
+    private String state;
 
     public Intake (HardwareMap hardwareMap)
     {
@@ -26,14 +23,14 @@ public class Intake {
 
         actionTimer = new Timer();
 
-        SetState("start");
+        setState(IntakeConstants.START);
     }
 
     public void Update() {
         HorizontalSlidesUpdate();
 
         switch (state) {
-            case "start":
+            case IntakeConstants.START:
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_START);
 
                 IntakeSpeed(IntakeConstants.INTAKE_STOP);
@@ -52,7 +49,7 @@ public class Intake {
                 }
                 break;
 
-            case "intake sub ready":
+            case IntakeConstants.INTAKE_SUB_READY:
                 if (onsSetState)
                 {
                     horizontalPosition = IntakeConstants.SLIDES_OUT;
@@ -72,7 +69,7 @@ public class Intake {
                 }
                 break;
 
-            case "intake":
+            case IntakeConstants.INTAKE:
                 IntakeSpeed(IntakeConstants.INTAKE_FORWARD);
 
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_DOWN);
@@ -85,7 +82,7 @@ public class Intake {
                 }
                 break;
 
-            case "transfer":
+            case IntakeConstants.TRANSFER:
                 IntakeSpeed(IntakeConstants.INTAKE_STOP);
 
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
@@ -101,7 +98,7 @@ public class Intake {
                 }
                 break;
 
-            case "reject":
+            case IntakeConstants.REJECT:
                 IntakeSpeed(IntakeConstants.INTAKE_REVERSE);
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_INTERMEDIATE);
 
@@ -123,7 +120,19 @@ public class Intake {
         hardware.intakeLeft.setPower(speed);
     }
 
-    public void SetState(String s)
+    public double getHorizontalPosition() {
+        return horizontalPosition;
+    }
+
+    public void setHorizontalPosition(double horizontalPosition) {
+        this.horizontalPosition = horizontalPosition;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String s)
     {
         onsSetState = true;
         isBusy = true;

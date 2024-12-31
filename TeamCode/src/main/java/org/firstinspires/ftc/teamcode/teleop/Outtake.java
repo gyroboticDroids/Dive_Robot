@@ -15,9 +15,9 @@ public class Outtake {
     private boolean isBusy = false;
     private boolean onsSetState = false;
 
-    double vertPosition = 0;
+    private double vertPosition = 0;
 
-    String state;
+    private String state;
 
     public Outtake(HardwareMap hardwareMap)
     {
@@ -240,6 +240,12 @@ public class Outtake {
         VertSlidesUpdate();
         onsSetState = false;
     }
+
+
+    public String getState() {
+        return state;
+    }
+
     public void setState(String s)
     {
         isBusy = true;
@@ -247,6 +253,14 @@ public class Outtake {
         actionTimer.resetTimer();
         state = s;
         //Update();
+    }
+
+    public double getVertPosition() {
+        return vertPosition;
+    }
+
+    public void setVertPosition(double vertPosition) {
+        this.vertPosition = vertPosition;
     }
 
     public void VertSlidesManual(double position)

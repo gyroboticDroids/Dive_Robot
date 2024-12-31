@@ -15,7 +15,7 @@ public class Hang {
     private boolean onsSetState = false;
     private boolean isBusy = false;
 
-    Timer hangTimer;
+    private Timer hangTimer;
 
     public Hang(HardwareMap hardwareMap)
     {
@@ -29,7 +29,7 @@ public class Hang {
     {
         switch (state)
         {
-            case "start":
+            case HangConstants.START:
                 hardware.hangRight.setPosition(HangConstants.RIGHT_DOWN);
                 hardware.hangLeft.setPosition(HangConstants.LEFT_DOWN);
 
@@ -39,10 +39,10 @@ public class Hang {
                 }
                 break;
 
-            case "hang ready":
+            case HangConstants.HANG_READY:
                 if(onsSetState)
                 {
-                    outtake.vertPosition = OuttakeConstants.SLIDES_HANG;
+                    outtake.setVertPosition(OuttakeConstants.SLIDES_HANG);
                 }
                 outtake.VertSlidesUpdate();
 
@@ -55,7 +55,7 @@ public class Hang {
                 }
                 break;
 
-            case "lvl 2":
+            case HangConstants.LVL_2:
                 hardware.hangRight.setPosition(HangConstants.HANGING_RIGHT);
                 hardware.hangLeft.setPosition(HangConstants.HANGING_LEFT);
 
@@ -65,13 +65,13 @@ public class Hang {
                 }
                 break;
 
-            case "lvl 3":
+            case HangConstants.LVL_3:
                 hardware.hangRight.setPosition(HangConstants.RIGHT_DOWN);
                 hardware.hangLeft.setPosition(HangConstants.LEFT_DOWN);
 
                 if(onsSetState)
                 {
-                    outtake.vertPosition = OuttakeConstants.SLIDES_START;
+                    outtake.setVertPosition(OuttakeConstants.SLIDES_START);
                 }
                 outtake.VertSlidesUpdate();
                 break;

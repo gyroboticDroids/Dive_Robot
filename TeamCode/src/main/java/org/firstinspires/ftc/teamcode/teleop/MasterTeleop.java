@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.constants.HangConstants;
+import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
+import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 import java.util.Objects;
@@ -37,9 +40,9 @@ public class MasterTeleop extends OpMode {
     {
         teleopTimer.resetTimer();
 
-        outtake.setState(START);
-        intake.SetState("start");
-        hang.SetState("start");
+        outtake.setState(OuttakeConstants.START);
+        intake.setState(IntakeConstants.START);
+        hang.SetState(HangConstants.START);
     }
 
     @Override
@@ -70,16 +73,16 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("current heading", Math.toDegrees(drive.botHeading));
 
         telemetry.addLine("-------------------Outtake-------------------");
-        telemetry.addData("outtake state", outtake.state);
+        telemetry.addData("outtake state", outtake.getState());
         telemetry.addData("outtake busy", outtake.IsBusy());
-        telemetry.addData("vert spt pos", outtake.vertPosition);
+        telemetry.addData("vert spt pos", outtake.getVertPosition());
         telemetry.addData("vert fdbk pos", outtake.GetVertSlidePos());
         telemetry.addData("drive back", outtake.IsDriveBack());
 
         telemetry.addLine("-------------------Intake--------------------");
-        telemetry.addData("intake state", intake.state);
+        telemetry.addData("intake state", intake.getState());
         telemetry.addData("intake busy", intake.IsBusy());
-        telemetry.addData("horizontal spt pos", intake.horizontalPosition);
+        telemetry.addData("horizontal spt pos", intake.getHorizontalPosition());
         telemetry.addData("horizontal fdbk pos", intake.GetHorizontalSlidePos());
 
         telemetry.addLine("-------------------Hang----------------------");
@@ -137,7 +140,7 @@ public class MasterTeleop extends OpMode {
 
         drive.setDriveBack(outtake.IsDriveBack());
 
-        prevOuttakeState = outtake.state;
+        prevOuttakeState = outtake.getState();
         prevGp2X = gamepad2.x;
         prevGp2Y = gamepad2.y;
     }
@@ -154,17 +157,17 @@ public class MasterTeleop extends OpMode {
         if(!intake.IsBusy())
         {
             if (gamepad2.back && Objects.equals(prevIntakeState, "transfer")) {
-                intake.SetState("start");
+                intake.setState("start");
             } else if (gamepad2.left_bumper && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "start")
                     || Objects.equals(prevIntakeState, "intake"))) {
-                intake.SetState("transfer");
+                intake.setState("transfer");
             } else if ((gamepad2.right_trigger > 0.1 || gamepad2.right_bumper) && (Objects.equals(prevIntakeState, "transfer")
                     || Objects.equals(prevIntakeState, "start") || Objects.equals(prevIntakeState, "intake"))) {
-                intake.SetState("intake sub ready");
+                intake.setState("intake sub ready");
             } else if (gamepad2.dpad_down && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "reject"))) {
-                intake.SetState("intake");
+                intake.setState("intake");
             } else if (gamepad2.dpad_up && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake"))) {
-                intake.SetState("reject");
+                intake.setState("reject");
             } else if (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake")
                     || Objects.equals(prevIntakeState, "reject")) {
                 intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
@@ -173,7 +176,7 @@ public class MasterTeleop extends OpMode {
 
         intake.Update();
 
-        prevIntakeState = intake.state;
+        prevIntakeState = intake.getState();
     }
 
     void HangUpdate()

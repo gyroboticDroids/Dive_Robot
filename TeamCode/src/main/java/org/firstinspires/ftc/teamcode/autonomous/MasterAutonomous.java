@@ -228,7 +228,7 @@ public class MasterAutonomous extends OpMode {
             case 11:
                 if(!follower.isBusy())
                 {
-                    intake.SetState("intake sub ready");
+                    intake.setState("intake sub ready");
                     setPathState(12);
                 }
                 break;
@@ -236,8 +236,8 @@ public class MasterAutonomous extends OpMode {
             case 12:
                 if(pathTimer.getElapsedTimeSeconds() > 1)
                 {
-                    intake.SetState("intake");
-                    intake.horizontalPosition = IntakeConstants.SLIDES_MAX;
+                    intake.setState("intake");
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
                     setPathState(13);
                 }
                 break;
@@ -245,7 +245,7 @@ public class MasterAutonomous extends OpMode {
             case 13:
                 if(intake.GetHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 10)
                 {
-                    intake.SetState("transfer");
+                    intake.setState("transfer");
                     setPathState(14);
                 }
                 break;
@@ -263,7 +263,7 @@ public class MasterAutonomous extends OpMode {
                 if(!follower.isBusy())
                 {
                     outtake.setState("score sample ready high");
-                    intake.SetState("intake sub ready");
+                    intake.setState("intake sub ready");
                     setPathState(16);
                 }
                 break;
@@ -272,8 +272,8 @@ public class MasterAutonomous extends OpMode {
                 if(pathTimer.getElapsedTimeSeconds() > 2)
                 {
                     outtake.setState("score sample");
-                    intake.SetState("intake");
-                    intake.horizontalPosition = IntakeConstants.SLIDES_MAX;
+                    intake.setState("intake");
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
                     setPathState(17);
                 }
                 break;
@@ -281,7 +281,7 @@ public class MasterAutonomous extends OpMode {
             case 17:
                 if(intake.GetHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 10)
                 {
-                    intake.SetState("transfer");
+                    intake.setState("transfer");
                     setPathState(18);
                 }
                 break;
@@ -314,7 +314,7 @@ public class MasterAutonomous extends OpMode {
                 if(pathTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     follower.followPath(toSample3, true);
-                    intake.SetState("intake sub ready");
+                    intake.setState("intake sub ready");
                     setPathState(22);
                 }
                 break;
@@ -322,8 +322,8 @@ public class MasterAutonomous extends OpMode {
             case 22:
                 if(!follower.isBusy())
                 {
-                    intake.SetState("intake");
-                    intake.horizontalPosition = IntakeConstants.SLIDES_MAX;
+                    intake.setState("intake");
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
                     setPathState(23);
                 }
                 break;
@@ -331,7 +331,7 @@ public class MasterAutonomous extends OpMode {
             case 23:
                 if(intake.GetHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 10)
                 {
-                    intake.SetState("transfer");
+                    intake.setState("transfer");
                     follower.followPath(toBasket3, true);
                     setPathState(24);
                 }
