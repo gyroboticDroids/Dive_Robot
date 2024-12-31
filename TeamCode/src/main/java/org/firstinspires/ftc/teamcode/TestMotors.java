@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 
 @TeleOp(name = "TestMotors")
@@ -18,6 +19,23 @@ public class TestMotors extends OpMode {
     public void init()
     {
         hardware = new Hardware(hardwareMap);
+    }
+
+    @Override
+    public void start()
+    {
+        //outtake
+        hardware.outtakeExtension.setPosition(0.5);
+        hardware.outtakePivot.setPosition(0.5);
+        hardware.outtakeWrist.setPosition(0.5);
+        hardware.outtakeClaw.setPosition(0.5);
+
+        //intake
+        hardware.intakePivot.setPosition(0.5);
+
+        //hang
+        hardware.hangRight.setPosition(0.5);
+        hardware.hangLeft.setPosition(0.5);
     }
 
     @Override
