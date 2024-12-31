@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @TeleOp(name = "Master Tele-op", group = "Tele-op")
 public class MasterTeleop extends OpMode {
-    public static final String START = "start";
+    int rumble = 1000;
 
     Drive drive;
     Outtake outtake;
@@ -50,8 +50,8 @@ public class MasterTeleop extends OpMode {
     {
         if(teleopTimer.getElapsedTimeSeconds() >= 90 && !isRumble)
         {
-            gamepad1.rumble(1000);
-            gamepad2.rumble(1000);
+            gamepad1.rumble(rumble);
+            gamepad2.rumble(rumble);
 
             isRumble = true;
         }
@@ -186,13 +186,13 @@ public class MasterTeleop extends OpMode {
         if(!hang.IsBusy())
         {
             if (gamepad1.dpad_down) {
-                hang.SetState("start");
-            } else if (gamepad1.dpad_up && Objects.equals(prevOuttakeState, "start") && Objects.equals(prevIntakeState, "start")) {
-                hang.SetState("hang ready");
-            } else if (gamepad1.start && Objects.equals(hang.state, "hang ready")) {
-                hang.SetState("lvl 2");
-            } else if (Objects.equals(hang.state, "lvl 2")) {
-                hang.SetState("lvl 3");
+                hang.SetState(HangConstants.START);
+            } else if (gamepad1.dpad_up && Objects.equals(prevOuttakeState, OuttakeConstants.START) && Objects.equals(prevIntakeState, IntakeConstants.START)) {
+                hang.SetState(HangConstants.HANG_READY);
+            } else if (gamepad1.start && Objects.equals(hang.state, HangConstants.HANG_READY)) {
+                hang.SetState(HangConstants.LVL_2);
+            } else if (Objects.equals(hang.state, HangConstants.LVL_2)) {
+                hang.SetState(HangConstants.LVL_3);
             }
         }
 
