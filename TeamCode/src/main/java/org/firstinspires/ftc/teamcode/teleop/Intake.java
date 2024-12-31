@@ -2,12 +2,11 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.constants.DriveConstants;
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
-
-import java.util.Objects;
 
 public class Intake {
 
@@ -35,18 +34,18 @@ public class Intake {
 
         switch (state) {
             case "start":
-                hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_START);
+                hardware.intakePivot.setPosition(IntakeConstants.PIVOT_START);
 
-                IntakeSpeed(Constants.INTAKE_STOP);
+                IntakeSpeed(IntakeConstants.INTAKE_STOP);
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     if (onsSetState)
                     {
-                        horizontalPosition = Constants.INTAKE_SLIDES_START;
+                        horizontalPosition = IntakeConstants.SLIDES_START;
                     }
 
-                    if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition(), horizontalPosition, Constants.INTAKE_SLIDES_ACCURACY))
+                    if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition(), horizontalPosition, IntakeConstants.SLIDES_ACCURACY))
                     {
                         isBusy = false;
                     }
@@ -56,29 +55,29 @@ public class Intake {
             case "intake sub ready":
                 if (onsSetState)
                 {
-                    horizontalPosition = Constants.INTAKE_SLIDES_OUT;
+                    horizontalPosition = IntakeConstants.SLIDES_OUT;
                 }
 
-                if(horizontalPosition > Constants.INTAKE_SLIDES_OUT - 10)
+                if(horizontalPosition > IntakeConstants.SLIDES_OUT - 10)
                 {
-                    hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
-                    IntakeSpeed(Constants.INTAKE_FORWARD);
+                    hardware.intakePivot.setPosition(IntakeConstants.PIVOT_INTERMEDIATE);
+                    IntakeSpeed(IntakeConstants.INTAKE_FORWARD);
 
-                    horizontalPosition = MathFunctions.clamp(horizontalPosition, Constants.INTAKE_SLIDES_OUT, Constants.INTAKE_SLIDES_MAX);
+                    horizontalPosition = MathFunctions.clamp(horizontalPosition, IntakeConstants.SLIDES_OUT, IntakeConstants.SLIDES_MAX);
                 }
 
-                if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition(), horizontalPosition, Constants.INTAKE_SLIDES_ACCURACY))
+                if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition(), horizontalPosition, IntakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
                 break;
 
             case "intake":
-                IntakeSpeed(Constants.INTAKE_FORWARD);
+                IntakeSpeed(IntakeConstants.INTAKE_FORWARD);
 
-                hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_DOWN);
+                hardware.intakePivot.setPosition(IntakeConstants.PIVOT_DOWN);
 
-                horizontalPosition = MathFunctions.clamp(horizontalPosition, Constants.INTAKE_SLIDES_OUT, Constants.INTAKE_SLIDES_MAX);
+                horizontalPosition = MathFunctions.clamp(horizontalPosition, IntakeConstants.SLIDES_OUT, IntakeConstants.SLIDES_MAX);
 
                 if((actionTimer.getElapsedTimeSeconds() > 0.5))
                 {
@@ -87,15 +86,15 @@ public class Intake {
                 break;
 
             case "transfer":
-                IntakeSpeed(Constants.INTAKE_STOP);
+                IntakeSpeed(IntakeConstants.INTAKE_STOP);
 
-                hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_TRANSFER);
+                hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    horizontalPosition = Constants.INTAKE_SLIDES_TRANSFER;
+                    horizontalPosition = IntakeConstants.SLIDES_TRANSFER;
 
-                    if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition(), horizontalPosition, Constants.INTAKE_SLIDES_ACCURACY))
+                    if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition(), horizontalPosition, IntakeConstants.SLIDES_ACCURACY))
                     {
                         isBusy = false;
                     }
@@ -103,10 +102,10 @@ public class Intake {
                 break;
 
             case "reject":
-                IntakeSpeed(Constants.INTAKE_REVERSE);
-                hardware.intakePivot.setPosition(Constants.INTAKE_PIVOT_INTERMEDIATE);
+                IntakeSpeed(IntakeConstants.INTAKE_REVERSE);
+                hardware.intakePivot.setPosition(IntakeConstants.PIVOT_INTERMEDIATE);
 
-                horizontalPosition = MathFunctions.clamp(horizontalPosition, Constants.INTAKE_SLIDES_OUT, Constants.INTAKE_SLIDES_MAX);
+                horizontalPosition = MathFunctions.clamp(horizontalPosition, IntakeConstants.SLIDES_OUT, IntakeConstants.SLIDES_MAX);
 
                 if((actionTimer.getElapsedTimeSeconds() > 0.5))
                 {
@@ -140,11 +139,11 @@ public class Intake {
 
     public void HorizontalSlidesUpdate()
     {
-        horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, Constants.INTAKE_SLIDES_MAX);
+        horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, IntakeConstants.SLIDES_MAX);
 
         double error = horizontalPosition - hardware.intakeSlide.getCurrentPosition();
 
-        double motorPower = error * Constants.INTAKE_SLIDES_P_GAIN;
+        double motorPower = error * IntakeConstants.SLIDES_P_GAIN;
         motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
 
         hardware.intakeSlide.setPower(motorPower);

@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierCurve;
@@ -237,13 +237,13 @@ public class MasterAutonomous extends OpMode {
                 if(pathTimer.getElapsedTimeSeconds() > 1)
                 {
                     intake.SetState("intake");
-                    intake.horizontalPosition = Constants.INTAKE_SLIDES_MAX;
+                    intake.horizontalPosition = IntakeConstants.SLIDES_MAX;
                     setPathState(13);
                 }
                 break;
 
             case 13:
-                if(intake.GetHorizontalSlidePos() > Constants.INTAKE_SLIDES_MAX - 10)
+                if(intake.GetHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 10)
                 {
                     intake.SetState("transfer");
                     setPathState(14);
@@ -251,7 +251,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 14:
-                if(intake.GetHorizontalSlidePos() < Constants.INTAKE_SLIDES_TRANSFER + 10)
+                if(intake.GetHorizontalSlidePos() < IntakeConstants.SLIDES_TRANSFER + 10)
                 {
                     follower.followPath(toBasket2, true);
                     outtake.setState("transfer intake");
@@ -273,13 +273,13 @@ public class MasterAutonomous extends OpMode {
                 {
                     outtake.setState("score sample");
                     intake.SetState("intake");
-                    intake.horizontalPosition = Constants.INTAKE_SLIDES_MAX;
+                    intake.horizontalPosition = IntakeConstants.SLIDES_MAX;
                     setPathState(17);
                 }
                 break;
 
             case 17:
-                if(intake.GetHorizontalSlidePos() > Constants.INTAKE_SLIDES_MAX - 10)
+                if(intake.GetHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 10)
                 {
                     intake.SetState("transfer");
                     setPathState(18);
@@ -287,7 +287,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 18:
-                if(intake.GetHorizontalSlidePos() < Constants.INTAKE_SLIDES_TRANSFER + 10)
+                if(intake.GetHorizontalSlidePos() < IntakeConstants.SLIDES_TRANSFER + 10)
                 {
                     outtake.setState("transfer intake");
                     setPathState(19);
@@ -323,13 +323,13 @@ public class MasterAutonomous extends OpMode {
                 if(!follower.isBusy())
                 {
                     intake.SetState("intake");
-                    intake.horizontalPosition = Constants.INTAKE_SLIDES_MAX;
+                    intake.horizontalPosition = IntakeConstants.SLIDES_MAX;
                     setPathState(23);
                 }
                 break;
 
             case 23:
-                if(intake.GetHorizontalSlidePos() > Constants.INTAKE_SLIDES_MAX - 10)
+                if(intake.GetHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 10)
                 {
                     intake.SetState("transfer");
                     follower.followPath(toBasket3, true);

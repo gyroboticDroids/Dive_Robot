@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Constants;
+import org.firstinspires.ftc.teamcode.constants.DriveConstants;
 import org.firstinspires.ftc.teamcode.Hardware;
 
 public class Drive {
@@ -36,10 +36,10 @@ public class Drive {
 
         if(driveBack)
         {
-            hardware.frontLeft.setPower(Constants.DRIVE_BACK_POWER);
-            hardware.rearLeft.setPower(Constants.DRIVE_BACK_POWER);
-            hardware.frontRight.setPower(Constants.DRIVE_BACK_POWER);
-            hardware.rearRight.setPower(Constants.DRIVE_BACK_POWER);
+            hardware.frontLeft.setPower(DriveConstants.DRIVE_BACK_POWER);
+            hardware.rearLeft.setPower(DriveConstants.DRIVE_BACK_POWER);
+            hardware.frontRight.setPower(DriveConstants.DRIVE_BACK_POWER);
+            hardware.rearRight.setPower(DriveConstants.DRIVE_BACK_POWER);
 
             return;
         }
@@ -52,7 +52,7 @@ public class Drive {
 
     private void Input(Gamepad gpad)
     {
-        double multiplier = (Math.abs(gpad.right_stick_x) + Math.abs(gpad.right_stick_y) > 0)? Constants.DRIVE_SLOW_SPEED_MULTIPLIER :Constants.DRIVE_SPEED_MULTIPLIER;
+        double multiplier = (Math.abs(gpad.right_stick_x) + Math.abs(gpad.right_stick_y) > 0)? DriveConstants.DRIVE_SLOW_SPEED_MULTIPLIER : DriveConstants.DRIVE_SPEED_MULTIPLIER;
 
         y = gpad.left_stick_y * multiplier;
         x = -gpad.left_stick_x * multiplier;
@@ -107,7 +107,7 @@ public class Drive {
             error += 360;
         }
 
-        turnPower = Constants.DRIVE_TURN_P_GAIN * error;
+        turnPower = DriveConstants.DRIVE_TURN_P_GAIN * error;
         turnPower = Math.min(Math.max(turnPower, -0.4), 0.4);
     }
 

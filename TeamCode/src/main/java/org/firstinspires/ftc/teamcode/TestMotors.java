@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 import org.firstinspires.ftc.teamcode.teleop.Outtake;
 
@@ -70,13 +71,13 @@ public class TestMotors extends OpMode {
 
         horizontalPosition -= gamepad2.left_stick_y;
 
-        horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, Constants.INTAKE_SLIDES_MAX);
+        horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, IntakeConstants.SLIDES_MAX);
 
         telemetry.addData("gamepad control", horizontalPosition);
 
         double error = horizontalPosition - hardware.intakeSlide.getCurrentPosition();
 
-        double motorPower = error * Constants.INTAKE_SLIDES_P_GAIN;
+        double motorPower = error * IntakeConstants.SLIDES_P_GAIN;
         motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
 
         telemetry.addData("motor power", motorPower);

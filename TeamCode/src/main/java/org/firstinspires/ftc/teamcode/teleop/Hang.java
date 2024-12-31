@@ -2,8 +2,9 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.Constants;
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.constants.HangConstants;
+import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 public class Hang {
@@ -29,8 +30,8 @@ public class Hang {
         switch (state)
         {
             case "start":
-                hardware.hangRight.setPosition(Constants.HANG_RIGHT_DOWN);
-                hardware.hangLeft.setPosition(Constants.HANG_LEFT_DOWN);
+                hardware.hangRight.setPosition(HangConstants.RIGHT_DOWN);
+                hardware.hangLeft.setPosition(HangConstants.LEFT_DOWN);
 
                 if(hangTimer.getElapsedTimeSeconds() > 2)
                 {
@@ -41,12 +42,12 @@ public class Hang {
             case "hang ready":
                 if(onsSetState)
                 {
-                    outtake.vertPosition = Constants.OUTTAKE_SLIDES_HANG;
+                    outtake.vertPosition = OuttakeConstants.SLIDES_HANG;
                 }
                 outtake.VertSlidesUpdate();
 
-                hardware.hangRight.setPosition(Constants.HANG_RIGHT_UP);
-                hardware.hangLeft.setPosition(Constants.HANG_LEFT_UP);
+                hardware.hangRight.setPosition(HangConstants.RIGHT_UP);
+                hardware.hangLeft.setPosition(HangConstants.LEFT_UP);
 
                 if(hangTimer.getElapsedTimeSeconds() > 2)
                 {
@@ -55,8 +56,8 @@ public class Hang {
                 break;
 
             case "lvl 2":
-                hardware.hangRight.setPosition(Constants.HANGING_RIGHT);
-                hardware.hangLeft.setPosition(Constants.HANGING_LEFT);
+                hardware.hangRight.setPosition(HangConstants.HANGING_RIGHT);
+                hardware.hangLeft.setPosition(HangConstants.HANGING_LEFT);
 
                 if(hangTimer.getElapsedTimeSeconds() > 2)
                 {
@@ -65,12 +66,12 @@ public class Hang {
                 break;
 
             case "lvl 3":
-                hardware.hangRight.setPosition(Constants.HANG_RIGHT_DOWN);
-                hardware.hangLeft.setPosition(Constants.HANG_LEFT_DOWN);
+                hardware.hangRight.setPosition(HangConstants.RIGHT_DOWN);
+                hardware.hangLeft.setPosition(HangConstants.LEFT_DOWN);
 
                 if(onsSetState)
                 {
-                    outtake.vertPosition = Constants.OUTTAKE_SLIDES_START;
+                    outtake.vertPosition = OuttakeConstants.SLIDES_START;
                 }
                 outtake.VertSlidesUpdate();
                 break;
