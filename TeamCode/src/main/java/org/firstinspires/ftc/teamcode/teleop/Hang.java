@@ -12,10 +12,11 @@ public class Hang {
     private final Outtake outtake;
 
     String state;
+
     private boolean onsSetState = false;
     private boolean isBusy = false;
 
-    private Timer hangTimer;
+    private final Timer hangTimer;
 
     public Hang(HardwareMap hardwareMap)
     {
