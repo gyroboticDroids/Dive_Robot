@@ -106,32 +106,32 @@ public class MasterTeleop extends OpMode {
 
         if(!outtake.IsBusy())
         {
-            if (gamepad2.start && Objects.equals(prevOuttakeState, "transfer intake ready")) {
-                outtake.setState("start");
-            } else if (gamepad2.x && !prevGp2X && (Objects.equals(prevOuttakeState, "start") || Objects.equals(prevOuttakeState, "grab specimen ready"))) {
-                outtake.setState("transfer intake ready");
-            } else if (gamepad2.x && !prevGp2X && Objects.equals(prevOuttakeState, "transfer intake ready")) {
-                outtake.setState("transfer intake");
-            } else if (gamepad2.b && (Objects.equals(prevOuttakeState, "transfer intake ready") || Objects.equals(prevOuttakeState, "transfer intake")
-                    || Objects.equals(prevOuttakeState, "start"))) {
-                outtake.setState("grab specimen ready");
-            } else if (gamepad2.y && !prevGp2Y && (Objects.equals(prevOuttakeState, "grab specimen ready") || Objects.equals(prevOuttakeState, "score specimen ready low"))) {
-                outtake.setState("score specimen ready high");
-            } else if (gamepad2.y && !prevGp2Y && Objects.equals(prevOuttakeState, "score specimen ready high")) {
-                outtake.setState("score specimen ready low");
-            } else if (gamepad2.y && !prevGp2Y && (Objects.equals(prevOuttakeState, "transfer intake") || Objects.equals(prevOuttakeState, "score sample ready low"))) {
-                outtake.setState("score sample ready high");
-            } else if (gamepad2.y && !prevGp2Y && Objects.equals(prevOuttakeState, "score sample ready high")) {
-                outtake.setState("score sample ready low");
-            } else if (gamepad2.a && (Objects.equals(prevOuttakeState, "score sample ready high") || Objects.equals(prevOuttakeState, "score sample ready low"))) {
-                outtake.setState("score sample");
-            } else if (gamepad2.a && (Objects.equals(prevOuttakeState, "score specimen ready high") || Objects.equals(prevOuttakeState, "score specimen ready low"))) {
-                outtake.setState("score specimen");
-            } else if (Objects.equals(prevOuttakeState, "score sample") || Objects.equals(prevOuttakeState, "score specimen")) {
-                outtake.setState("transfer intake ready");
-            } else if (Objects.equals(prevOuttakeState, "score sample ready high") || Objects.equals(prevOuttakeState, "score sample ready low")
-                    || Objects.equals(prevOuttakeState, "score specimen ready high") || Objects.equals(prevOuttakeState, "score specimen ready low")
-                    || Objects.equals(prevOuttakeState, "start")) {
+            if (gamepad2.start && prevIntakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
+                outtake.setState(OuttakeConstants.START);
+            } else if (gamepad2.x && !prevGp2X && (prevIntakeState.equals(OuttakeConstants.START) || prevIntakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY))) {
+                outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+            } else if (gamepad2.x && !prevGp2X && prevIntakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
+                outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+            } else if (gamepad2.b && (prevIntakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevIntakeState.equals(OuttakeConstants.TRANSFER_INTAKE)
+                    || prevIntakeState.equals(OuttakeConstants.START))) {
+                outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
+            } else if (gamepad2.y && !prevGp2Y && (prevIntakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) || prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+            } else if (gamepad2.y && !prevGp2Y && prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)) {
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_LOW);
+            } else if (gamepad2.y && !prevGp2Y && (prevIntakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
+                outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+            } else if (gamepad2.y && !prevGp2Y && prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_LOW);
+            } else if (gamepad2.a && (prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
+                outtake.setState(OuttakeConstants.SCORE_SAMPLE);
+            } else if (gamepad2.a && (prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
+            } else if (prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
+                outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+            } else if (prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)
+                    || prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)
+                    || prevIntakeState.equals(OuttakeConstants.START)) {
                 outtake.VertSlidesManual(-gamepad2.left_stick_y);
             }
         }
@@ -156,20 +156,20 @@ public class MasterTeleop extends OpMode {
 
         if(!intake.IsBusy())
         {
-            if (gamepad2.back && Objects.equals(prevIntakeState, "transfer")) {
-                intake.setState("start");
-            } else if (gamepad2.left_bumper && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "start")
-                    || Objects.equals(prevIntakeState, "intake"))) {
-                intake.setState("transfer");
-            } else if ((gamepad2.right_trigger > 0.1 || gamepad2.right_bumper) && (Objects.equals(prevIntakeState, "transfer")
-                    || Objects.equals(prevIntakeState, "start") || Objects.equals(prevIntakeState, "intake"))) {
-                intake.setState("intake sub ready");
-            } else if (gamepad2.dpad_down && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "reject"))) {
-                intake.setState("intake");
-            } else if (gamepad2.dpad_up && (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake"))) {
-                intake.setState("reject");
-            } else if (Objects.equals(prevIntakeState, "intake sub ready") || Objects.equals(prevIntakeState, "intake")
-                    || Objects.equals(prevIntakeState, "reject")) {
+            if (gamepad2.back && prevIntakeState.equals(IntakeConstants.TRANSFER)) {
+                intake.setState(IntakeConstants.START);
+            } else if (gamepad2.left_bumper && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
+                    || prevIntakeState.equals(IntakeConstants.INTAKE))) {
+                intake.setState(IntakeConstants.TRANSFER);
+            } else if ((gamepad2.right_trigger > 0.1 || gamepad2.right_bumper) && (prevIntakeState.equals(IntakeConstants.TRANSFER)
+                    || prevIntakeState.equals(IntakeConstants.START) || prevIntakeState.equals(IntakeConstants.INTAKE))) {
+                intake.setState(IntakeConstants.INTAKE_SUB_READY);
+            } else if (gamepad2.dpad_down && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT))) {
+                intake.setState(IntakeConstants.INTAKE);
+            } else if (gamepad2.dpad_up && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE))) {
+                intake.setState(IntakeConstants.REJECT);
+            } else if (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
+                    || prevIntakeState.equals(IntakeConstants.REJECT)) {
                 intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
             }
         }
