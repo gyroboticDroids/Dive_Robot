@@ -60,7 +60,7 @@ public class Hang {
                 hardware.hangRight.setPosition(HangConstants.HANGING_RIGHT);
                 hardware.hangLeft.setPosition(HangConstants.HANGING_LEFT);
 
-                if(hangTimer.getElapsedTimeSeconds() > 2)
+                if(hangTimer.getElapsedTimeSeconds() > 5)
                 {
                     isBusy = false;
                 }
@@ -86,7 +86,7 @@ public class Hang {
         isBusy = true;
         hangTimer.resetTimer();
         state = s;
-        Update();
+        //Update();
     }
 
     public boolean IsBusy()

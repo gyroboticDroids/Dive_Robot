@@ -57,8 +57,8 @@ public class MasterTeleop extends OpMode {
         }
 
         drive.Update();
-        OuttakeUpdate();
-        IntakeUpdate();
+        //OuttakeUpdate();
+        //IntakeUpdate();
         HangUpdate();
 
         updateTelemetry();
@@ -93,7 +93,7 @@ public class MasterTeleop extends OpMode {
         telemetry.update();
     }
 
-    private String prevOuttakeState;
+    private String prevOuttakeState = OuttakeConstants.START;
     private boolean prevGp2Y = false;
     private boolean prevGp2X = false;
 
@@ -145,7 +145,7 @@ public class MasterTeleop extends OpMode {
         prevGp2Y = gamepad2.y;
     }
 
-    String prevIntakeState;
+    private String prevIntakeState = IntakeConstants.START;
 
     void IntakeUpdate()
     {
@@ -181,17 +181,17 @@ public class MasterTeleop extends OpMode {
 
     void HangUpdate()
     {
-        isHanging = !Objects.equals(hang.state, HangConstants.START);
+        isHanging = !hang.state.equals(HangConstants.START);
 
         if(!hang.IsBusy())
         {
             if (gamepad1.dpad_down) {
                 hang.SetState(HangConstants.START);
-            } else if (gamepad1.dpad_up && Objects.equals(prevOuttakeState, OuttakeConstants.START) && Objects.equals(prevIntakeState, IntakeConstants.START)) {
+            } else if (gamepad1.dpad_up && prevOuttakeState.equals(OuttakeConstants.START) && prevIntakeState.equals(IntakeConstants.START)) {
                 hang.SetState(HangConstants.HANG_READY);
-            } else if (gamepad1.start && Objects.equals(hang.state, HangConstants.HANG_READY)) {
+            } else if (gamepad1.start && hang.state.equals(HangConstants.HANG_READY)) {
                 hang.SetState(HangConstants.LVL_2);
-            } else if (Objects.equals(hang.state, HangConstants.LVL_2)) {
+            } else if (hang.state.equals(HangConstants.LVL_2)) {
                 hang.SetState(HangConstants.LVL_3);
             }
         }

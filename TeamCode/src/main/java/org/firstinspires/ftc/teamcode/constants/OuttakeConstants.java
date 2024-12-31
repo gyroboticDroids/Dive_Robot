@@ -9,8 +9,8 @@ public class OuttakeConstants {
     public static int SLIDES_SPECIMEN_HIGH_SCORING = 1031;//
     public static int SLIDES_SPECIMEN_INCREASE = 476;//
     public static int SLIDES_START = 0;//
-    public static int SLIDES_HANG = 2700;//
-    public static int SLIDES_MAX_LIMIT = 2700;//
+    public static int SLIDES_HANG = 2650;//
+    public static int SLIDES_MAX_LIMIT = 2650;//
     public static double SLIDES_P_GAIN = 0.031;
     public static double SLIDES_ACCURACY = 50;//
 

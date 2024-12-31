@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Hardware;
@@ -277,10 +278,20 @@ public class Outtake {
         double error = vertPosition - hardware.outtakeSlide1.getCurrentPosition();
 
         motorPower = error * OuttakeConstants.SLIDES_P_GAIN;
-        motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
 
-        hardware.outtakeSlide1.setPower(motorPower);
-        hardware.outtakeSlide2.setPower(motorPower);
+        if(hardware.outtakeSlide1.getCurrentPosition() < OuttakeConstants.SLIDES_ACCURACY && vertPosition < 5) {
+            hardware.outtakeSlide1.setPower(0);
+            hardware.outtakeSlide2.setPower(0);
+
+            hardware.outtakeSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            hardware.outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        }
+        else {
+            motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
+
+            hardware.outtakeSlide1.setPower(motorPower);
+            hardware.outtakeSlide2.setPower(motorPower);
+        }
     }
 
     public boolean IsDriveBack()

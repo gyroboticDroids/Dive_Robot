@@ -138,7 +138,7 @@ public class Intake {
         isBusy = true;
         actionTimer.resetTimer();
         state = s;
-        Update();
+        //Update();
     }
 
     public void HorizontalSlidesManual(double position)
