@@ -181,7 +181,7 @@ public class MasterTeleop extends OpMode {
 
     void HangUpdate()
     {
-        isHanging = !Objects.equals(hang.state, "start");
+        isHanging = !Objects.equals(hang.state, HangConstants.START);
 
         if(!hang.IsBusy())
         {
