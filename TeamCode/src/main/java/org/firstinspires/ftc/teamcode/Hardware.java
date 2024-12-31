@@ -77,7 +77,7 @@ public class Hardware {
         outtakeSlide2.setDirection(DcMotor.Direction.FORWARD);
 
         //Intake
-        intakeSlide = hardwareMap.get(DcMotor.class, "extension");
+        intakeSlide = hardwareMap.get(DcMotor.class, "horizontalSlide");
         intakePivot = hardwareMap.get(Servo.class, "intakePivot");
         intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
         intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
