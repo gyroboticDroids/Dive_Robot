@@ -12,7 +12,7 @@ import java.util.Objects;
 
 @TeleOp(name = "Master Tele-op", group = "Tele-op")
 public class MasterTeleop extends OpMode {
-    int rumble = 1000;
+    private static final int RUMBLE = 1000;
 
     Drive drive;
     Outtake outtake;
@@ -50,8 +50,8 @@ public class MasterTeleop extends OpMode {
     {
         if(teleopTimer.getElapsedTimeSeconds() >= 90 && !isRumble)
         {
-            gamepad1.rumble(rumble);
-            gamepad2.rumble(rumble);
+            gamepad1.rumble(RUMBLE);
+            gamepad2.rumble(RUMBLE);
 
             isRumble = true;
         }
