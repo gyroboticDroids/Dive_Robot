@@ -57,7 +57,7 @@ public class MasterTeleop extends OpMode {
         }
 
         drive.Update();
-        //OuttakeUpdate();
+        OuttakeUpdate();
         IntakeUpdate();
         HangUpdate();
 
@@ -107,32 +107,32 @@ public class MasterTeleop extends OpMode {
 
         if(!outtake.IsBusy())
         {
-            if (gamepad2.start && prevIntakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
+            if (gamepad2.start && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                 outtake.setState(OuttakeConstants.START);
-            } else if (gamepad2.x && !prevGp2X && (prevIntakeState.equals(OuttakeConstants.START) || prevIntakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY))) {
+            } else if (gamepad2.x && !prevGp2X && (prevOuttakeState.equals(OuttakeConstants.START) || prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY))) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-            } else if (gamepad2.x && !prevGp2X && prevIntakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
+            } else if (gamepad2.x && !prevGp2X && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
-            } else if (gamepad2.b && (prevIntakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevIntakeState.equals(OuttakeConstants.TRANSFER_INTAKE)
-                    || prevIntakeState.equals(OuttakeConstants.START))) {
+            } else if (gamepad2.b && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE)
+                    || prevOuttakeState.equals(OuttakeConstants.START))) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
-            } else if (gamepad2.y && !prevGp2Y && (prevIntakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) || prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
+            } else if (gamepad2.y && !prevGp2Y && (prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
-            } else if (gamepad2.y && !prevGp2Y && prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)) {
+            } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_LOW);
-            } else if (gamepad2.y && !prevGp2Y && (prevIntakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
+            } else if (gamepad2.y && !prevGp2Y && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
-            } else if (gamepad2.y && !prevGp2Y && prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+            } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_LOW);
-            } else if (gamepad2.a && (prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
+            } else if (gamepad2.a && (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE);
-            } else if (gamepad2.a && (prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
+            } else if (gamepad2.a && (prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
-            } else if (prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
+            } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-            } else if (prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevIntakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)
-                    || prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevIntakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)
-                    || prevIntakeState.equals(OuttakeConstants.START)) {
+            } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)
+                    || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)
+                    || prevOuttakeState.equals(OuttakeConstants.START)) {
                 outtake.VertSlidesManual(-gamepad2.left_stick_y);
             }
         }

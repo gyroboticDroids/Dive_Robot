@@ -7,11 +7,11 @@ public class OuttakeConstants {
     public static int SLIDES_SPECIMEN_COLLECT = 0;//
     public static int SLIDES_SPECIMEN_LOW_SCORING = 0;//
     public static int SLIDES_SPECIMEN_HIGH_SCORING = 1031;//
-    public static int SLIDES_SPECIMEN_INCREASE = 476;//
+    public static int SLIDES_SPECIMEN_INCREASE = 576;//
     public static int SLIDES_START = 0;//
     public static int SLIDES_HANG = 2650;//
     public static int SLIDES_MAX_LIMIT = 2650;//
-    public static double SLIDES_P_GAIN = 0.02;
+    public static double SLIDES_P_GAIN = 0.015;
     public static double SLIDES_ACCURACY = 50;//
 
     public static double EXTENSION_START = 0.6367;//
@@ -21,7 +21,7 @@ public class OuttakeConstants {
     public static double EXTENSION_SAMPLE_SCORE = 0.6367;
 
     public static double PIVOT_TRANSFER = 0.410;//
-    public static double PIVOT_SPECIMEN = 0.451;//
+    public static double PIVOT_SPECIMEN = 0.445;//
     public static double PIVOT_OFF_WALL = 0.614;//
     public static double PIVOT_SAMPLE = 0.537;//
     public static double PIVOT_START = 0.4339;//
