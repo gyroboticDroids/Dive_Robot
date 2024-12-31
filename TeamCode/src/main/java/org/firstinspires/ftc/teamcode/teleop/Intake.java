@@ -146,14 +146,20 @@ public class Intake {
         horizontalPosition += position;
     }
 
+    double motorPower;
+
+    public double getMotorPower() {
+        return motorPower;
+    }
+
     public void HorizontalSlidesUpdate()
     {
         horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, IntakeConstants.SLIDES_MAX);
 
         double error = horizontalPosition - hardware.intakeSlide.getCurrentPosition();
 
-        double motorPower = error * IntakeConstants.SLIDES_P_GAIN;
-        motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
+        motorPower = error * IntakeConstants.SLIDES_P_GAIN;
+        motorPower = Math.min(Math.max(motorPower, -1), 1);
 
         hardware.intakeSlide.setPower(motorPower);
     }

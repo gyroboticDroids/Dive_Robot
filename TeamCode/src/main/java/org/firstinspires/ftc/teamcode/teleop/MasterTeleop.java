@@ -58,7 +58,7 @@ public class MasterTeleop extends OpMode {
 
         drive.Update();
         //OuttakeUpdate();
-        //IntakeUpdate();
+        IntakeUpdate();
         HangUpdate();
 
         updateTelemetry();
@@ -84,6 +84,7 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("intake busy", intake.IsBusy());
         telemetry.addData("horizontal spt pos", intake.getHorizontalPosition());
         telemetry.addData("horizontal fdbk pos", intake.GetHorizontalSlidePos());
+        telemetry.addData("horizontal power", intake.getMotorPower());
 
         telemetry.addLine("-------------------Hang----------------------");
         telemetry.addData("hang state", hang.state);
@@ -170,7 +171,7 @@ public class MasterTeleop extends OpMode {
                 intake.setState(IntakeConstants.REJECT);
             } else if (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
                     || prevIntakeState.equals(IntakeConstants.REJECT)) {
-                intake.HorizontalSlidesManual(gamepad2.right_trigger - gamepad2.left_trigger);
+                intake.HorizontalSlidesManual((gamepad2.right_trigger - gamepad2.left_trigger) * 5);
             }
         }
 
