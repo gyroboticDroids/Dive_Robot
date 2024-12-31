@@ -107,7 +107,7 @@ public class Outtake {
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_COLLECT);
+                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 1)
