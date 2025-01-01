@@ -300,7 +300,7 @@ public class Outtake {
             hardware.outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
         else {
-            motorPower = Math.min(Math.max(motorPower, -1), 1);
+            motorPower = Math.min(Math.max(motorPower, -0.8), 0.8);
 
             hardware.outtakeSlide1.setPower(motorPower);
             hardware.outtakeSlide2.setPower(motorPower);
