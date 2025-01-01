@@ -153,8 +153,8 @@ public class MasterAutonomousOliver extends OpMode {
     public void loop()
     {
         follower.update();
-        intake.Update();
-        outtake.Update();
+        intake.update();
+        outtake.update();
         AutoPathUpdate();
 
         telemetry.addData("current state", pathState);
@@ -223,9 +223,9 @@ public class MasterAutonomousOliver extends OpMode {
                 follower.followPath(toLeftOfBar, true);
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
 
-                if(!follower.isBusy() && !outtake.IsBusy())
+                if(!follower.isBusy() && !outtake.isBusy())
                 {
-                    if(lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) && !outtake.IsBusy())
+                    if(lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) && !outtake.isBusy())
                     {
                         outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
                     }
@@ -237,9 +237,9 @@ public class MasterAutonomousOliver extends OpMode {
                 follower.followPath(toRightOfBar, true);
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
 
-                if(!follower.isBusy() && !outtake.IsBusy())
+                if(!follower.isBusy() && !outtake.isBusy())
                 {
-                    if(lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) && !outtake.IsBusy())
+                    if(lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) && !outtake.isBusy())
                     {
                         outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
                     }
@@ -248,7 +248,7 @@ public class MasterAutonomousOliver extends OpMode {
                 break;
 
             case 31:
-                if(lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN) && !outtake.IsBusy())
+                if(lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN) && !outtake.isBusy())
                 {
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
                     follower.followPath(toRedSampleIntake1, true);
@@ -257,11 +257,11 @@ public class MasterAutonomousOliver extends OpMode {
                 break;
 
             case 32:
-                if(lastOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && !outtake.IsBusy())
+                if(lastOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && !outtake.isBusy())
                 {
                     intake.setState(IntakeConstants.INTAKE_SUB_READY);
 
-                    if(lastIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) && !intake.IsBusy())
+                    if(lastIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) && !intake.isBusy())
                     {
                         intake.setState(IntakeConstants.INTAKE);
                     }
@@ -270,7 +270,7 @@ public class MasterAutonomousOliver extends OpMode {
                 break;
 
             case 33:
-                if(lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN) && !outtake.IsBusy())
+                if(lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN) && !outtake.isBusy())
                 {
 
                 }

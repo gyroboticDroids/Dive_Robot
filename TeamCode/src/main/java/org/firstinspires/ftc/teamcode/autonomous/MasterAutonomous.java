@@ -146,9 +146,9 @@ public class MasterAutonomous extends OpMode {
     public void loop()
     {
         follower.update();
-        intake.Update();
-        outtake.Update();
-        AutoPathUpdate();
+        intake.update();
+        outtake.update();
+        autoPathUpdate();
 
         telemetry.addData("current state", pathState);
         telemetry.update();
@@ -175,7 +175,7 @@ public class MasterAutonomous extends OpMode {
         toBar.setLinearHeadingInterpolation(basketSample3.getHeading(), touchBar.getHeading());
     }
 
-    private void AutoPathUpdate()
+    private void autoPathUpdate()
     {
         switch (pathState)
         {
@@ -192,7 +192,7 @@ public class MasterAutonomous extends OpMode {
                 follower.followPath(toLeftOfBar, true);
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
 
-                if(!follower.isBusy() && !outtake.IsBusy())
+                if(!follower.isBusy() && !outtake.isBusy())
                 {
                     outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
                     setPathState(10);
@@ -203,7 +203,7 @@ public class MasterAutonomous extends OpMode {
                 follower.followPath(toBasket1, true);
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
 
-                if(!follower.isBusy() && !outtake.IsBusy())
+                if(!follower.isBusy() && !outtake.isBusy())
                 {
                     outtake.setState(OuttakeConstants.SCORE_SAMPLE);
                     setPathState(6);
@@ -211,7 +211,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 10:
-                if(!follower.isBusy() && !outtake.IsBusy())
+                if(!follower.isBusy() && !outtake.isBusy())
                 {
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
 
@@ -223,7 +223,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 11:
-                if(!follower.isBusy() && !outtake.IsBusy())
+                if(!follower.isBusy() && !outtake.isBusy())
                 {
                     if(lastIntakeState.equals(IntakeConstants.INTAKE_SUB_READY)) {
                         intake.setState(IntakeConstants.INTAKE);
@@ -236,7 +236,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 12:
-                if(!intake.IsBusy())
+                if(!intake.isBusy())
                 {
                     if(lastIntakeState.equals(IntakeConstants.TRANSFER)) {
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
@@ -248,7 +248,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 13:
-                if(!outtake.IsBusy())
+                if(!outtake.isBusy())
                 {
                     if(lastOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
                         outtake.setState(OuttakeConstants.SCORE_SAMPLE);
@@ -260,7 +260,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 14:
-                if(!outtake.IsBusy())
+                if(!outtake.isBusy())
                 {
                     follower.followPath(toBasket2);
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
@@ -270,7 +270,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 15:
-                if(!follower.isBusy() && !outtake.IsBusy() && !intake.IsBusy())
+                if(!follower.isBusy() && !outtake.isBusy() && !intake.isBusy())
                 {
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
@@ -279,7 +279,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 16:
-                if(!intake.IsBusy())
+                if(!intake.isBusy())
                 {
                     if (lastIntakeState.equals(IntakeConstants.TRANSFER)) {
                         outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
@@ -291,7 +291,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 17:
-                if(!outtake.IsBusy())
+                if(!outtake.isBusy())
                 {
                     if(lastOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
                         outtake.setState(OuttakeConstants.SCORE_SAMPLE);
@@ -303,7 +303,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 18:
-                if(!outtake.IsBusy())
+                if(!outtake.isBusy())
                 {
                     follower.followPath(toSample3);
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
@@ -313,7 +313,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 19:
-                if(!intake.IsBusy() && !follower.isBusy())
+                if(!intake.isBusy() && !follower.isBusy())
                 {
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
@@ -322,7 +322,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 20:
-                if(!intake.IsBusy())
+                if(!intake.isBusy())
                 {
                     if(lastIntakeState.equals(IntakeConstants.TRANSFER)){
                         outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
@@ -335,7 +335,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 21:
-                if(!outtake.IsBusy() && !follower.isBusy())
+                if(!outtake.isBusy() && !follower.isBusy())
                 {
                     if(lastOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)){
                         outtake.setState(OuttakeConstants.SCORE_SAMPLE);
@@ -347,7 +347,7 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 22:
-                if(!outtake.IsBusy())
+                if(!outtake.isBusy())
                 {
                     follower.followPath(toBar);
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
@@ -369,6 +369,6 @@ public class MasterAutonomous extends OpMode {
     public void setPathState(int state) {
         pathState = state;
         pathTimer.resetTimer();
-        AutoPathUpdate();
+        autoPathUpdate();
     }
 }

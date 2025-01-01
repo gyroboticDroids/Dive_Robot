@@ -33,7 +33,7 @@ public class Outtake {
 
     private double lastVertConstant = 0;
 
-    public void Update()
+    public void update()
     {
         switch (state)
         {
@@ -244,7 +244,7 @@ public class Outtake {
                 }
                 break;
         }
-        VertSlidesUpdate();
+        vertSlidesUpdate();
         onsSetState = false;
     }
 
@@ -271,14 +271,14 @@ public class Outtake {
         this.vertPosition = vertPosition;
     }
 
-    public void VertSlidesManual(double position)
+    public void vertSlidesManual(double position)
     {
         vertPosition += position * 10;
     }
 
     double motorPower;
 
-    public void VertSlidesUpdate()
+    public void vertSlidesUpdate()
     {
         vertPosition = MathFunctions.clamp(vertPosition, 0, OuttakeConstants.SLIDES_MAX_LIMIT);
 
@@ -301,17 +301,17 @@ public class Outtake {
         }
     }
 
-    public boolean IsDriveBack()
+    public boolean isDriveBack()
     {
         return driveBack;
     }
 
-    public boolean IsBusy()
+    public boolean isBusy()
     {
         return isBusy;
     }
 
-    public int GetVertSlidePos()
+    public int getVertSlidePos()
     {
         return hardware.outtakeSlide1.getCurrentPosition();
     }

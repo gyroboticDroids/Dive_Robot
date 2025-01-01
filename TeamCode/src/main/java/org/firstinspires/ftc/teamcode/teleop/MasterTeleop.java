@@ -45,10 +45,10 @@ public class MasterTeleop extends OpMode {
     @Override
     public void loop()
     {
-        drive.Update();
-        OuttakeUpdate();
-        IntakeUpdate();
-        HangUpdate();
+        drive.update();
+        outtakeUpdate();
+        intakeUpdate();
+        hangUpdate();
 
         updateTelemetry();
     }
@@ -63,21 +63,21 @@ public class MasterTeleop extends OpMode {
 
         telemetry.addLine("-------------------Outtake-------------------");
         telemetry.addData("outtake state", outtake.getState());
-        telemetry.addData("outtake busy", outtake.IsBusy());
+        telemetry.addData("outtake busy", outtake.isBusy());
         telemetry.addData("vert spt pos", outtake.getVertPosition());
-        telemetry.addData("vert fdbk pos", outtake.GetVertSlidePos());
-        telemetry.addData("drive back", outtake.IsDriveBack());
+        telemetry.addData("vert fdbk pos", outtake.getVertSlidePos());
+        telemetry.addData("drive back", outtake.isDriveBack());
 
         telemetry.addLine("-------------------Intake--------------------");
         telemetry.addData("intake state", intake.getState());
-        telemetry.addData("intake busy", intake.IsBusy());
+        telemetry.addData("intake busy", intake.isBusy());
         telemetry.addData("horizontal spt pos", intake.getHorizontalPosition());
-        telemetry.addData("horizontal fdbk pos", intake.GetHorizontalSlidePos());
+        telemetry.addData("horizontal fdbk pos", intake.getHorizontalSlidePos());
         telemetry.addData("horizontal power", intake.getMotorPower());
 
         telemetry.addLine("-------------------Hang----------------------");
         telemetry.addData("hang state", hang.getState());
-        telemetry.addData("hang busy", hang.IsBusy());
+        telemetry.addData("hang busy", hang.isBusy());
         telemetry.addData("hanging", isHanging);
 
         telemetry.update();
@@ -87,14 +87,14 @@ public class MasterTeleop extends OpMode {
     private boolean prevGp2Y = false;
     private boolean prevGp2X = false;
 
-    void OuttakeUpdate()
+    void outtakeUpdate()
     {
         if(isHanging)
         {
             return; //Doesn't interrupt hanging
         }
 
-        if(!outtake.IsBusy())
+        if(!outtake.isBusy())
         {
             if (gamepad2.start && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                 outtake.setState(OuttakeConstants.START);
@@ -119,7 +119,7 @@ public class MasterTeleop extends OpMode {
             } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)
                     || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)
                     || prevOuttakeState.equals(OuttakeConstants.START)) {
-                outtake.VertSlidesManual(-gamepad2.left_stick_y);
+                outtake.vertSlidesManual(-gamepad2.left_stick_y);
             }
         }
         else
@@ -135,9 +135,9 @@ public class MasterTeleop extends OpMode {
             }
         }
 
-        outtake.Update();
+        outtake.update();
 
-        drive.setDriveBack(outtake.IsDriveBack());
+        drive.setDriveBack(outtake.isDriveBack());
 
         prevOuttakeState = outtake.getState();
         prevGp2X = gamepad2.x;
@@ -146,14 +146,14 @@ public class MasterTeleop extends OpMode {
 
     private String prevIntakeState = IntakeConstants.START;
 
-    void IntakeUpdate()
+    void intakeUpdate()
     {
         if (isHanging)
         {
             return;
         }
 
-        if(!intake.IsBusy())
+        if(!intake.isBusy())
         {
             if (gamepad2.start && (prevIntakeState.equals(IntakeConstants.TRANSFER) || prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY))) {
                 intake.setState(IntakeConstants.START);
@@ -178,21 +178,21 @@ public class MasterTeleop extends OpMode {
                 intake.setState(IntakeConstants.TRANSFER);
             } else if (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
                     || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB)) {
-                intake.HorizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
+                intake.horizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
                 MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 10);
             }
         }
 
-        intake.Update();
+        intake.update();
 
         prevIntakeState = intake.getState();
     }
 
-    void HangUpdate()
+    void hangUpdate()
     {
         isHanging = !hang.getState().equals(HangConstants.START);
 
-        if(!hang.IsBusy())
+        if(!hang.isBusy())
         {
             if (gamepad1.dpad_down) {
                 hang.setState(HangConstants.START);
@@ -205,6 +205,6 @@ public class MasterTeleop extends OpMode {
             //}
         }
 
-        hang.Update();
+        hang.update();
     }
 }
