@@ -106,15 +106,11 @@ public class MasterTeleop extends OpMode {
             } else if (gamepad2.b && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE)
                     || prevOuttakeState.equals(OuttakeConstants.START) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
-            } else if (gamepad2.y && !prevGp2Y && (prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
+            } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY)) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
-            } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)) {
-                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_LOW);
-            } else if (gamepad2.y && !prevGp2Y && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
+            } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE)) {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
-            } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
-                outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_LOW);
-            } else if (gamepad2.a && (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
+            }  else if (gamepad2.a && (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE);
             } else if (gamepad2.a && (prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
@@ -124,6 +120,18 @@ public class MasterTeleop extends OpMode {
                     || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)
                     || prevOuttakeState.equals(OuttakeConstants.START)) {
                 outtake.VertSlidesManual(-gamepad2.left_stick_y);
+            }
+        }
+        else
+        {
+            if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)) {
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_LOW);
+            } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)) {
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+            } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_LOW);
+            } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)) {
+                outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
             }
         }
 
