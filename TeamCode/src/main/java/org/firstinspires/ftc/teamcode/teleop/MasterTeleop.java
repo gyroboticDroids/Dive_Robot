@@ -12,7 +12,6 @@ import java.util.Objects;
 
 @TeleOp(name = "Master Tele-op", group = "Tele-op")
 public class MasterTeleop extends OpMode {
-    private static final int RUMBLE = 1000;
 
     Drive drive;
     Outtake outtake;
@@ -22,7 +21,6 @@ public class MasterTeleop extends OpMode {
     Timer teleopTimer;
 
     private boolean isHanging = false;
-    private boolean isRumble = false;
 
     @Override
     public void init()
@@ -48,14 +46,6 @@ public class MasterTeleop extends OpMode {
     @Override
     public void loop()
     {
-        if(teleopTimer.getElapsedTimeSeconds() >= 90 && !isRumble)
-        {
-            gamepad1.rumble(RUMBLE);
-            gamepad2.rumble(RUMBLE);
-
-            isRumble = true;
-        }
-
         drive.Update();
         OuttakeUpdate();
         IntakeUpdate();
@@ -109,7 +99,8 @@ public class MasterTeleop extends OpMode {
         {
             if (gamepad2.start && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                 outtake.setState(OuttakeConstants.START);
-            } else if (gamepad2.x && !prevGp2X && (prevOuttakeState.equals(OuttakeConstants.START) || prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY))) {
+            } else if (gamepad2.x && !prevGp2X && !(prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)
+                    || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE))) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
             } else if (gamepad2.x && !prevGp2X && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
@@ -150,6 +141,8 @@ public class MasterTeleop extends OpMode {
 
     void IntakeUpdate()
     {
+        intake.HorizontalSlidesUpdate();
+
         if (isHanging)
         {
             return;
@@ -162,7 +155,7 @@ public class MasterTeleop extends OpMode {
             } else if (gamepad2.left_bumper && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
                     || prevIntakeState.equals(IntakeConstants.INTAKE))) {
                 intake.setState(IntakeConstants.TRANSFER);
-            } else if ((gamepad2.right_trigger > 0.1 || gamepad2.right_bumper) && (prevIntakeState.equals(IntakeConstants.TRANSFER)
+            } else if (gamepad2.right_bumper && (prevIntakeState.equals(IntakeConstants.TRANSFER)
                     || prevIntakeState.equals(IntakeConstants.START) || prevIntakeState.equals(IntakeConstants.INTAKE))) {
                 intake.setState(IntakeConstants.INTAKE_SUB_READY);
             } else if (gamepad2.dpad_down && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT))) {

@@ -72,7 +72,7 @@ public class Hang {
 
                 if(onsSetState)
                 {
-                    outtake.setVertPosition(OuttakeConstants.SLIDES_START);
+                    outtake.setVertPosition(OuttakeConstants.SLIDES_START + 1);
                 }
                 outtake.VertSlidesUpdate();
                 break;

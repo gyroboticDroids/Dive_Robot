@@ -146,11 +146,15 @@ public class Outtake {
                 {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SPECIMEN);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SPECIMEN);
+
+                    driveBack = true;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 1)
                 {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_SCORE);
+
+                    driveBack = false;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 1.5 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
@@ -172,11 +176,15 @@ public class Outtake {
                 {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SPECIMEN);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SPECIMEN);
+
+                    driveBack = true;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 1)
                 {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_SCORE);
+
+                    driveBack = false;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 1.5 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
@@ -284,7 +292,7 @@ public class Outtake {
 
         motorPower = error * OuttakeConstants.SLIDES_P_GAIN;
 
-        if(hardware.outtakeSlide1.getCurrentPosition() < OuttakeConstants.SLIDES_ACCURACY && vertPosition < 5) {
+        if(hardware.outtakeSlide1.getCurrentPosition() < OuttakeConstants.SLIDES_ACCURACY && vertPosition == 0) {
             hardware.outtakeSlide1.setPower(0);
             hardware.outtakeSlide2.setPower(0);
 
@@ -292,7 +300,7 @@ public class Outtake {
             hardware.outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
         else {
-            motorPower = Math.min(Math.max(motorPower, -0.6), 0.6);
+            motorPower = Math.min(Math.max(motorPower, -1), 1);
 
             hardware.outtakeSlide1.setPower(motorPower);
             hardware.outtakeSlide2.setPower(motorPower);

@@ -20,7 +20,7 @@ public class OuttakeConstants {
     public static double EXTENSION_SPECIMEN_SCORE = 0.6367;//
     public static double EXTENSION_SAMPLE_SCORE = 0.6367;
 
-    public static double PIVOT_TRANSFER = 0.410;//
+    public static double PIVOT_TRANSFER = 0.412;//
     public static double PIVOT_SPECIMEN = 0.445;//
     public static double PIVOT_OFF_WALL = 0.614;//
     public static double PIVOT_SAMPLE = 0.537;//
@@ -35,7 +35,7 @@ public class OuttakeConstants {
     public static double WRIST_RAISE = 0.464;//
 
     public static double CLAW_OPEN = 0.2544;//
-    public static double CLAW_CLOSED = 0.7950;//
+    public static double CLAW_CLOSED = 0.801;//
 
     //States
     public static final String START = "start";
