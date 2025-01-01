@@ -12,31 +12,38 @@ import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 @TeleOp(name = "Master Tele-op", group = "Tele-op")
 public class MasterTeleop extends OpMode {
 
+    //Defines classes
     Drive drive;
     Outtake outtake;
     Intake intake;
     Hang hang;
 
+    //Timer for automatic movements
     Timer teleopTimer;
 
+    //Keeps track of if the robot is about to hang
     private boolean isHanging = false;
 
     @Override
     public void init()
     {
+        //Sets up classes
         drive = new Drive(hardwareMap, gamepad1);
         outtake = new Outtake(hardwareMap);
         intake = new Intake(hardwareMap);
         hang = new Hang(hardwareMap);
 
+        //Sets up timer
         teleopTimer = new Timer();
     }
 
     @Override
     public void start()
     {
+        //Resets timer
         teleopTimer.resetTimer();
 
+        //Sets all states to the starting states
         outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
         intake.setState(IntakeConstants.TRANSFER);
         hang.setState(HangConstants.START);
@@ -45,18 +52,22 @@ public class MasterTeleop extends OpMode {
     @Override
     public void loop()
     {
+        //Updates all classes
         drive.update();
         outtakeUpdate();
         intakeUpdate();
         hangUpdate();
 
+        //Updates telemetry
         updateTelemetry();
     }
 
     private void updateTelemetry() {
+        //Time remaining in the match
         telemetry.addData("time remaining", 120 - teleopTimer.getElapsedTimeSeconds());
         telemetry.addLine();
 
+        //Telemetry
         telemetry.addLine("-------------------Drive---------------------");
         telemetry.addData("target heading", drive.targetHeading);
         telemetry.addData("current heading", Math.toDegrees(drive.botHeading));
@@ -80,22 +91,27 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("hang busy", hang.isBusy());
         telemetry.addData("hanging", isHanging);
 
+        //Updates telemetry
         telemetry.update();
     }
 
+    //Variables used in outtakeUpdate class
     private String prevOuttakeState = OuttakeConstants.START;
     private boolean prevGp2Y = false;
     private boolean prevGp2X = false;
 
     void outtakeUpdate()
     {
+        //Stops the outtake from interrupting hanging
         if(isHanging)
         {
-            return; //Doesn't interrupt hanging
+            return;
         }
 
+        //If outtake is busy then don't receive any inputs
         if(!outtake.isBusy())
         {
+            //All buttons and statements that change outtake states
             if (gamepad2.start && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                 outtake.setState(OuttakeConstants.START);
             } else if (gamepad2.x && !prevGp2X && !(prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)
@@ -119,11 +135,12 @@ public class MasterTeleop extends OpMode {
             } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)
                     || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)
                     || prevOuttakeState.equals(OuttakeConstants.START)) {
-                outtake.vertSlidesManual(-gamepad2.left_stick_y);
+                outtake.vertSlidesManual(-gamepad2.left_stick_y); //Manual control for vert slides
             }
         }
         else
         {
+            //Control for states that can run while the outtake is busy
             if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_LOW);
             } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)) {
@@ -135,26 +152,33 @@ public class MasterTeleop extends OpMode {
             }
         }
 
+        //Updates outtake
         outtake.update();
 
+        //Makes robot drive back if collecting specimens off wall or scoring samples
         drive.setDriveBack(outtake.isDriveBack());
 
+        //Previous states and button presses
         prevOuttakeState = outtake.getState();
         prevGp2X = gamepad2.x;
         prevGp2Y = gamepad2.y;
     }
 
+    //Variable used for intakeUpdate
     private String prevIntakeState = IntakeConstants.START;
 
     void intakeUpdate()
     {
+        //Stops the intake from interrupting hanging
         if (isHanging)
         {
             return;
         }
 
+        //If outtake is busy then don't receive any inputs
         if(!intake.isBusy())
         {
+            //All buttons and statements that change outtake states
             if (gamepad2.start && (prevIntakeState.equals(IntakeConstants.TRANSFER) || prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY))) {
                 intake.setState(IntakeConstants.START);
             } else if (gamepad2.back && prevIntakeState.equals(IntakeConstants.TRANSFER)) {
@@ -179,21 +203,26 @@ public class MasterTeleop extends OpMode {
             } else if (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
                     || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB)) {
                 intake.horizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
-                MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 10);
+                MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 10); //Manual control for horizontal slides
             }
         }
 
+        //Updates intake
         intake.update();
 
+        //Previous intake state
         prevIntakeState = intake.getState();
     }
 
     void hangUpdate()
     {
+        //Sets if the robot is hanging
         isHanging = !hang.getState().equals(HangConstants.START);
 
+        //Doesn't change states if the hang is busy
         if(!hang.isBusy())
         {
+            //All buttons and statements that change hang states
             if (gamepad1.dpad_down) {
                 hang.setState(HangConstants.START);
             } else if (gamepad1.dpad_up && prevOuttakeState.equals(OuttakeConstants.START) && prevIntakeState.equals(IntakeConstants.START)) {
@@ -205,6 +234,7 @@ public class MasterTeleop extends OpMode {
             //}
         }
 
+        //Updates the hang
         hang.update();
     }
 }
