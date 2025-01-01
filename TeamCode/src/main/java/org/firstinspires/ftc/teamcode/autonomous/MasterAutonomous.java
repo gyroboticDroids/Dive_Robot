@@ -11,6 +11,7 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.teleop.Intake;
 import org.firstinspires.ftc.teamcode.teleop.Outtake;
@@ -34,6 +35,7 @@ public class MasterAutonomous extends OpMode {
 
     private String lastOuttakeState;
     private String lastIntakeState;
+    private int lastState;
 
     //Poses
     private Pose start;
@@ -192,14 +194,167 @@ public class MasterAutonomous extends OpMode {
 
                 if(!follower.isBusy() && !outtake.IsBusy())
                 {
-                    if(lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) && !outtake.IsBusy())
-                    {
-                        outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
-                    }
+                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
+                    setPathState(10);
                 }
-                setPathState(2);
                 break;
 
+            case 5:
+                follower.followPath(toBasket1, true);
+                outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+
+                if(!follower.isBusy() && !outtake.IsBusy())
+                {
+                    outtake.setState(OuttakeConstants.SCORE_SAMPLE);
+                    setPathState(6);
+                }
+                break;
+
+            case 10:
+                if(!follower.isBusy() && !outtake.IsBusy())
+                {
+                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+
+                    if(lastState == 1) {
+                        follower.followPath(toBasket1, true);
+                    }
+                    setPathState(11);
+                }
+                break;
+
+            case 11:
+                if(!follower.isBusy() && !outtake.IsBusy())
+                {
+                    if(lastIntakeState.equals(IntakeConstants.INTAKE_SUB_READY)) {
+                        intake.setState(IntakeConstants.INTAKE);
+                        intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
+                        setPathState(12);
+                    }
+
+                    intake.setState(IntakeConstants.INTAKE_SUB_READY);
+                }
+                break;
+
+            case 12:
+                if(!intake.IsBusy())
+                {
+                    if(lastIntakeState.equals(IntakeConstants.TRANSFER)) {
+                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+                    setPathState(13);
+                    }
+
+                    intake.setState(IntakeConstants.TRANSFER);
+                }
+                break;
+
+            case 13:
+                if(!outtake.IsBusy())
+                {
+                    if(lastOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                        outtake.setState(OuttakeConstants.SCORE_SAMPLE);
+                        setPathState(14);
+                    }
+
+                    outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                }
+                break;
+
+            case 14:
+                if(!outtake.IsBusy())
+                {
+                    follower.followPath(toBasket2);
+                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+                    intake.setState(IntakeConstants.INTAKE_SUB_READY);
+                    setPathState(15);
+                }
+                break;
+
+            case 15:
+                if(!follower.isBusy() && !outtake.IsBusy() && !intake.IsBusy())
+                {
+                    intake.setState(IntakeConstants.INTAKE);
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
+                    setPathState(16);
+                }
+                break;
+
+            case 16:
+                if(!intake.IsBusy())
+                {
+                    if (lastIntakeState.equals(IntakeConstants.TRANSFER)) {
+                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+                        setPathState(17);
+                    }
+
+                    intake.setState(IntakeConstants.TRANSFER);
+                }
+                break;
+
+            case 17:
+                if(!outtake.IsBusy())
+                {
+                    if(lastOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                        outtake.setState(OuttakeConstants.SCORE_SAMPLE);
+                        setPathState(18);
+                    }
+
+                    outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                }
+                break;
+
+            case 18:
+                if(!outtake.IsBusy())
+                {
+                    follower.followPath(toSample3);
+                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+                    intake.setState(IntakeConstants.INTAKE_SUB_READY);
+                    setPathState(19);
+                }
+                break;
+
+            case 19:
+                if(!intake.IsBusy() && !follower.isBusy())
+                {
+                    intake.setState(IntakeConstants.INTAKE);
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
+                    setPathState(20);
+                }
+                break;
+
+            case 20:
+                if(!intake.IsBusy())
+                {
+                    if(lastIntakeState.equals(IntakeConstants.TRANSFER)){
+                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+                        follower.followPath(toBasket3);
+                        setPathState(21);
+                    }
+
+                    intake.setState(IntakeConstants.TRANSFER);
+                }
+                break;
+
+            case 21:
+                if(!outtake.IsBusy() && !follower.isBusy())
+                {
+                    if(lastOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)){
+                        outtake.setState(OuttakeConstants.SCORE_SAMPLE);
+                        setPathState(22);
+                    }
+
+                    outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                }
+                break;
+
+            case 22:
+                if(!outtake.IsBusy())
+                {
+                    follower.followPath(toBar);
+                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+
+                    setPathState(100);
+                }
+                break;
 
             case 100:
                 telemetry.addLine("Done!");
@@ -208,6 +363,7 @@ public class MasterAutonomous extends OpMode {
 
         lastOuttakeState = outtake.getState();
         lastIntakeState = intake.getState();
+        lastState = pathState;
     }
 
     public void setPathState(int state) {
