@@ -41,11 +41,11 @@ public class Hang {
                 break;
 
             case HangConstants.HANG_READY:
-                if(onsSetState)
-                {
-                    outtake.setVertPosition(OuttakeConstants.SLIDES_HANG);
-                }
-                outtake.VertSlidesUpdate();
+                //if(onsSetState)
+                //{
+                //    outtake.setVertPosition(OuttakeConstants.SLIDES_HANG);
+                //}
+                //outtake.VertSlidesUpdate();
 
                 hardware.hangRight.setPosition(HangConstants.RIGHT_UP);
                 hardware.hangLeft.setPosition(HangConstants.LEFT_UP);
@@ -60,7 +60,7 @@ public class Hang {
                 hardware.hangRight.setPosition(HangConstants.HANGING_RIGHT);
                 hardware.hangLeft.setPosition(HangConstants.HANGING_LEFT);
 
-                if(hangTimer.getElapsedTimeSeconds() > 5)
+                if(hangTimer.getElapsedTimeSeconds() > 2)
                 {
                     isBusy = false;
                 }

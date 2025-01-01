@@ -7,11 +7,11 @@ public class OuttakeConstants {
     public static int SLIDES_SPECIMEN_COLLECT = 0;//
     public static int SLIDES_SPECIMEN_LOW_SCORING = 0;//
     public static int SLIDES_SPECIMEN_HIGH_SCORING = 1031;//
-    public static int SLIDES_SPECIMEN_INCREASE = 576;//
+    public static int SLIDES_SPECIMEN_INCREASE = 600;//
     public static int SLIDES_START = 0;//
     public static int SLIDES_HANG = 2650;//
     public static int SLIDES_MAX_LIMIT = 2650;//
-    public static double SLIDES_P_GAIN = 0.015;
+    public static double SLIDES_P_GAIN = 0.01;
     public static double SLIDES_ACCURACY = 50;//
 
     public static double EXTENSION_START = 0.6367;//
@@ -34,7 +34,7 @@ public class OuttakeConstants {
     public static double WRIST_START = 0.5556;//
     public static double WRIST_RAISE = 0.464;//
 
-    public static double CLAW_OPEN = 0.2544;//
+    public static double CLAW_OPEN = 0.270;//
     public static double CLAW_CLOSED = 0.801;//
 
     //States

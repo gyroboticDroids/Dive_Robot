@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Hardware;
@@ -27,8 +28,6 @@ public class Intake {
     }
 
     public void Update() {
-        HorizontalSlidesUpdate();
-
         switch (state) {
             case IntakeConstants.START:
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_START);
@@ -49,8 +48,23 @@ public class Intake {
                 }
                 break;
 
+            case IntakeConstants.RESET_POS:
+                hardware.intakeSlide.setPower(-0.4);
+
+                if(actionTimer.getElapsedTimeSeconds() > 1)
+                {
+                    hardware.intakeSlide.setPower(0);
+                }
+                if(actionTimer.getElapsedTimeSeconds() > 1.5)
+                {
+                    hardware.intakeSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    hardware.intakeSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                    isBusy = false;
+                }
+                break;
+
             case IntakeConstants.INTAKE_SUB_READY:
-                if (onsSetState)
+                if (onsSetState && !(horizontalPosition > IntakeConstants.SLIDES_OUT - 10))
                 {
                     horizontalPosition = IntakeConstants.SLIDES_OUT;
                 }
@@ -109,8 +123,22 @@ public class Intake {
                     isBusy = false;
                 }
                 break;
-        }
 
+            case IntakeConstants.CLEAR_SUB:
+                IntakeSpeed(IntakeConstants.INTAKE_REVERSE);
+                hardware.intakePivot.setPosition(IntakeConstants.PIVOT_DOWN);
+
+                horizontalPosition = MathFunctions.clamp(horizontalPosition, IntakeConstants.SLIDES_OUT, IntakeConstants.SLIDES_MAX);
+
+                if((actionTimer.getElapsedTimeSeconds() > 0.5))
+                {
+                    isBusy = false;
+                }
+                break;
+        }
+        if(!state.equals(IntakeConstants.RESET_POS)) {
+            HorizontalSlidesUpdate();
+        }
         onsSetState = false;
     }
 

@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
+import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 @TeleOp(name = "Master Tele-op", group = "Tele-op")
@@ -36,8 +37,8 @@ public class MasterTeleop extends OpMode {
     {
         teleopTimer.resetTimer();
 
-        outtake.setState(OuttakeConstants.START);
-        intake.setState(IntakeConstants.START);
+        outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+        intake.setState(IntakeConstants.TRANSFER);
         hang.setState(HangConstants.START);
     }
 
@@ -103,7 +104,7 @@ public class MasterTeleop extends OpMode {
             } else if (gamepad2.x && !prevGp2X && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
             } else if (gamepad2.b && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE)
-                    || prevOuttakeState.equals(OuttakeConstants.START))) {
+                    || prevOuttakeState.equals(OuttakeConstants.START) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
             } else if (gamepad2.y && !prevGp2Y && (prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
@@ -139,8 +140,6 @@ public class MasterTeleop extends OpMode {
 
     void IntakeUpdate()
     {
-        intake.HorizontalSlidesUpdate();
-
         if (isHanging)
         {
             return;
@@ -148,21 +147,31 @@ public class MasterTeleop extends OpMode {
 
         if(!intake.IsBusy())
         {
-            if (gamepad2.back && prevIntakeState.equals(IntakeConstants.TRANSFER)) {
+            if (gamepad2.start && (prevIntakeState.equals(IntakeConstants.TRANSFER) || prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY))) {
                 intake.setState(IntakeConstants.START);
-            } else if (gamepad2.left_bumper && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
-                    || prevIntakeState.equals(IntakeConstants.INTAKE))) {
+            } else if (gamepad2.back && prevIntakeState.equals(IntakeConstants.TRANSFER)) {
+                    intake.setState(IntakeConstants.RESET_POS);
+            } else if (gamepad2.left_bumper && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
+                    || prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
                 intake.setState(IntakeConstants.TRANSFER);
-            } else if (gamepad2.right_bumper && (prevIntakeState.equals(IntakeConstants.TRANSFER)
-                    || prevIntakeState.equals(IntakeConstants.START) || prevIntakeState.equals(IntakeConstants.INTAKE))) {
+            } else if (gamepad2.right_bumper || gamepad1.right_bumper && (prevIntakeState.equals(IntakeConstants.TRANSFER)
+                    || prevIntakeState.equals(IntakeConstants.START) || prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
                 intake.setState(IntakeConstants.INTAKE_SUB_READY);
-            } else if (gamepad2.dpad_down && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT))) {
+            } else if (gamepad2.dpad_down && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT)
+                    || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
                 intake.setState(IntakeConstants.INTAKE);
-            } else if (gamepad2.dpad_up && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE))) {
+            } else if (gamepad2.dpad_up && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
+                    || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
                 intake.setState(IntakeConstants.REJECT);
+            } else if ((gamepad2.dpad_right || gamepad2.dpad_left) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
+                    || prevIntakeState.equals(IntakeConstants.REJECT))) {
+                intake.setState(IntakeConstants.CLEAR_SUB);
+            } else if (prevIntakeState.equals(IntakeConstants.RESET_POS)) {
+                intake.setState(IntakeConstants.TRANSFER);
             } else if (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
-                    || prevIntakeState.equals(IntakeConstants.REJECT)) {
-                intake.HorizontalSlidesManual((gamepad2.right_trigger - gamepad2.left_trigger) * 5);
+                    || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB)) {
+                intake.HorizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
+                MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 10);
             }
         }
 
@@ -183,9 +192,9 @@ public class MasterTeleop extends OpMode {
                 hang.setState(HangConstants.HANG_READY);
             } else if (gamepad1.start && hang.getState().equals(HangConstants.HANG_READY)) {
                 hang.setState(HangConstants.LVL_2);
-            } else if (hang.getState().equals(HangConstants.LVL_2)) {
-                hang.setState(HangConstants.LVL_3);
-            }
+            } //else if (hang.getState().equals(HangConstants.LVL_2)) {
+            //    hang.setState(HangConstants.LVL_3);
+            //}
         }
 
         hang.Update();

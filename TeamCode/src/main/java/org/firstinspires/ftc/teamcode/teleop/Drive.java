@@ -56,7 +56,7 @@ public class Drive {
 
         y = gpad.left_stick_y * multiplier;
         x = -gpad.left_stick_x * multiplier;
-        rx = (gpad.left_trigger - gpad.right_trigger) * multiplier;
+        rx = (gpad.left_trigger - gpad.right_trigger) * 2 * multiplier;
         resetHeading = gpad.back;
 
         targetHeading = (gpad.y)? 0:(gpad.x)? 90: (gpad.a)? -45: (gpad.b)? -90:targetHeading;
