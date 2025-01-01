@@ -26,7 +26,7 @@ public class Hang {
         hangTimer = new Timer();
     }
 
-    public void Update()
+    public void update()
     {
         switch (state)
         {
@@ -74,7 +74,7 @@ public class Hang {
                 {
                     outtake.setVertPosition(OuttakeConstants.SLIDES_START + 1);
                 }
-                outtake.VertSlidesUpdate();
+                outtake.vertSlidesUpdate();
                 break;
         }
 
@@ -93,7 +93,7 @@ public class Hang {
         //Update();
     }
 
-    public boolean IsBusy()
+    public boolean isBusy()
     {
         return isBusy;
     }

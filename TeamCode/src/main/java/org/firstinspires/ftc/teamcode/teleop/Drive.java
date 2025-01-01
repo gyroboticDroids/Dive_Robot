@@ -30,7 +30,7 @@ public class Drive {
         gamepad = gamepad1;
     }
 
-    public void Update()
+    public void update()
     {
         hardware.pinpointDriver.update();
 
@@ -46,11 +46,11 @@ public class Drive {
 
         botHeading = hardware.pinpointDriver.getHeading() - turnOffset;
 
-        Input(gamepad);
-        Movement();
+        input(gamepad);
+        movement();
     }
 
-    private void Input(Gamepad gpad)
+    private void input(Gamepad gpad)
     {
         double multiplier = (Math.abs(gpad.right_stick_x) + Math.abs(gpad.right_stick_y) > 0)? DriveConstants.DRIVE_SLOW_SPEED_MULTIPLIER : DriveConstants.DRIVE_SPEED_MULTIPLIER;
 
@@ -64,7 +64,7 @@ public class Drive {
         targetHeading += rx;
     }
 
-    private void Movement()
+    private void movement()
     {
         if (resetHeading)
         {
@@ -78,7 +78,7 @@ public class Drive {
 
         rotX = rotX * 1.1;  // Counteract imperfect strafing
 
-        AutoTurn();
+        autoTurn();
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
@@ -95,7 +95,7 @@ public class Drive {
         hardware.rearRight.setPower(backRightPower);
     }
 
-    public void AutoTurn()
+    public void autoTurn()
     {
         double error = targetHeading - Math.toDegrees(botHeading);
 

@@ -27,12 +27,12 @@ public class Intake {
         setState(IntakeConstants.START);
     }
 
-    public void Update() {
+    public void update() {
         switch (state) {
             case IntakeConstants.START:
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_START);
 
-                IntakeSpeed(IntakeConstants.INTAKE_STOP);
+                intakeSpeed(IntakeConstants.INTAKE_STOP);
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
@@ -72,7 +72,7 @@ public class Intake {
                 if(horizontalPosition > IntakeConstants.SLIDES_OUT - 10)
                 {
                     hardware.intakePivot.setPosition(IntakeConstants.PIVOT_INTERMEDIATE);
-                    IntakeSpeed(IntakeConstants.INTAKE_FORWARD);
+                    intakeSpeed(IntakeConstants.INTAKE_FORWARD);
 
                     horizontalPosition = MathFunctions.clamp(horizontalPosition, IntakeConstants.SLIDES_OUT, IntakeConstants.SLIDES_MAX);
                 }
@@ -84,7 +84,7 @@ public class Intake {
                 break;
 
             case IntakeConstants.INTAKE:
-                IntakeSpeed(IntakeConstants.INTAKE_FORWARD);
+                intakeSpeed(IntakeConstants.INTAKE_FORWARD);
 
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_DOWN);
 
@@ -97,7 +97,7 @@ public class Intake {
                 break;
 
             case IntakeConstants.TRANSFER:
-                IntakeSpeed(IntakeConstants.INTAKE_STOP);
+                intakeSpeed(IntakeConstants.INTAKE_STOP);
 
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
 
@@ -113,7 +113,7 @@ public class Intake {
                 break;
 
             case IntakeConstants.REJECT:
-                IntakeSpeed(IntakeConstants.INTAKE_REVERSE);
+                intakeSpeed(IntakeConstants.INTAKE_REVERSE);
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_INTERMEDIATE);
 
                 horizontalPosition = MathFunctions.clamp(horizontalPosition, IntakeConstants.SLIDES_OUT, IntakeConstants.SLIDES_MAX);
@@ -125,7 +125,7 @@ public class Intake {
                 break;
 
             case IntakeConstants.CLEAR_SUB:
-                IntakeSpeed(IntakeConstants.INTAKE_REVERSE);
+                intakeSpeed(IntakeConstants.INTAKE_REVERSE);
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_DOWN);
 
                 horizontalPosition = MathFunctions.clamp(horizontalPosition, IntakeConstants.SLIDES_OUT, IntakeConstants.SLIDES_MAX);
@@ -137,12 +137,12 @@ public class Intake {
                 break;
         }
         if(!state.equals(IntakeConstants.RESET_POS)) {
-            HorizontalSlidesUpdate();
+            horizontalSlidesUpdate();
         }
         onsSetState = false;
     }
 
-    public void IntakeSpeed(double speed)
+    public void intakeSpeed(double speed)
     {
         hardware.intakeRight.setPower(speed);
         hardware.intakeLeft.setPower(speed);
@@ -169,7 +169,7 @@ public class Intake {
         //Update();
     }
 
-    public void HorizontalSlidesManual(double position)
+    public void horizontalSlidesManual(double position)
     {
         horizontalPosition += position;
     }
@@ -180,7 +180,7 @@ public class Intake {
         return motorPower;
     }
 
-    public void HorizontalSlidesUpdate()
+    public void horizontalSlidesUpdate()
     {
         horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, IntakeConstants.SLIDES_MAX);
 
@@ -192,12 +192,12 @@ public class Intake {
         hardware.intakeSlide.setPower(motorPower);
     }
 
-    public int GetHorizontalSlidePos()
+    public int getHorizontalSlidePos()
     {
         return hardware.intakeSlide.getCurrentPosition();
     }
 
-    public boolean IsBusy()
+    public boolean isBusy()
     {
         return isBusy;
     }
