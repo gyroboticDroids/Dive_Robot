@@ -45,12 +45,12 @@ public class MasterAutonomousOliver extends OpMode {
     private final Pose basketSample3 = new Pose(7, -48, Math.toRadians(45));
     private final Pose touchBar = new Pose(72, -12, Math.toRadians(0));
     private final Pose specimenRight = new Pose(36, -11.25, 0);
-    private final Pose redSampleIntake1 = new Pose(24, -36, Math.toRadians(30));
-    private final Pose redSampleIntake2 = new Pose(24, -42, Math.toRadians(25));
-    private final Pose redSampleIntake3 = new Pose(24, -36, Math.toRadians(25));
-    private final Pose redSampleOuttake1 = new Pose(36, -42, Math.toRadians(135));
-    private final Pose redSampleOuttake2 = new Pose(36, -36, Math.toRadians(25));
-    private final Pose redSampleOuttake3 = new Pose(36, -36, Math.toRadians(25));
+    private final Pose pushingReady1 = new Pose(24, -24, 0);
+    private final Pose pushingReady2 = new Pose(48, -36, 0);
+    private final Pose pushingReady3 = new Pose(60, -48, 0);
+    private final Pose pushing1 = new Pose(12, -48, 0);
+    private final Pose pushing2 = new Pose(36, -36, 0);
+    private final Pose pushing3 = new Pose(36, -36, 0);
     private final Pose grabSpecimen = new Pose(0, -36, 0);
 
     //Paths
@@ -184,26 +184,26 @@ public class MasterAutonomousOliver extends OpMode {
         toRightOfBar = new Path(new BezierLine(new Point(start), new Point(specimenRight)));
         toRightOfBar.setLinearHeadingInterpolation(start.getHeading(), specimenRight.getHeading());
 
-        toRedSampleIntake1 = new Path(new BezierLine(new Point(specimenRight), new Point(redSampleIntake1)));
-        toRedSampleIntake1.setLinearHeadingInterpolation(specimenRight.getHeading(), redSampleIntake1.getHeading());
+        toRedSampleIntake1 = new Path(new BezierLine(new Point(specimenRight), new Point(pushingReady1)));
+        toRedSampleIntake1.setLinearHeadingInterpolation(specimenRight.getHeading(), pushingReady1.getHeading());
 
-        toRedSampleIntake2 = new Path(new BezierLine(new Point(redSampleOuttake1), new Point(redSampleIntake2)));
-        toRedSampleIntake2.setLinearHeadingInterpolation(redSampleOuttake1.getHeading(), redSampleIntake2.getHeading());
+        toRedSampleIntake2 = new Path(new BezierLine(new Point(pushing1), new Point(pushingReady2)));
+        toRedSampleIntake2.setLinearHeadingInterpolation(pushing1.getHeading(), pushingReady2.getHeading());
 
-        toRedSampleIntake3 = new Path(new BezierLine(new Point(redSampleOuttake2), new Point(redSampleIntake3)));
-        toRedSampleIntake3.setLinearHeadingInterpolation(redSampleOuttake2.getHeading(), redSampleIntake3.getHeading());
+        toRedSampleIntake3 = new Path(new BezierLine(new Point(pushing2), new Point(pushingReady3)));
+        toRedSampleIntake3.setLinearHeadingInterpolation(pushing2.getHeading(), pushingReady3.getHeading());
 
-        toRedSampleOuttake1 = new Path(new BezierLine(new Point(redSampleIntake1), new Point(redSampleOuttake1)));
-        toRedSampleOuttake1.setLinearHeadingInterpolation(redSampleIntake1.getHeading(), redSampleOuttake1.getHeading());
+        toRedSampleOuttake1 = new Path(new BezierLine(new Point(pushingReady1), new Point(pushing1)));
+        toRedSampleOuttake1.setLinearHeadingInterpolation(pushingReady1.getHeading(), pushing1.getHeading());
 
-        toRedSampleOuttake2 = new Path(new BezierLine(new Point(redSampleIntake2), new Point(redSampleOuttake2)));
-        toRedSampleOuttake2.setLinearHeadingInterpolation(redSampleIntake2.getHeading(), redSampleOuttake2.getHeading());
+        toRedSampleOuttake2 = new Path(new BezierLine(new Point(pushingReady2), new Point(pushing2)));
+        toRedSampleOuttake2.setLinearHeadingInterpolation(pushingReady2.getHeading(), pushing2.getHeading());
 
-        toRedSampleOuttake3 = new Path(new BezierLine(new Point(redSampleIntake3), new Point(redSampleOuttake3)));
-        toRedSampleOuttake3.setLinearHeadingInterpolation(redSampleIntake3.getHeading(), redSampleOuttake3.getHeading());
+        toRedSampleOuttake3 = new Path(new BezierLine(new Point(pushingReady3), new Point(pushing3)));
+        toRedSampleOuttake3.setLinearHeadingInterpolation(pushingReady3.getHeading(), pushing3.getHeading());
 
-        toGrabSpecimen = new Path(new BezierLine(new Point(redSampleOuttake3), new Point(grabSpecimen)));
-        toGrabSpecimen.setLinearHeadingInterpolation(redSampleOuttake3.getHeading(), grabSpecimen.getHeading());
+        toGrabSpecimen = new Path(new BezierLine(new Point(pushing3), new Point(grabSpecimen)));
+        toGrabSpecimen.setLinearHeadingInterpolation(pushing3.getHeading(), grabSpecimen.getHeading());
     }
 
     private void AutoPathUpdate()
