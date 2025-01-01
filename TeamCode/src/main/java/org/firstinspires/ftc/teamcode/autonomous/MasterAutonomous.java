@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
+import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.teamcode.pedroPathing.localization.Pose;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierCurve;
@@ -29,8 +29,11 @@ public class MasterAutonomous extends OpMode {
     boolean scoreSpecimens = false;
     boolean scoreBoth = false;
 
-    int startPos = 0;
-    boolean isPressed;
+    private int startPos = 0;
+    private boolean isPressed;
+
+    private String lastOuttakeState;
+    private String lastIntakeState;
 
     //Poses
     private Pose start;
@@ -185,229 +188,26 @@ public class MasterAutonomous extends OpMode {
 
             case 1:
                 follower.followPath(toLeftOfBar, true);
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+
+                if(!follower.isBusy() && !outtake.IsBusy())
+                {
+                    if(lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) && !outtake.IsBusy())
+                    {
+                        outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
+                    }
+                }
                 setPathState(2);
                 break;
 
-            case 2:
-                outtake.setState("score specimen ready high");
-
-                if(!follower.isBusy())
-                {
-                    outtake.setState("score specimen");
-                    setPathState(3);
-                }
-                break;
-
-            case 3:
-                if(pathTimer.getElapsedTimeSeconds() > 1)
-                {
-                    setPathState(10);
-                }
-                break;
-
-            case 5:
-                follower.followPath(toBasket1, true);
-                setPathState(6);
-                break;
-
-            case 6:
-                outtake.setState("score sample ready high");
-
-                if(!follower.isBusy())
-                {
-                    outtake.setState("score sample");
-                    setPathState(11);
-                }
-                break;
-
-            case 10:
-                follower.followPath(toBasket1, true);
-                setPathState(11);
-                break;
-
-            case 11:
-                if(!follower.isBusy())
-                {
-                    intake.setState("intake sub ready");
-                    setPathState(12);
-                }
-                break;
-
-            case 12:
-                if(pathTimer.getElapsedTimeSeconds() > 1)
-                {
-                    intake.setState("intake");
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
-                    setPathState(13);
-                }
-                break;
-
-            case 13:
-                if(intake.GetHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 10)
-                {
-                    intake.setState("transfer");
-                    setPathState(14);
-                }
-                break;
-
-            case 14:
-                if(intake.GetHorizontalSlidePos() < IntakeConstants.SLIDES_TRANSFER + 10)
-                {
-                    follower.followPath(toBasket2, true);
-                    outtake.setState("transfer intake");
-                    setPathState(15);
-                }
-                break;
-
-            case 15:
-                if(!follower.isBusy())
-                {
-                    outtake.setState("score sample ready high");
-                    intake.setState("intake sub ready");
-                    setPathState(16);
-                }
-                break;
-
-            case 16:
-                if(pathTimer.getElapsedTimeSeconds() > 2)
-                {
-                    outtake.setState("score sample");
-                    intake.setState("intake");
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
-                    setPathState(17);
-                }
-                break;
-
-            case 17:
-                if(intake.GetHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 10)
-                {
-                    intake.setState("transfer");
-                    setPathState(18);
-                }
-                break;
-
-            case 18:
-                if(intake.GetHorizontalSlidePos() < IntakeConstants.SLIDES_TRANSFER + 10)
-                {
-                    outtake.setState("transfer intake");
-                    setPathState(19);
-                }
-                break;
-
-            case 19:
-                if(pathTimer.getElapsedTimeSeconds() > 1)
-                {
-                    outtake.setState("score sample ready high");
-                    setPathState(20);
-                }
-                break;
-
-            case 20:
-                if(pathTimer.getElapsedTimeSeconds() > 1)
-                {
-                    outtake.setState("score sample");
-                    setPathState(21);
-                }
-                break;
-
-            case 21:
-                if(pathTimer.getElapsedTimeSeconds() > 0.5)
-                {
-                    follower.followPath(toSample3, true);
-                    intake.setState("intake sub ready");
-                    setPathState(22);
-                }
-                break;
-
-            case 22:
-                if(!follower.isBusy())
-                {
-                    intake.setState("intake");
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
-                    setPathState(23);
-                }
-                break;
-
-            case 23:
-                if(intake.GetHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 10)
-                {
-                    intake.setState("transfer");
-                    follower.followPath(toBasket3, true);
-                    setPathState(24);
-                }
-                break;
-
-            case 24:
-                if(!follower.isBusy())
-                {
-                    outtake.setState("transfer intake");
-                    setPathState(25);
-                }
-                break;
-
-            case 25:
-                if(pathTimer.getElapsedTimeSeconds() > 1)
-                {
-                    outtake.setState("score sample ready high");
-                    setPathState(26);
-                }
-                break;
-
-            case 26:
-                if(pathTimer.getElapsedTimeSeconds() > 1)
-                {
-                    outtake.setState("score sample");
-                    setPathState(27);
-                }
-                break;
-
-            case 27:
-                if(pathTimer.getElapsedTimeSeconds() > 1)
-                {
-                    follower.followPath(toBar, true);
-                    setPathState(100);
-                }
-                break;
-
-            case 30:
-                follower.followPath(toBasket1, true);
-                setPathState(31);
-                break;
-
-            case 31:
-                outtake.setState("score sample ready high");
-                setPathState(32);
-                break;
-
-            case 32:
-                outtake.setState("score sample");
-                setPathState(33);
-                break;
-
-            case 33:
-                follower.followPath(toBasket2, true);
-                outtake.setState("transfer intake");
-                setPathState(34);
-                break;
-
-            case 34:
-                follower.followPath(toBasket2, true);
-                outtake.setState("transfer intake");
-                setPathState(35);
-                break;
-
-            case 35:
-                if(!follower.isBusy())
-                {
-                    follower.followPath(toBar, true);
-                    setPathState(36);
-                }
-                break;
 
             case 100:
                 telemetry.addLine("Done!");
                 break;
         }
+
+        lastOuttakeState = outtake.getState();
+        lastIntakeState = intake.getState();
     }
 
     public void setPathState(int state) {
