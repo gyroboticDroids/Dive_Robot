@@ -11,7 +11,7 @@ public class Hang {
     private final Hardware hardware;
     private final Outtake outtake;
 
-    String state;
+    private String state;
 
     private boolean onsSetState = false;
     private boolean isBusy = false;
@@ -81,7 +81,11 @@ public class Hang {
         onsSetState = false;
     }
 
-    public void SetState(String s) {
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String s) {
         onsSetState = true;
         isBusy = true;
         hangTimer.resetTimer();

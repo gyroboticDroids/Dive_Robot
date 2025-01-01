@@ -8,8 +8,6 @@ import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
-import java.util.Objects;
-
 @TeleOp(name = "Master Tele-op", group = "Tele-op")
 public class MasterTeleop extends OpMode {
 
@@ -40,7 +38,7 @@ public class MasterTeleop extends OpMode {
 
         outtake.setState(OuttakeConstants.START);
         intake.setState(IntakeConstants.START);
-        hang.SetState(HangConstants.START);
+        hang.setState(HangConstants.START);
     }
 
     @Override
@@ -77,7 +75,7 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("horizontal power", intake.getMotorPower());
 
         telemetry.addLine("-------------------Hang----------------------");
-        telemetry.addData("hang state", hang.state);
+        telemetry.addData("hang state", hang.getState());
         telemetry.addData("hang busy", hang.IsBusy());
         telemetry.addData("hanging", isHanging);
 
@@ -175,18 +173,18 @@ public class MasterTeleop extends OpMode {
 
     void HangUpdate()
     {
-        isHanging = !hang.state.equals(HangConstants.START);
+        isHanging = !hang.getState().equals(HangConstants.START);
 
         if(!hang.IsBusy())
         {
             if (gamepad1.dpad_down) {
-                hang.SetState(HangConstants.START);
+                hang.setState(HangConstants.START);
             } else if (gamepad1.dpad_up && prevOuttakeState.equals(OuttakeConstants.START) && prevIntakeState.equals(IntakeConstants.START)) {
-                hang.SetState(HangConstants.HANG_READY);
-            } else if (gamepad1.start && hang.state.equals(HangConstants.HANG_READY)) {
-                hang.SetState(HangConstants.LVL_2);
-            } else if (hang.state.equals(HangConstants.LVL_2)) {
-                hang.SetState(HangConstants.LVL_3);
+                hang.setState(HangConstants.HANG_READY);
+            } else if (gamepad1.start && hang.getState().equals(HangConstants.HANG_READY)) {
+                hang.setState(HangConstants.LVL_2);
+            } else if (hang.getState().equals(HangConstants.LVL_2)) {
+                hang.setState(HangConstants.LVL_3);
             }
         }
 
