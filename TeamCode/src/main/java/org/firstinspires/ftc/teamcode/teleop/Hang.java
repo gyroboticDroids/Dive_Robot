@@ -1,11 +1,11 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
-import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 public class Hang {
     private final Hardware hardware;

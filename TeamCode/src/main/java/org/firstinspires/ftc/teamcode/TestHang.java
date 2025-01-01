@@ -1,10 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.pedropathing.pathgen.MathFunctions;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 
 @TeleOp(name = "test hang")
 public class TestHang extends OpMode {

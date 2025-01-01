@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.pedropathing.pathgen.MathFunctions;
+import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
-import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 public class Intake {
     private final Hardware hardware;

@@ -1,13 +1,13 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.pedropathing.pathgen.MathFunctions;
+import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
-import org.firstinspires.ftc.teamcode.pedroPathing.util.Timer;
 
 @TeleOp(name = "Master Tele-op", group = "Tele-op")
 public class MasterTeleop extends OpMode {

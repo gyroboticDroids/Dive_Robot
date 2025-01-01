@@ -1,10 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.pedropathing.pathgen.MathFunctions;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-
-import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 
 @TeleOp(name = "TestMotors")
 public class TestMotors extends OpMode {
