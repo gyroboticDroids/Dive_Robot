@@ -100,7 +100,7 @@ public class Outtake {
 
                 hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.25)
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);

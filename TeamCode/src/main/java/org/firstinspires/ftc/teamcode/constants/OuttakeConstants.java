@@ -3,16 +3,16 @@ package org.firstinspires.ftc.teamcode.constants;
 public class OuttakeConstants {
     //Outtake
     public static int SLIDES_SAMPLE_LOW = 1660;//
-    public static int SLIDES_SAMPLE_HIGH = 3700;//
+    public static int SLIDES_SAMPLE_HIGH = 3500;//
     public static int SLIDES_SPECIMEN_COLLECT = 0;//
     public static int SLIDES_SPECIMEN_LOW_SCORING = 0;//
-    public static int SLIDES_SPECIMEN_HIGH_SCORING = 1031;//
-    public static int SLIDES_SPECIMEN_INCREASE = 600;//
+    public static int SLIDES_SPECIMEN_HIGH_SCORING = 1478;//
+    public static int SLIDES_SPECIMEN_INCREASE = 810;//
     public static int SLIDES_START = 0;//
     public static int SLIDES_HANG = 3700;//
     public static int SLIDES_MAX_LIMIT = 3700;//
     public static double SLIDES_P_GAIN = 0.01;
-    public static double SLIDES_ACCURACY = 50;//
+    public static double SLIDES_ACCURACY = 70;//
 
     public static double EXTENSION_START = 0.6367;//
     public static double EXTENSION_TRANSFER = 0.6367;//
@@ -21,21 +21,21 @@ public class OuttakeConstants {
     public static double EXTENSION_SAMPLE_SCORE = 0.6367;
 
     public static double PIVOT_TRANSFER = 0.397;//
-    public static double PIVOT_SPECIMEN = 0.445;//
+    public static double PIVOT_SPECIMEN = 0.429;//
     public static double PIVOT_OFF_WALL = 0.6;//
     public static double PIVOT_SAMPLE = 0.519;//
     public static double PIVOT_START = 0.421;//
     public static double PIVOT_RAISE = 0.5;//
 
     public static double WRIST_TRANSFER = 0.594;//
-    public static double WRIST_SPECIMEN = 0.541;//
+    public static double WRIST_SPECIMEN = 0.581;//
     public static double WRIST_OFF_WALL = 0.407;//
     public static double WRIST_SAMPLE = 0.44;//
     public static double WRIST_START = 0.585;//
     public static double WRIST_RAISE = 0.5;//
 
-    public static double CLAW_OPEN = 0.270;//
-    public static double CLAW_CLOSED = 0.801;//
+    public static double CLAW_OPEN = 0.356;//
+    public static double CLAW_CLOSED = 0.772;//
 
     //States
     public static final String START = "start";

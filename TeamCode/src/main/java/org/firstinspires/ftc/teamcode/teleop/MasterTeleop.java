@@ -44,7 +44,7 @@ public class MasterTeleop extends OpMode {
         teleopTimer.resetTimer();
 
         //Sets all states to the starting states
-        outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+        outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
         intake.setState(IntakeConstants.TRANSFER);
         hang.setState(HangConstants.START);
     }
@@ -203,7 +203,7 @@ public class MasterTeleop extends OpMode {
             } else if (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
                     || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB)) {
                 intake.horizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
-                MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 10); //Manual control for horizontal slides
+                MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 40); //Manual control for horizontal slides
             }
         }
 
