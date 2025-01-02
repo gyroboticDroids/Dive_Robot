@@ -229,9 +229,9 @@ public class MasterTeleop extends OpMode {
                 hang.setState(HangConstants.HANG_READY);
             } else if (gamepad1.start && hang.getState().equals(HangConstants.HANG_READY)) {
                 hang.setState(HangConstants.LVL_2);
-            } //else if (hang.getState().equals(HangConstants.LVL_2)) {
-            //    hang.setState(HangConstants.LVL_3);
-            //}
+            } else if (hang.getState().equals(HangConstants.LVL_2)) {
+                hang.setState(HangConstants.LVL_3);
+            }
         }
 
         //Updates the hang

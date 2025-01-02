@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.teleop.Intake;
 import org.firstinspires.ftc.teamcode.teleop.Outtake;
 
-@Autonomous(name = "Master Autonomous", group = "Autonomous", preselectTeleOp = "Master Tele-op")
+@Autonomous(name = "Master Autonomous Oliver", group = "Autonomous", preselectTeleOp = "Master Tele-op")
 public class MasterAutonomousOliver extends OpMode {
     private Follower follower;
     private Timer pathTimer;

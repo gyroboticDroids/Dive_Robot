@@ -3,17 +3,17 @@ package org.firstinspires.ftc.teamcode.constants;
 public class IntakeConstants {
     //Intake
     public static int SLIDES_START = 0;//
-    public static int SLIDES_MAX = 720;//
-    public static int SLIDES_TRANSFER = 12;//
-    public static int SLIDES_OUT = 70;//
-    public static int SLIDES_ACCURACY = 10;//
+    public static int SLIDES_MAX = 1960;//
+    public static int SLIDES_TRANSFER = 68;//
+    public static int SLIDES_OUT = 195;//
+    public static int SLIDES_ACCURACY = 30;//
     //public static int SLIDES_HALFWAY = 700;
-    public static double SLIDES_P_GAIN = 0.03;
+    public static double SLIDES_P_GAIN = 0.01;
 
-    public static double PIVOT_START = 0.980;//
-    public static double PIVOT_TRANSFER = 1;//
-    public static double PIVOT_INTERMEDIATE = 0.719;//
-    public static double PIVOT_DOWN = 0.240;//
+    public static double PIVOT_START = 0.924;//
+    public static double PIVOT_TRANSFER = 0.924;//
+    public static double PIVOT_INTERMEDIATE = 0.532;//
+    public static double PIVOT_DOWN = 0.187;//
 
     public static double INTAKE_FORWARD = 1;//
     public static double INTAKE_STOP = 0;//

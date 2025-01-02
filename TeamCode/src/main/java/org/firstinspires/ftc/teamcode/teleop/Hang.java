@@ -41,11 +41,11 @@ public class Hang {
                 break;
 
             case HangConstants.HANG_READY:
-                //if(onsSetState)
-                //{
-                //    outtake.setVertPosition(OuttakeConstants.SLIDES_HANG);
-                //}
-                //outtake.VertSlidesUpdate();
+                if(onsSetState)
+                {
+                    outtake.setVertPosition(OuttakeConstants.SLIDES_HANG);
+                }
+                outtake.vertSlidesUpdate();
 
                 hardware.hangRight.setPosition(HangConstants.RIGHT_UP);
                 hardware.hangLeft.setPosition(HangConstants.LEFT_UP);

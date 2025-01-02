@@ -2,15 +2,15 @@ package org.firstinspires.ftc.teamcode.constants;
 
 public class OuttakeConstants {
     //Outtake
-    public static int SLIDES_SAMPLE_LOW = 1000;//
-    public static int SLIDES_SAMPLE_HIGH = 2500;//
+    public static int SLIDES_SAMPLE_LOW = 1660;//
+    public static int SLIDES_SAMPLE_HIGH = 3700;//
     public static int SLIDES_SPECIMEN_COLLECT = 0;//
     public static int SLIDES_SPECIMEN_LOW_SCORING = 0;//
     public static int SLIDES_SPECIMEN_HIGH_SCORING = 1031;//
     public static int SLIDES_SPECIMEN_INCREASE = 600;//
     public static int SLIDES_START = 0;//
-    public static int SLIDES_HANG = 2650;//
-    public static int SLIDES_MAX_LIMIT = 2650;//
+    public static int SLIDES_HANG = 3700;//
+    public static int SLIDES_MAX_LIMIT = 3700;//
     public static double SLIDES_P_GAIN = 0.01;
     public static double SLIDES_ACCURACY = 50;//
 
@@ -20,19 +20,19 @@ public class OuttakeConstants {
     public static double EXTENSION_SPECIMEN_SCORE = 0.6367;//
     public static double EXTENSION_SAMPLE_SCORE = 0.6367;
 
-    public static double PIVOT_TRANSFER = 0.412;//
+    public static double PIVOT_TRANSFER = 0.397;//
     public static double PIVOT_SPECIMEN = 0.445;//
-    public static double PIVOT_OFF_WALL = 0.614;//
-    public static double PIVOT_SAMPLE = 0.537;//
-    public static double PIVOT_START = 0.4339;//
-    public static double PIVOT_RAISE = 0.509;//
+    public static double PIVOT_OFF_WALL = 0.6;//
+    public static double PIVOT_SAMPLE = 0.519;//
+    public static double PIVOT_START = 0.421;//
+    public static double PIVOT_RAISE = 0.5;//
 
-    public static double WRIST_TRANSFER = 0.567;//
+    public static double WRIST_TRANSFER = 0.594;//
     public static double WRIST_SPECIMEN = 0.541;//
-    public static double WRIST_OFF_WALL = 0.3706;//
-    public static double WRIST_SAMPLE = 0.403;//
-    public static double WRIST_START = 0.5556;//
-    public static double WRIST_RAISE = 0.464;//
+    public static double WRIST_OFF_WALL = 0.407;//
+    public static double WRIST_SAMPLE = 0.44;//
+    public static double WRIST_START = 0.585;//
+    public static double WRIST_RAISE = 0.5;//
 
     public static double CLAW_OPEN = 0.270;//
     public static double CLAW_CLOSED = 0.801;//
