@@ -53,7 +53,13 @@ public class MasterTeleop extends OpMode {
     public void loop()
     {
         //Updates all classes
-        drive.update();
+        if(!(hang.getState().equals(HangConstants.LVL_2) || hang.getState().equals(HangConstants.LVL_3))){
+            drive.update();
+        }
+        else {
+            drive.resetPowers();
+        }
+
         outtakeUpdate();
         intakeUpdate();
         hangUpdate();
@@ -164,11 +170,15 @@ public class MasterTeleop extends OpMode {
         prevGp2Y = gamepad2.y;
     }
 
-    //Variable used for intakeUpdate
+    //Variables used for intakeUpdate
     private String prevIntakeState = IntakeConstants.START;
+    private boolean prevGp2LeftBumper = false;
 
     void intakeUpdate()
     {
+        if(!intake.getState().equals(IntakeConstants.RESET_POS)) {
+            intake.horizontalSlidesUpdate();
+        }
         //Stops the intake from interrupting hanging
         if (isHanging)
         {
@@ -183,7 +193,11 @@ public class MasterTeleop extends OpMode {
                 intake.setState(IntakeConstants.START);
             } else if (gamepad2.back && prevIntakeState.equals(IntakeConstants.TRANSFER)) {
                     intake.setState(IntakeConstants.RESET_POS);
-            } else if (gamepad2.left_bumper && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
+            } else if (gamepad2.left_bumper && !prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
+                    || prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
+                outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+                intake.setState(IntakeConstants.INTAKE_SUB_READY);
+            } else if (gamepad2.left_bumper && !prevGp2LeftBumper && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
                     || prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
                 intake.setState(IntakeConstants.TRANSFER);
             } else if (gamepad2.right_bumper || gamepad1.right_bumper && (prevIntakeState.equals(IntakeConstants.TRANSFER)
@@ -212,7 +226,10 @@ public class MasterTeleop extends OpMode {
 
         //Previous intake state
         prevIntakeState = intake.getState();
+        prevGp2LeftBumper = gamepad2.left_bumper;
     }
+
+    private boolean prevGp1Start = false;
 
     void hangUpdate()
     {
@@ -229,12 +246,13 @@ public class MasterTeleop extends OpMode {
                 hang.setState(HangConstants.HANG_READY);
             } else if (gamepad1.start && hang.getState().equals(HangConstants.HANG_READY)) {
                 hang.setState(HangConstants.LVL_2);
-            } else if (hang.getState().equals(HangConstants.LVL_2)) {
+            } else if (gamepad1.start && !prevGp1Start && hang.getState().equals(HangConstants.LVL_2)) {
                 hang.setState(HangConstants.LVL_3);
             }
         }
 
         //Updates the hang
         hang.update();
+        prevGp1Start = gamepad1.start;
     }
 }

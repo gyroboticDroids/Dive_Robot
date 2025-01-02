@@ -70,7 +70,7 @@ public class Outtake {
 
                 hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.5 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     isBusy = false;
                 }
@@ -294,7 +294,7 @@ public class Outtake {
             hardware.outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
         else {
-            motorPower = Math.min(Math.max(motorPower, -0.8), 0.8);
+            motorPower = Math.min(Math.max(motorPower, -0.9), 0.9);
 
             hardware.outtakeSlide1.setPower(motorPower);
             hardware.outtakeSlide2.setPower(motorPower);

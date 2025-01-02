@@ -34,22 +34,18 @@ public class Intake {
 
                 intakeSpeed(IntakeConstants.INTAKE_STOP);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                if (onsSetState)
                 {
-                    if (onsSetState)
-                    {
-                        horizontalPosition = IntakeConstants.SLIDES_START;
-                    }
-
-                    if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition(), horizontalPosition, IntakeConstants.SLIDES_ACCURACY))
-                    {
-                        isBusy = false;
-                    }
+                    horizontalPosition = IntakeConstants.SLIDES_START;
+                }
+                if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition(), horizontalPosition, IntakeConstants.SLIDES_ACCURACY))
+                {
+                    isBusy = false;
                 }
                 break;
 
             case IntakeConstants.RESET_POS:
-                hardware.intakeSlide.setPower(-0.4);
+                hardware.intakeSlide.setPower(-0.2);
 
                 if(actionTimer.getElapsedTimeSeconds() > 1)
                 {

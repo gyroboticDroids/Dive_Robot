@@ -56,7 +56,7 @@ public class Drive {
 
         y = gpad.left_stick_y * multiplier;
         x = -gpad.left_stick_x * multiplier;
-        rx = (gpad.left_trigger - gpad.right_trigger) * 2 * multiplier;
+        rx = (gpad.left_trigger - gpad.right_trigger) * 4 * multiplier;
         resetHeading = gpad.back;
 
         targetHeading = (gpad.y)? 0:(gpad.x)? 90: (gpad.a)? -45: (gpad.b)? -90:targetHeading;
@@ -117,5 +117,12 @@ public class Drive {
 
     public void setDriveBack(boolean driveBack) {
         this.driveBack = driveBack;
+    }
+
+    public void resetPowers() {
+        hardware.frontLeft.setPower(0);
+        hardware.rearLeft.setPower(0);
+        hardware.frontRight.setPower(0);
+        hardware.rearRight.setPower(0);
     }
 }

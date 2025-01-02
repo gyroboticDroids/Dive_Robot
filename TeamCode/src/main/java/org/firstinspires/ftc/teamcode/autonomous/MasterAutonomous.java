@@ -46,9 +46,11 @@ public class MasterAutonomous extends OpMode {
     private final Pose sample3 = new Pose(12, -45, Math.toRadians(-45));
     private final Pose basketSample3 = new Pose(7, -48, Math.toRadians(45));
     private final Pose touchBar = new Pose(72, -12, Math.toRadians(0));
+    private final Pose observationZoneReady = new Pose(12, -72, Math.toRadians(0));
+    private final Pose observationZone = new Pose(6, -72, Math.toRadians(0));
 
     //Paths
-    private Path toLeftOfBar, toBasket1, toBasket2, toSample3, toBasket3, toBar;
+    private Path toLeftOfBar, toRightOfBar, toBasket1, toBasket2, toSample3, toBasket3, toBar, toObservationZoneReady, toObservationZone, toLeftBarFromObs;
 
     @Override
     public void init()
@@ -159,6 +161,9 @@ public class MasterAutonomous extends OpMode {
         toLeftOfBar = new Path(new BezierLine(new Point(start), new Point(specimenLeft)));
         toLeftOfBar.setLinearHeadingInterpolation(start.getHeading(), specimenLeft.getHeading());
 
+        toRightOfBar = new Path(new BezierLine(new Point(start), new Point(specimenRight)));
+        toRightOfBar.setLinearHeadingInterpolation(start.getHeading(), specimenRight.getHeading());
+
         toBasket1 = new Path(new BezierLine(new Point(specimenLeft), new Point(basketSample1)));
         toBasket1.setLinearHeadingInterpolation(specimenLeft.getHeading(), basketSample1.getHeading());
 
@@ -173,6 +178,15 @@ public class MasterAutonomous extends OpMode {
 
         toBar = new Path(new BezierCurve(new Point(basketSample3), new Point(new Pose(basketSample3.getX(), touchBar.getY())), new Point(touchBar)));
         toBar.setLinearHeadingInterpolation(basketSample3.getHeading(), touchBar.getHeading());
+
+        toObservationZoneReady = new Path(new BezierLine(new Point(specimenRight), new Point(observationZoneReady)));
+        toObservationZoneReady.setLinearHeadingInterpolation(specimenRight.getHeading(), observationZoneReady.getHeading());
+
+        toObservationZone = new Path(new BezierLine(new Point(observationZoneReady), new Point(observationZone)));
+        toObservationZone.setLinearHeadingInterpolation(observationZoneReady.getHeading(), observationZone.getHeading());
+
+        toLeftBarFromObs = new Path(new BezierLine(new Point(observationZone), new Point(specimenLeft)));
+        toLeftBarFromObs.setLinearHeadingInterpolation(observationZone.getHeading(), specimenLeft.getHeading());
     }
 
     private void autoPathUpdate()
@@ -352,6 +366,61 @@ public class MasterAutonomous extends OpMode {
                     follower.followPath(toBar);
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
 
+                    setPathState(100);
+                }
+                break;
+
+            case 30:
+                follower.followPath(toRightOfBar, true);
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+
+                if(!follower.isBusy() && !outtake.isBusy())
+                {
+                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
+                    setPathState(31);
+                }
+                break;
+
+            case 31:
+                if(!outtake.isBusy()) {
+                    follower.followPath(toObservationZoneReady, true);
+                    outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
+
+                    setPathState(32);
+                }
+                break;
+
+            case 32:
+                if(!follower.isBusy()) {
+                    follower.followPath(toObservationZone, true);
+                    setPathState(33);
+                }
+                break;
+
+            case 33:
+                if(!follower.isBusy()) {
+                    if(!outtake.isBusy() && lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH))
+                    {
+                        follower.followPath(toLeftBarFromObs);
+                        setPathState(34);
+                    }
+
+                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+                }
+                break;
+
+            case 34:
+                if(!follower.isBusy()) {
+                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
+
+                    setPathState(35);
+                }
+                break;
+
+            case 35:
+                if(!outtake.isBusy()) {
+                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+                    follower.followPath(toObservationZoneReady);
                     setPathState(100);
                 }
                 break;
