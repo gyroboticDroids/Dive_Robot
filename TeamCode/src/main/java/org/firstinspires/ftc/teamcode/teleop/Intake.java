@@ -45,13 +45,13 @@ public class Intake {
                 break;
 
             case IntakeConstants.RESET_POS:
-                hardware.intakeSlide.setPower(-0.2);
+                hardware.intakeSlide.setPower(-0.3);
 
                 if(actionTimer.getElapsedTimeSeconds() > 1)
                 {
                     hardware.intakeSlide.setPower(0);
                 }
-                if(actionTimer.getElapsedTimeSeconds() > 1.5)
+                if(actionTimer.getElapsedTimeSeconds() > 1.25)
                 {
                     hardware.intakeSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     hardware.intakeSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

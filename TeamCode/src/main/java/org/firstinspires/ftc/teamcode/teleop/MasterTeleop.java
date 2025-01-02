@@ -191,8 +191,8 @@ public class MasterTeleop extends OpMode {
             //All buttons and statements that change outtake states
             if (gamepad2.start && (prevIntakeState.equals(IntakeConstants.TRANSFER) || prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY))) {
                 intake.setState(IntakeConstants.START);
-            } else if (gamepad2.back && prevIntakeState.equals(IntakeConstants.TRANSFER)) {
-                    intake.setState(IntakeConstants.RESET_POS);
+            //} else if (gamepad2.back && prevIntakeState.equals(IntakeConstants.TRANSFER)) {
+            //        intake.setState(IntakeConstants.RESET_POS);
             } else if (gamepad2.left_bumper && !prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
                     || prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
