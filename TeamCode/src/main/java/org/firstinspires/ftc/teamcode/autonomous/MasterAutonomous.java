@@ -7,6 +7,7 @@ import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
+import com.pedropathing.util.Constants;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -15,6 +16,9 @@ import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.teleop.Intake;
 import org.firstinspires.ftc.teamcode.teleop.Outtake;
+
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
 
 @Autonomous(name = "Master Autonomous", group = "Autonomous", preselectTeleOp = "Master Tele-op")
 public class MasterAutonomous extends OpMode {
@@ -32,6 +36,7 @@ public class MasterAutonomous extends OpMode {
 
     private int startPos = 0;
     private boolean isPressed;
+    private boolean onsFollowPath = false;
 
     private String lastOuttakeState;
     private String lastIntakeState;
@@ -40,7 +45,7 @@ public class MasterAutonomous extends OpMode {
     //Poses
     private Pose start;
     private final Pose specimenLeft = new Pose(36, 11.25, 0);
-    private final Pose specimenRight = new Pose(36, -11.25, 0);
+    private final Pose specimenRight = new Pose(114, 30, Math.toRadians(-180));
     private final Pose basketSample1 = new Pose(7, -50, Math.toRadians(25));
     private final Pose basketSample2 = new Pose(8, -51, Math.toRadians(13));
     private final Pose sample3 = new Pose(12, -45, Math.toRadians(-45));
@@ -55,10 +60,15 @@ public class MasterAutonomous extends OpMode {
     @Override
     public void init()
     {
+        Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         pathTimer = new Timer();
         intake = new Intake(hardwareMap);
         outtake = new Outtake(hardwareMap);
+
+        start = new Pose(138,30, Math.toRadians(-180));
+        follower.setStartingPose(start);
+        BuildPaths();
     }
 
     @Override
@@ -119,38 +129,36 @@ public class MasterAutonomous extends OpMode {
         telemetry.update();
     }
 
-    @Override
-    public void start()
-    {
-        if(startPos == 0)
-        {
-            start = new Pose(0,-35.75,0);
-        }
-        else if(startPos == 1)
-        {
-            start = new Pose(0,-11.25,0);
-        }
-        else if(startPos == 2)
-        {
-            start = new Pose(0,11.25,0);
-        }
-        else if(startPos == 3)
-        {
-            start = new Pose(0,35.75,0);
-        }
-
-        follower.setStartingPose(start);
-
-        BuildPaths();
-    }
+//    @Override
+//    public void start()
+//    {
+//        if(startPos == 0)
+//        {
+//            start = new Pose(7.125,-35.75,0);
+//        }
+//        else if(startPos == 1)
+//        {
+//            start = new Pose(7.125,-6.125,0);
+//        }
+//        else if(startPos == 2)
+//        {
+//
+//        }
+//        else if(startPos == 3)
+//        {
+//            start = new Pose(7.125,35.75,0);
+//        }
+//
+//    }
 
     @Override
     public void loop()
     {
+        autoPathUpdate();
         follower.update();
         intake.update();
         outtake.update();
-        autoPathUpdate();
+
 
         telemetry.addData("current state", pathState);
         telemetry.update();
@@ -371,14 +379,17 @@ public class MasterAutonomous extends OpMode {
                 break;
 
             case 30:
-                follower.followPath(toRightOfBar, true);
-                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+                //if(pathTimer.getElapsedTimeSeconds() > 5)
+                //{
+                //    outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
 
-                if(!follower.isBusy() && !outtake.isBusy())
-                {
-                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
-                    setPathState(31);
-                }
+                //}
+
+                //if(onsFollowPath){
+                    follower.followPath(toRightOfBar, true);
+                //    outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+                //}
+                setPathState(100);
                 break;
 
             case 31:
@@ -433,11 +444,16 @@ public class MasterAutonomous extends OpMode {
         lastOuttakeState = outtake.getState();
         lastIntakeState = intake.getState();
         lastState = pathState;
+
+        //outtake.update();
+        //intake.update();
+
+        onsFollowPath = false;
     }
 
     public void setPathState(int state) {
         pathState = state;
         pathTimer.resetTimer();
-        autoPathUpdate();
+        onsFollowPath = true;
     }
 }

@@ -7,9 +7,13 @@ import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
+import com.pedropathing.util.Constants;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
 
 @Autonomous
 public class AutonomousDriveTestPedro extends OpMode {
@@ -62,7 +66,7 @@ public class AutonomousDriveTestPedro extends OpMode {
             case 11:
                 if(!follower.isBusy())
                 {
-                    setPathState(20);
+                    setPathState(22);
                 }
                 break;
 
@@ -138,6 +142,7 @@ public class AutonomousDriveTestPedro extends OpMode {
     public void init() {
         pathTimer = new Timer();
 
+        Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);
     }
