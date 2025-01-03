@@ -9,13 +9,14 @@ import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.teleop.Intake;
 import org.firstinspires.ftc.teamcode.teleop.Outtake;
-
+@Disabled
 @Autonomous(name = "Master Autonomous Oliver", group = "Autonomous", preselectTeleOp = "Master Tele-op")
 public class MasterAutonomousOliver extends OpMode {
     private Follower follower;

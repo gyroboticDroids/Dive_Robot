@@ -9,6 +9,7 @@ import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 /**
@@ -20,7 +21,7 @@ import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
  * @author Baron Henderson - 20077 The Indubitables
  * @version 2.0, 9/8/2024
  */
-
+@Disabled
 @Autonomous(name = "Example Box Motion", group = "Examples")
 public class ExampleAuto_BoxMotion extends OpMode {
 

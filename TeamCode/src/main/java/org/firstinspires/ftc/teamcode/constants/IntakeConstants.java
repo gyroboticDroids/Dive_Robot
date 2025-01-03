@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode.constants;
 
 public class IntakeConstants {
     //Intake
-    public static int SLIDES_START = -10;//
-    public static int SLIDES_MAX = 1950;//
-    public static int SLIDES_TRANSFER = 58;//
-    public static int SLIDES_OUT = 185;//
+    public static int SLIDES_START = 0;//
+    public static int SLIDES_MAX = 1970;//
+    public static int SLIDES_TRANSFER = 78;//
+    public static int SLIDES_OUT = 225;//
     public static int SLIDES_ACCURACY = 30;//
     //public static int SLIDES_HALFWAY = 700;
     public static double SLIDES_P_GAIN = 0.01;

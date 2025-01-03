@@ -64,6 +64,18 @@ public class Drive {
         targetHeading += rx;
     }
 
+    public void autoMovement(double xSpeed, double ySpeed, double targHeading)
+    {
+        y = -ySpeed;
+        x = xSpeed;
+        targetHeading = targHeading;
+
+        hardware.pinpointDriver.update();
+        botHeading = hardware.pinpointDriver.getHeading();
+
+        movement();
+    }
+
     private void movement()
     {
         if (resetHeading)
