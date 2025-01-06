@@ -105,7 +105,7 @@ public class OneSpecAuto extends OpMode {
                 }
 
 
-                if(timer.getElapsedTimeSeconds() > 1.5){
+                if(timer.getElapsedTimeSeconds() > 1.25){
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
                     setState(2);
                 }
