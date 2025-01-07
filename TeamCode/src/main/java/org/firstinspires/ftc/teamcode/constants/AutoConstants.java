@@ -10,4 +10,18 @@ public class AutoConstants {
     public static Pose SAMPLE_MIDDLE = new Pose(20, 131, Math.toRadians(0));
     public static Pose SAMPLE_LEFT = new Pose(24, 136, Math.toRadians(15));
     public static Pose PARK = new Pose(60, 94, Math.toRadians(0));
+
+    //Poses in SpecimenAuto
+    public static Pose SPECIMEN_START = new Pose(7.125, 68, Math.toRadians(0));
+    public static Pose SPECIMEN_SCORE = new Pose(40, 68, Math.toRadians(0));
+    public static Pose SPECIMEN_INTAKE1 = new Pose(24, 42, Math.toRadians(-30));
+    public static Pose SPECIMEN_OUTTAKE1 = new Pose(36, 42, Math.toRadians(-135));
+    public static Pose SPECIMEN_INTAKE2 = new Pose(24, 34, Math.toRadians(-30));
+    public static Pose SPECIMEN_OUTTAKE2 = new Pose(36, 34, Math.toRadians(-135));
+    public static Pose SPECIMEN_INTAKE3 = new Pose(30, 24, Math.toRadians(-40));
+    public static Pose SPECIMEN_OUTTAKE3 = new Pose(30, 34, Math.toRadians(-135));
+    public static Pose SPECIMEN_GRAB_READY = new Pose(12, 34, Math.toRadians(0));
+    public static Pose SPECIMEN_GRAB = new Pose(7.125, 34, Math.toRadians(0));
+
+    public double SPECIMEN_SCORE_Y_INCREMENT = 2;
 }
