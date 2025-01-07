@@ -276,6 +276,7 @@ public class SampleAuto extends OpMode {
 
         // Feedback to Driver Hub
         telemetry.addData("path state", pathState);
+        telemetry.addData("action state", actionState);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
