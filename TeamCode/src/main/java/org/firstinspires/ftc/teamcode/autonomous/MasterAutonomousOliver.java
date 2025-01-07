@@ -6,6 +6,7 @@ import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.pathgen.Path;
+import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -55,8 +56,10 @@ public class MasterAutonomousOliver extends OpMode {
     private final Pose grabSpecimen = new Pose(0, -36, 0);
 
     //Paths
-    private Path toLeftOfBar, toBasket1, toBasket2, toSample3, toBasket3, toBar, toRightOfBar, toRedSampleIntake1,
-            toRedSampleIntake2, toRedSampleOuttake3, toRedSampleOuttake1, toRedSampleOuttake2, toRedSampleIntake3, toGrabSpecimen;
+    private Path toLeftOfBar, toBasket1, toBasket2, toSample3, toBasket3, toBar, toRightOfBar,
+            toPushingReady1, toPushingReady2, toPushingReady3, toPushing1, toPushing2, toPushing3, toGrabSpecimen;
+
+    private PathChain pushingSamples;
 
     @Override
     public void init()
@@ -185,26 +188,29 @@ public class MasterAutonomousOliver extends OpMode {
         toRightOfBar = new Path(new BezierLine(new Point(start), new Point(specimenRight)));
         toRightOfBar.setLinearHeadingInterpolation(start.getHeading(), specimenRight.getHeading());
 
-        toRedSampleIntake1 = new Path(new BezierLine(new Point(specimenRight), new Point(pushingReady1)));
-        toRedSampleIntake1.setLinearHeadingInterpolation(specimenRight.getHeading(), pushingReady1.getHeading());
+        toPushingReady1 = new Path(new BezierLine(new Point(specimenRight), new Point(pushingReady1)));
+        toPushingReady1.setLinearHeadingInterpolation(specimenRight.getHeading(), pushingReady1.getHeading());
 
-        toRedSampleIntake2 = new Path(new BezierLine(new Point(pushing1), new Point(pushingReady2)));
-        toRedSampleIntake2.setLinearHeadingInterpolation(pushing1.getHeading(), pushingReady2.getHeading());
+        toPushingReady2 = new Path(new BezierLine(new Point(pushing1), new Point(pushingReady2)));
+        toPushingReady2.setLinearHeadingInterpolation(pushing1.getHeading(), pushingReady2.getHeading());
 
-        toRedSampleIntake3 = new Path(new BezierLine(new Point(pushing2), new Point(pushingReady3)));
-        toRedSampleIntake3.setLinearHeadingInterpolation(pushing2.getHeading(), pushingReady3.getHeading());
+        toPushingReady3 = new Path(new BezierLine(new Point(pushing2), new Point(pushingReady3)));
+        toPushingReady3.setLinearHeadingInterpolation(pushing2.getHeading(), pushingReady3.getHeading());
 
-        toRedSampleOuttake1 = new Path(new BezierLine(new Point(pushingReady1), new Point(pushing1)));
-        toRedSampleOuttake1.setLinearHeadingInterpolation(pushingReady1.getHeading(), pushing1.getHeading());
+        toPushing1 = new Path(new BezierLine(new Point(pushingReady1), new Point(pushing1)));
+        toPushing1.setLinearHeadingInterpolation(pushingReady1.getHeading(), pushing1.getHeading());
 
-        toRedSampleOuttake2 = new Path(new BezierLine(new Point(pushingReady2), new Point(pushing2)));
-        toRedSampleOuttake2.setLinearHeadingInterpolation(pushingReady2.getHeading(), pushing2.getHeading());
+        toPushing2 = new Path(new BezierLine(new Point(pushingReady2), new Point(pushing2)));
+        toPushing2.setLinearHeadingInterpolation(pushingReady2.getHeading(), pushing2.getHeading());
 
-        toRedSampleOuttake3 = new Path(new BezierLine(new Point(pushingReady3), new Point(pushing3)));
-        toRedSampleOuttake3.setLinearHeadingInterpolation(pushingReady3.getHeading(), pushing3.getHeading());
+        toPushing3 = new Path(new BezierLine(new Point(pushingReady3), new Point(pushing3)));
+        toPushing3.setLinearHeadingInterpolation(pushingReady3.getHeading(), pushing3.getHeading());
 
         toGrabSpecimen = new Path(new BezierLine(new Point(pushing3), new Point(grabSpecimen)));
         toGrabSpecimen.setLinearHeadingInterpolation(pushing3.getHeading(), grabSpecimen.getHeading());
+
+        pushingSamples = new PathChain (new Path(new BezierLine(new Point(specimenRight), new Point(pushingReady1))),
+                (new Path(new BezierLine(new Point(pushingReady1), new Point(pushingReady2)))));
     }
 
     private void AutoPathUpdate()
@@ -252,7 +258,7 @@ public class MasterAutonomousOliver extends OpMode {
                 if(lastOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN) && !outtake.isBusy())
                 {
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-                    follower.followPath(toRedSampleIntake1, true);
+               //     follower.followPath();
                 }
                 setPathState(32);
                 break;
