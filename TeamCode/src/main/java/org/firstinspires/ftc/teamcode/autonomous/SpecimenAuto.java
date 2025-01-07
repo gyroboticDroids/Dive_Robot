@@ -49,14 +49,24 @@ public class SpecimenAuto extends OpMode {
         outtakeSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_CENTER), new Point(AutoConstants.SPECIMEN_OUTTAKE_CENTER)));
         outtakeSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_CENTER.getHeading(), AutoConstants.SPECIMEN_OUTTAKE_CENTER.getHeading());
 
-        intakeSpecimenRight = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_OUTTAKE_CENTER), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
+        intakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE_CENTER), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
         intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_CENTER.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading());
 
         outtakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT)));
         outtakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading());
 
-        grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT)));
-        grabSpecimenReady1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading());
+        grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
+        grabSpecimenReady1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
+
+        grabSpecimen = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB_READY), new Point(AutoConstants.SPECIMEN_GRAB)));
+        grabSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB_READY.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
+
+        scoreSpecimen = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SPECIMEN_SCORE.getX(), AutoConstants.SPECIMEN_GRAB.getY()),
+                new Point(AutoConstants.SPECIMEN_GRAB.getX(), AutoConstants.SPECIMEN_SCORE.getY()), new Point(AutoConstants.SPECIMEN_SCORE)));
+        scoreSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
+
+        grabSpecimenReady2 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
+        grabSpecimenReady2.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
     }
 
     public void autonomousPathUpdate() {
@@ -69,17 +79,9 @@ public class SpecimenAuto extends OpMode {
                 follower.followPath(currentPath, true);
                 setPathState(1);
                 break;
+
             case 1:
-
-                /* You could check for
-                - Follower State: "if(!follower.isBusy() {}" (Though, I don't recommend this because it might not return due to holdEnd
-                - Time: "if(pathTimer.getElapsedTimeSeconds() > 1) {}"
-                - Robot Position: "if(follower.getPose().getX() > 36) {}"
-                */
-
                 if(robotInPos){
-                    /* Score Preload */
-
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
                         currentPath = intakeSpecimenLeft;
                         follower.followPath(currentPath, true);
@@ -87,10 +89,9 @@ public class SpecimenAuto extends OpMode {
                     }
                 }
                 break;
+
             case 2:
                 if(robotInPos) {
-                    /* Grab Sample */
-
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
                         currentPath = outtakeSpecimenLeft;
                         follower.followPath(currentPath, true);
@@ -98,10 +99,9 @@ public class SpecimenAuto extends OpMode {
                     }
                 }
                 break;
+
             case 3:
                 if(robotInPos) {
-                    /* Score Sample */
-
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
                         currentPath = intakeSpecimenCenter;
                         follower.followPath(currentPath, true);
@@ -109,10 +109,9 @@ public class SpecimenAuto extends OpMode {
                     }
                 }
                 break;
+
             case 4:
                 if(robotInPos) {
-                    /* Grab Sample */
-
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
                        currentPath = outtakeSpecimenCenter;
                         follower.followPath(currentPath, true);
@@ -120,10 +119,9 @@ public class SpecimenAuto extends OpMode {
                     }
                 }
                 break;
+
             case 5:
                 if(robotInPos) {
-                    /* Score Sample */
-
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
                         currentPath = intakeSpecimenRight;
                         follower.followPath(currentPath, true);
@@ -131,10 +129,9 @@ public class SpecimenAuto extends OpMode {
                     }
                 }
                 break;
+
             case 6:
                 if(robotInPos) {
-                    /* Grab Sample */
-
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
                         currentPath = outtakeSpecimenRight;
                         follower.followPath(currentPath, true);
@@ -142,24 +139,44 @@ public class SpecimenAuto extends OpMode {
                     }
                 }
                 break;
+
             case 7:
                 if(robotInPos) {
-                    /* Score Sample */
-
-                    /* Since this is a pathChain, we can have Pedro hold the end point while we are parked */
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                      //  currentPath = touchBar;
+                        currentPath = grabSpecimenReady1;
                         follower.followPath(currentPath,true);
                         setPathState(8);
                     }
                 }
                 break;
+
             case 8:
                 if(robotInPos) {
-                    /* Level 1 Ascent */
+                    if(pathTimer.getElapsedTimeSeconds() > 7) {
+                        currentPath = grabSpecimen;
+                        follower.followPath(currentPath,true);
+                        setPathState(9);
+                    }
+                }
+                break;
 
-                    /* Set the state to a Case we won't use or define, so it just stops running an new paths */
-                    setPathState(-1);
+            case 9:
+                if(robotInPos) {
+                    if(pathTimer.getElapsedTimeSeconds() > 7) {
+                        currentPath = scoreSpecimen;
+                        follower.followPath(currentPath,true);
+                        setPathState(10);
+                    }
+                }
+                break;
+
+            case 10:
+                if(robotInPos) {
+                    if(pathTimer.getElapsedTimeSeconds() > 7) {
+                        currentPath = grabSpecimenReady2;
+                        follower.followPath(currentPath,true);
+                        setPathState(11);
+                    }
                 }
                 break;
         }
