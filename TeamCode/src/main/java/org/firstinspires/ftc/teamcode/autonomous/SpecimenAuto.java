@@ -78,7 +78,7 @@ public class SpecimenAuto extends OpMode {
                     /* Score Preload */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = intakeSpecimenRight;
+                        currentPath = intakeSpecimenLeft;
                         follower.followPath(currentPath, true);
                         setPathState(2);
                     }
@@ -89,7 +89,7 @@ public class SpecimenAuto extends OpMode {
                     /* Grab Sample */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = outtakeSpecimenRight;
+                        currentPath = outtakeSpecimenLeft;
                         follower.followPath(currentPath, true);
                         setPathState(3);
                     }
@@ -122,7 +122,7 @@ public class SpecimenAuto extends OpMode {
                     /* Score Sample */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = intakeSpecimenLeft;
+                        currentPath = intakeSpecimenRight;
                         follower.followPath(currentPath, true);
                         setPathState(6);
                     }
@@ -133,7 +133,7 @@ public class SpecimenAuto extends OpMode {
                     /* Grab Sample */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = outtakeSpecimenLeft;
+                        currentPath = outtakeSpecimenRight;
                         follower.followPath(currentPath, true);
                         setPathState(7);
                     }
