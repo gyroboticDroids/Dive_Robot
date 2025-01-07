@@ -120,6 +120,8 @@ public class MasterTeleop extends OpMode {
             //All buttons and statements that change outtake states
             if (gamepad2.start && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                 outtake.setState(OuttakeConstants.START);
+            } else if (gamepad2.back && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.START))) {
+                outtake.setState(OuttakeConstants.RESET_POS);
             } else if (gamepad2.x && !prevGp2X && !(prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)
                     || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE))) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
@@ -174,9 +176,6 @@ public class MasterTeleop extends OpMode {
 
     void intakeUpdate()
     {
-        if(!intake.getState().equals(IntakeConstants.RESET_POS)) {
-            intake.horizontalSlidesUpdate();
-        }
         //Stops the intake from interrupting hanging
         if (isHanging)
         {

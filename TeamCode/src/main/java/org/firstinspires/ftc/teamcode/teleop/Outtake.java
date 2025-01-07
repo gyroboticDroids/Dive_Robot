@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 
 public class Outtake {
@@ -22,8 +23,7 @@ public class Outtake {
 
     private String state;
 
-    public Outtake(HardwareMap hardwareMap)
-    {
+    public Outtake(HardwareMap hardwareMap) {
         hardware = new Hardware(hardwareMap);
 
         actionTimer = new Timer();
@@ -33,8 +33,7 @@ public class Outtake {
 
     private double lastVertConstant = 0;
 
-    public void update()
-    {
+    public void update() {
         switch (state)
         {
             case OuttakeConstants.START:
@@ -54,6 +53,21 @@ public class Outtake {
 
                 if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
+                    isBusy = false;
+                }
+                break;
+
+            case IntakeConstants.RESET_POS:
+                hardware.outtakeSlide1.setPower(-0.3);
+                hardware.outtakeSlide2.setPower(-0.3);
+
+                if(actionTimer.getElapsedTimeSeconds() > 1)
+                {
+                    hardware.outtakeSlide1.setPower(0);
+                    hardware.outtakeSlide2.setPower(0);
+
+                    hardware.outtakeSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    hardware.outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                     isBusy = false;
                 }
                 break;
@@ -244,7 +258,9 @@ public class Outtake {
                 }
                 break;
         }
-        vertSlidesUpdate();
+        if(!state.equals(OuttakeConstants.RESET_POS)) {
+            vertSlidesUpdate();
+        }
         onsSetState = false;
     }
 
@@ -253,8 +269,7 @@ public class Outtake {
         return state;
     }
 
-    public void setState(String s)
-    {
+    public void setState(String s) {
         isBusy = true;
         onsSetState = true;
         specimenOnsSetState = true;
@@ -278,8 +293,7 @@ public class Outtake {
 
     double motorPower;
 
-    public void vertSlidesUpdate()
-    {
+    public void vertSlidesUpdate() {
         vertPosition = MathFunctions.clamp(vertPosition, 0, OuttakeConstants.SLIDES_MAX_LIMIT);
 
         double error = vertPosition - hardware.outtakeSlide1.getCurrentPosition();

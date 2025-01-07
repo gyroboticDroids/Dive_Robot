@@ -39,6 +39,7 @@ public class OuttakeConstants {
 
     //States
     public static final String START = "start";
+    public static final String RESET_POS = "reset pos";
     public static final String TRANSFER_INTAKE_READY = "transfer intake ready";
     public static final String TRANSFER_INTAKE = "transfer intake";
     public static final String SCORE_SAMPLE_READY_HIGH = "score sample ready high";
