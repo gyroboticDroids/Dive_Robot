@@ -23,5 +23,5 @@ public class AutoConstants {
     public static Pose SPECIMEN_GRAB_READY = new Pose(12, 34, Math.toRadians(0));
     public static Pose SPECIMEN_GRAB = new Pose(7.125, 34, Math.toRadians(0));
 
-    public double SPECIMEN_SCORE_Y_INCREMENT = 2;
+    public static double Y_INCREMENT = 2;
 }
