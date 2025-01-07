@@ -24,7 +24,6 @@ import pedroPathing.constants.LConstants;
 public class SampleAuto extends OpMode {
     private Follower follower;
     private Timer pathTimer;
-    private Timer actionTimer;
     private Intake intake;
     private Outtake outtake;
     private int pathState;
@@ -67,6 +66,7 @@ public class SampleAuto extends OpMode {
             case 0:
                 currentPath = scorePreload;
                 follower.followPath(currentPath, true);
+                setActionState(0);
                 setPathState(1);
                 break;
             case 1:
@@ -78,80 +78,91 @@ public class SampleAuto extends OpMode {
                 */
 
                 if(robotInPos){
-                    /* Score Preload */
-
-                    if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = collectSampleRight;
-                        follower.followPath(currentPath, true);
-                        setPathState(2);
+                    if(actionState == -1) {
+                        if(outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                            setActionState(1);
+                        }
+                        else {
+                            setActionState(10);
+                            currentPath = collectSampleRight;
+                            follower.followPath(currentPath, true);
+                            setPathState(2);
+                        }
                     }
                 }
                 break;
             case 2:
                 if(robotInPos) {
-                    /* Grab Sample */
-
-                    if(pathTimer.getElapsedTimeSeconds() > 7) {
+                    if(actionState == -1) {
                         currentPath = scoreSampleRight;
                         follower.followPath(currentPath, true);
+                        setActionState(0);
                         setPathState(3);
                     }
                 }
                 break;
             case 3:
                 if(robotInPos) {
-                    /* Score Sample */
-
-                    if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = collectSampleMiddle;
-                        follower.followPath(currentPath, true);
-                        setPathState(4);
+                    if(actionState == -1) {
+                        if(outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                            setActionState(1);
+                        }
+                        else {
+                            currentPath = collectSampleMiddle;
+                            follower.followPath(currentPath, true);
+                            setActionState(10);
+                            setPathState(4);
+                        }
                     }
                 }
                 break;
             case 4:
                 if(robotInPos) {
-                    /* Grab Sample */
-
-                    if(pathTimer.getElapsedTimeSeconds() > 7) {
+                    if(actionState == -1) {
                         currentPath = scoreSampleMiddle;
                         follower.followPath(currentPath, true);
+                        setActionState(0);
                         setPathState(5);
                     }
                 }
                 break;
             case 5:
                 if(robotInPos) {
-                    /* Score Sample */
-
-                    /* Since this is a pathChain, we can have Pedro hold the end point while we are grabbing the sample */
-                    if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = collectSampleLeft;
-                        follower.followPath(currentPath, true);
-                        setPathState(6);
+                    if(actionState == -1) {
+                        if(outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                            setActionState(1);
+                        }
+                        else {
+                            currentPath = collectSampleLeft;
+                            follower.followPath(currentPath, true);
+                            setActionState(10);
+                            setPathState(6);
+                        }
                     }
                 }
                 break;
             case 6:
                 if(robotInPos) {
-                    /* Grab Sample */
-
-                    if(pathTimer.getElapsedTimeSeconds() > 7) {
+                    if(actionState == -1) {
                         currentPath = scoreSampleLeft;
                         follower.followPath(currentPath, true);
+                        setActionState(0);
                         setPathState(7);
                     }
                 }
                 break;
             case 7:
                 if(robotInPos) {
-                    /* Score Sample */
-
-                    /* Since this is a pathChain, we can have Pedro hold the end point while we are parked */
-                    if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = touchBar;
-                        follower.followPath(currentPath,true);
-                        setPathState(8);
+                    if(actionState == -1) {
+                        if(outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                            setActionState(1);
+                        }
+                        else {
+                            currentPath = touchBar;
+                            follower.followPath(currentPath,true);
+                            setActionState(20);
+                            setPathState(8);
+                        }
                     }
                 }
                 break;
@@ -170,14 +181,12 @@ public class SampleAuto extends OpMode {
         switch (actionState) {
             case 0:
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
-                setActionState(-1);
+                setActionState(14);
                 break;
 
             case 1:
-                if(!outtake.isBusy()) {
-                    outtake.setState(OuttakeConstants.SCORE_SAMPLE);
-                    setActionState(-1);
-                }
+                outtake.setState(OuttakeConstants.SCORE_SAMPLE);
+                setActionState(14);
                 break;
 
             case 10:
@@ -213,6 +222,10 @@ public class SampleAuto extends OpMode {
                     setActionState(-1);
                 }
                 break;
+
+            case 20:
+                outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+                break;
         }
     }
 
@@ -223,7 +236,6 @@ public class SampleAuto extends OpMode {
 
     public void setActionState(int aState) {
         actionState = aState;
-        actionTimer.resetTimer();
     }
 
     @Override
@@ -235,7 +247,6 @@ public class SampleAuto extends OpMode {
         outtake = new Outtake(hardwareMap);
 
         pathTimer = new Timer();
-        actionTimer = new Timer();
 
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
@@ -251,7 +262,6 @@ public class SampleAuto extends OpMode {
     @Override
     public void start() {
         pathTimer.resetTimer();
-        actionTimer.resetTimer();
         setPathState(0);
     }
 
@@ -259,8 +269,8 @@ public class SampleAuto extends OpMode {
     public void loop()
     {
         follower.update();
-        //outtake.update();
-        //intake.update();
+        outtake.update();
+        intake.update();
         autonomousPathUpdate();
         autonomousActionUpdate();
 
