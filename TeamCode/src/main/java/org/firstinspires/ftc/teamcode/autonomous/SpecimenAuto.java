@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "4 sample auto", group = "autonomous", preselectTeleOp = "Master Tele-op")
+@Autonomous(name = "5 specimen auto", group = "autonomous", preselectTeleOp = "Master Tele-op")
 public class SpecimenAuto extends OpMode {
     private Follower follower;
     private Timer pathTimer;
@@ -31,32 +31,14 @@ public class SpecimenAuto extends OpMode {
     private int actionState;
     private Path currentPath;
 
-    private Path scorePreload, collectSampleRight, scoreSampleRight, collectSampleMiddle, scoreSampleMiddle, collectSampleLeft, scoreSampleLeft, touchBar;
+    private Path scorePreload, intakeSpecimenRight, outtakeSpecimenRight;
 
     public void buildPaths() {
-        scorePreload = new Path(new BezierLine(new Point(AutoConstants.START_POSE), new Point(AutoConstants.SCORE_SAMPLE)));
-        scorePreload.setLinearHeadingInterpolation(AutoConstants.START_POSE.getHeading(), AutoConstants.SCORE_SAMPLE.getHeading());
+        scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE)));
+        scorePreload.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_START.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
 
-        collectSampleRight = new Path(new BezierLine(new Point(AutoConstants.SCORE_SAMPLE), new Point(AutoConstants.SAMPLE_RIGHT)));
-        collectSampleRight.setLinearHeadingInterpolation(AutoConstants.SCORE_SAMPLE.getHeading(), AutoConstants.SAMPLE_RIGHT.getHeading());
-
-        scoreSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_RIGHT), new Point(AutoConstants.SCORE_SAMPLE)));
-        scoreSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_RIGHT.getHeading(), AutoConstants.SCORE_SAMPLE.getHeading());
-
-        collectSampleMiddle = new Path(new BezierLine(new Point(AutoConstants.SCORE_SAMPLE), new Point(AutoConstants.SAMPLE_MIDDLE)));
-        collectSampleMiddle.setLinearHeadingInterpolation(AutoConstants.SCORE_SAMPLE.getHeading(), AutoConstants.SAMPLE_MIDDLE.getHeading());
-
-        scoreSampleMiddle = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_MIDDLE), new Point(AutoConstants.SCORE_SAMPLE)));
-        scoreSampleMiddle.setLinearHeadingInterpolation(AutoConstants.SAMPLE_MIDDLE.getHeading(), AutoConstants.SCORE_SAMPLE.getHeading());
-
-        collectSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SCORE_SAMPLE), new Point(AutoConstants.SAMPLE_LEFT)));
-        collectSampleLeft.setLinearHeadingInterpolation(AutoConstants.SCORE_SAMPLE.getHeading(), AutoConstants.SAMPLE_LEFT.getHeading());
-
-        scoreSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_LEFT), new Point(AutoConstants.SCORE_SAMPLE)));
-        scoreSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_LEFT.getHeading(), AutoConstants.SCORE_SAMPLE.getHeading());
-
-        touchBar = new Path(new BezierCurve(new Point(AutoConstants.SCORE_SAMPLE), new Point(AutoConstants.PARK.getX(), AutoConstants.SCORE_SAMPLE.getY()), new Point(AutoConstants.PARK)));
-        touchBar.setLinearHeadingInterpolation(AutoConstants.SCORE_SAMPLE.getHeading(), AutoConstants.PARK.getHeading());
+        scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE)));
+        scorePreload.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_START.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
     }
 
     public void autonomousPathUpdate() {
@@ -81,7 +63,7 @@ public class SpecimenAuto extends OpMode {
                     /* Score Preload */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = collectSampleRight;
+                        currentPath = intakeSpecimenRight;
                         follower.followPath(currentPath, true);
                         setPathState(2);
                     }
@@ -92,7 +74,7 @@ public class SpecimenAuto extends OpMode {
                     /* Grab Sample */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = scoreSampleRight;
+                    //    currentPath = scoreSampleRight;
                         follower.followPath(currentPath, true);
                         setPathState(3);
                     }
@@ -103,7 +85,7 @@ public class SpecimenAuto extends OpMode {
                     /* Score Sample */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = collectSampleMiddle;
+                    //    currentPath = collectSampleMiddle;
                         follower.followPath(currentPath, true);
                         setPathState(4);
                     }
@@ -114,7 +96,7 @@ public class SpecimenAuto extends OpMode {
                     /* Grab Sample */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = scoreSampleMiddle;
+                    //   currentPath = scoreSampleMiddle;
                         follower.followPath(currentPath, true);
                         setPathState(5);
                     }
@@ -126,7 +108,7 @@ public class SpecimenAuto extends OpMode {
 
                     /* Since this is a pathChain, we can have Pedro hold the end point while we are grabbing the sample */
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = collectSampleLeft;
+                    //    currentPath = collectSampleLeft;
                         follower.followPath(currentPath, true);
                         setPathState(6);
                     }
@@ -137,7 +119,7 @@ public class SpecimenAuto extends OpMode {
                     /* Grab Sample */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = scoreSampleLeft;
+                    //    currentPath = scoreSampleLeft;
                         follower.followPath(currentPath, true);
                         setPathState(7);
                     }
@@ -149,7 +131,7 @@ public class SpecimenAuto extends OpMode {
 
                     /* Since this is a pathChain, we can have Pedro hold the end point while we are parked */
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                        currentPath = touchBar;
+                    //    currentPath = touchBar;
                         follower.followPath(currentPath,true);
                         setPathState(8);
                     }
