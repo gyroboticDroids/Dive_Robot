@@ -31,17 +31,29 @@ public class SpecimenAuto extends OpMode {
     private int actionState;
     private Path currentPath;
 
-    private Path scorePreload, intakeSpecimenRight, outtakeSpecimenRight, intakeSpecimenCenter, outtakeSpecimenCenter, intakeSpecimenLeft;
+    private Path scorePreload, intakeSpecimenLeft, outtakeSpecimenLeft, intakeSpecimenCenter, outtakeSpecimenCenter, intakeSpecimenRight, outtakeSpecimenRight;
 
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE)));
         scorePreload.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_START.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
 
-        intakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
-        intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading());
+        intakeSpecimenLeft = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), new Point(AutoConstants.SPECIMEN_INTAKE_LEFT.getX(), AutoConstants.SPECIMEN_SCORE.getY()), new Point(AutoConstants.SPECIMEN_INTAKE_LEFT)));
+        intakeSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_INTAKE_LEFT.getHeading());
 
-        outtakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
-        intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading());
+        outtakeSpecimenLeft = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_LEFT), new Point(AutoConstants.SPECIMEN_OUTTAKE_LEFT)));
+        outtakeSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_LEFT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE_LEFT.getHeading());
+
+        intakeSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_INTAKE_CENTER)));
+        intakeSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_INTAKE_CENTER.getHeading());
+
+        outtakeSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_CENTER), new Point(AutoConstants.SPECIMEN_OUTTAKE_CENTER)));
+        outtakeSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_CENTER.getHeading(), AutoConstants.SPECIMEN_OUTTAKE_CENTER.getHeading());
+
+        intakeSpecimenRight = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_OUTTAKE_CENTER), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
+        intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_CENTER.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading());
+
+        outtakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT)));
+        outtakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading());
     }
 
     public void autonomousPathUpdate() {
@@ -77,7 +89,7 @@ public class SpecimenAuto extends OpMode {
                     /* Grab Sample */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                    //    currentPath = scoreSampleRight;
+                        currentPath = outtakeSpecimenRight;
                         follower.followPath(currentPath, true);
                         setPathState(3);
                     }
@@ -88,7 +100,7 @@ public class SpecimenAuto extends OpMode {
                     /* Score Sample */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                    //    currentPath = collectSampleMiddle;
+                        currentPath = intakeSpecimenCenter;
                         follower.followPath(currentPath, true);
                         setPathState(4);
                     }
@@ -99,7 +111,7 @@ public class SpecimenAuto extends OpMode {
                     /* Grab Sample */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                    //   currentPath = scoreSampleMiddle;
+                       currentPath = outtakeSpecimenCenter;
                         follower.followPath(currentPath, true);
                         setPathState(5);
                     }
@@ -109,9 +121,8 @@ public class SpecimenAuto extends OpMode {
                 if(robotInPos) {
                     /* Score Sample */
 
-                    /* Since this is a pathChain, we can have Pedro hold the end point while we are grabbing the sample */
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                    //    currentPath = collectSampleLeft;
+                        currentPath = intakeSpecimenLeft;
                         follower.followPath(currentPath, true);
                         setPathState(6);
                     }
@@ -122,7 +133,7 @@ public class SpecimenAuto extends OpMode {
                     /* Grab Sample */
 
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                    //    currentPath = scoreSampleLeft;
+                        currentPath = outtakeSpecimenLeft;
                         follower.followPath(currentPath, true);
                         setPathState(7);
                     }
@@ -134,7 +145,7 @@ public class SpecimenAuto extends OpMode {
 
                     /* Since this is a pathChain, we can have Pedro hold the end point while we are parked */
                     if(pathTimer.getElapsedTimeSeconds() > 7) {
-                    //    currentPath = touchBar;
+                      //  currentPath = touchBar;
                         follower.followPath(currentPath,true);
                         setPathState(8);
                     }
@@ -154,13 +165,13 @@ public class SpecimenAuto extends OpMode {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
-                outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
                 setActionState(-1);
                 break;
 
             case 1:
                 if(!outtake.isBusy()) {
-                    outtake.setState(OuttakeConstants.SCORE_SAMPLE);
+                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
                     setActionState(-1);
                 }
                 break;
