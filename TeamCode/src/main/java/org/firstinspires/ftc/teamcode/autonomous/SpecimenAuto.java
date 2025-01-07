@@ -31,14 +31,17 @@ public class SpecimenAuto extends OpMode {
     private int actionState;
     private Path currentPath;
 
-    private Path scorePreload, intakeSpecimenRight, outtakeSpecimenRight;
+    private Path scorePreload, intakeSpecimenRight, outtakeSpecimenRight, intakeSpecimenCenter, outtakeSpecimenCenter, intakeSpecimenLeft;
 
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE)));
         scorePreload.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_START.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
 
-        scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE)));
-        scorePreload.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_START.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
+        intakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
+        intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading());
+
+        outtakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
+        intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading());
     }
 
     public void autonomousPathUpdate() {
@@ -221,7 +224,7 @@ public class SpecimenAuto extends OpMode {
 
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(AutoConstants.START_POSE);
+        //follower.setStartingPose(AutoConstants.START_POSE);
         buildPaths();
 
         currentPath = scorePreload;
