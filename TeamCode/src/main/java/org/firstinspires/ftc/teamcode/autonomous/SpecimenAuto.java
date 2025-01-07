@@ -104,7 +104,7 @@ public class SpecimenAuto extends OpMode {
 
             case 1:
                 if(robotInPos){
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
                         currentPath = intakeSpecimenLeft;
                         follower.followPath(currentPath, true);
                         setPathState(2);
@@ -114,7 +114,7 @@ public class SpecimenAuto extends OpMode {
 
             case 2:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
                         currentPath = outtakeSpecimenLeft;
                         follower.followPath(currentPath, true);
                         setPathState(3);
@@ -124,7 +124,7 @@ public class SpecimenAuto extends OpMode {
 
             case 3:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
                         currentPath = intakeSpecimenCenter;
                         follower.followPath(currentPath, true);
                         setPathState(4);
@@ -134,7 +134,7 @@ public class SpecimenAuto extends OpMode {
 
             case 4:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
                        currentPath = outtakeSpecimenCenter;
                         follower.followPath(currentPath, true);
                         setPathState(5);
@@ -144,7 +144,7 @@ public class SpecimenAuto extends OpMode {
 
             case 5:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
                         currentPath = intakeSpecimenRight;
                         follower.followPath(currentPath, true);
                         setPathState(6);
@@ -154,7 +154,7 @@ public class SpecimenAuto extends OpMode {
 
             case 6:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
                         currentPath = outtakeSpecimenRight;
                         follower.followPath(currentPath, true);
                         setPathState(7);
@@ -164,7 +164,7 @@ public class SpecimenAuto extends OpMode {
 
             case 7:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
                         currentPath = grabSpecimenReady1;
                         follower.followPath(currentPath,true);
                         setPathState(8);
@@ -174,7 +174,7 @@ public class SpecimenAuto extends OpMode {
 
             case 8:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
                         currentPath = grabSpecimen;
                         follower.followPath(currentPath,true);
                         setPathState(9);
@@ -184,7 +184,7 @@ public class SpecimenAuto extends OpMode {
 
             case 9:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
                         currentPath = scoreSpecimen1;
                         follower.followPath(currentPath,true);
                         setPathState(10);
@@ -194,7 +194,7 @@ public class SpecimenAuto extends OpMode {
 
             case 10:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
                         currentPath = grabSpecimenReady2;
                         follower.followPath(currentPath,true);
                         setPathState(11);
@@ -204,8 +204,8 @@ public class SpecimenAuto extends OpMode {
 
             case 11:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
-                        currentPath = scoreSpecimen2;
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
+                        currentPath = grabSpecimen;
                         follower.followPath(currentPath,true);
                         setPathState(12);
                     }
@@ -214,8 +214,8 @@ public class SpecimenAuto extends OpMode {
 
             case 12:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
-                        currentPath = grabSpecimenReady3;
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
+                        currentPath = scoreSpecimen2;
                         follower.followPath(currentPath,true);
                         setPathState(13);
                     }
@@ -224,8 +224,8 @@ public class SpecimenAuto extends OpMode {
 
             case 13:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
-                        currentPath = scoreSpecimen3;
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
+                        currentPath = grabSpecimenReady3;
                         follower.followPath(currentPath,true);
                         setPathState(14);
                     }
@@ -234,8 +234,8 @@ public class SpecimenAuto extends OpMode {
 
             case 14:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
-                        currentPath = grabSpecimenReady4;
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
+                        currentPath = grabSpecimen;
                         follower.followPath(currentPath,true);
                         setPathState(15);
                     }
@@ -244,8 +244,8 @@ public class SpecimenAuto extends OpMode {
 
             case 15:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
-                        currentPath = scoreSpecimen4;
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
+                        currentPath = scoreSpecimen3;
                         follower.followPath(currentPath,true);
                         setPathState(16);
                     }
@@ -254,10 +254,40 @@ public class SpecimenAuto extends OpMode {
 
             case 16:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 5) {
-                        currentPath = grabSpecimenReady5;
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
+                        currentPath = grabSpecimenReady4;
                         follower.followPath(currentPath,true);
                         setPathState(17);
+                    }
+                }
+                break;
+
+            case 17:
+                if(robotInPos) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
+                        currentPath = grabSpecimen;
+                        follower.followPath(currentPath,true);
+                        setPathState(18);
+                    }
+                }
+                break;
+
+            case 18:
+                if(robotInPos) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
+                        currentPath = scoreSpecimen4;
+                        follower.followPath(currentPath,true);
+                        setPathState(19);
+                    }
+                }
+                break;
+
+            case 19:
+                if(robotInPos) {
+                    if(pathTimer.getElapsedTimeSeconds() > 1) {
+                        currentPath = grabSpecimenReady5;
+                        follower.followPath(currentPath,true);
+                        setPathState(20);
                     }
                 }
                 break;
@@ -294,7 +324,7 @@ public class SpecimenAuto extends OpMode {
 
             case 12:
                 if(intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 10) {
-                    intake.setState(IntakeConstants.TRANSFER);
+                    intake.setState(IntakeConstants.REJECT);
                     setActionState(13);
                 }
                 break;
