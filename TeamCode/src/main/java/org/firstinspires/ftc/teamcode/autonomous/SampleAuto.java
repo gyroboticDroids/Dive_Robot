@@ -25,11 +25,14 @@ import pedroPathing.constants.LConstants;
 public class SampleAuto extends OpMode {
     private Follower follower;
     private Timer pathTimer;
+    private Timer actionTimer;
     private Intake intake;
     private Outtake outtake;
     private int pathState = -1;
     private int actionState = -1;
     private boolean onsSetState;
+    private boolean onsActionState;
+    private boolean onsSlideBackState;
     private Path currentPath;
 
     private Path scorePreload, collectSampleRight, scoreSampleRight, collectSampleCenter, scoreSampleCenter, collectSampleLeft, scoreSampleLeft, touchBar;
@@ -73,6 +76,7 @@ public class SampleAuto extends OpMode {
             case 0:
                 if(onsSetState){
                     setActionState(0);
+                    intake.setState(IntakeConstants.RESET_POS);
                 }
 
                 if(!onsSetState && outtake.getVertSlidePos() > outtake.getVertPosition() - 2000) {
@@ -99,8 +103,9 @@ public class SampleAuto extends OpMode {
 
             case 2:
                 if(robotInPos) {
-                    if(!(actionState == 10)) {
+                    if(onsActionState) {
                         setActionState(10);
+                        onsActionState = false;
                     }
                     if(actionState == -1) {
                         currentPath = scoreSampleRight;
@@ -127,8 +132,9 @@ public class SampleAuto extends OpMode {
 
             case 4:
                 if(robotInPos) {
-                    if(!(actionState == 10)) {
+                    if(onsActionState) {
                         setActionState(10);
+                        onsActionState = false;
                     }
                     if(actionState == -1) {
                         currentPath = scoreSampleCenter;
@@ -155,8 +161,9 @@ public class SampleAuto extends OpMode {
 
             case 6:
                 if(robotInPos) {
-                    if(!(actionState == 10)) {
+                    if(onsActionState) {
                         setActionState(10);
+                        onsActionState = false;
                     }
                     if(actionState == -1) {
                         currentPath = scoreSampleLeft;
@@ -222,8 +229,15 @@ public class SampleAuto extends OpMode {
 
             case 12:
                 if(intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - IntakeConstants.SLIDES_ACCURACY) {
-                    intake.setState(IntakeConstants.TRANSFER);
-                    setActionState(13);
+                    if(onsSlideBackState)
+                    {
+                        actionTimer.resetTimer();
+                        onsSlideBackState = false;
+                    }
+                    if(actionTimer.getElapsedTimeSeconds() > 0.75) {
+                        intake.setState(IntakeConstants.TRANSFER);
+                        setActionState(13);
+                    }
                 }
                 break;
 
@@ -249,26 +263,31 @@ public class SampleAuto extends OpMode {
     public void setPathState(int pState) {
         pathState = pState;
         onsSetState = true;
+        onsActionState = true;
         pathTimer.resetTimer();
     }
 
     public void setActionState(int aState) {
         actionState = aState;
+        onsSlideBackState = true;
+        actionTimer.resetTimer();
     }
 
     @Override
     public void init()
     {
         intake = new Intake(hardwareMap);
-        intake.setState(IntakeConstants.RESET_POS);
+        intake.setState(IntakeConstants.START);
 
         outtake = new Outtake(hardwareMap);
 
         pathTimer = new Timer();
+        actionTimer = new Timer();
 
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(AutoConstants.SAMPLE_START);
+        follower.setMaxPower(0.6);
         buildPaths();
 
         currentPath = scorePreload;
@@ -280,6 +299,7 @@ public class SampleAuto extends OpMode {
     @Override
     public void start() {
         pathTimer.resetTimer();
+        actionTimer.resetTimer();
         setPathState(0);
     }
 
@@ -296,6 +316,10 @@ public class SampleAuto extends OpMode {
         // Feedback to Driver Hub
         telemetry.addData("path state", pathState);
         telemetry.addData("action state", actionState);
+        telemetry.addData("intake state", intake.getState());
+        telemetry.addData("hori slide pos", intake.getHorizontalSlidePos());
+        telemetry.addData("hori slide setpoint", intake.getHorizontalPosition());
+        telemetry.addData("intake is busy", intake.isBusy());
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());

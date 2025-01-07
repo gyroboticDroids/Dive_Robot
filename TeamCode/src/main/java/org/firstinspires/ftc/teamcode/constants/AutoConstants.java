@@ -8,7 +8,7 @@ public class AutoConstants {
     public static Pose SAMPLE_SCORE = new Pose(13, 131, Math.toRadians(-45));
     public static Pose SAMPLE_RIGHT = new Pose(16, 121, Math.toRadians(0));
     public static Pose SAMPLE_CENTER = new Pose(20, 131, Math.toRadians(0));
-    public static Pose SAMPLE_LEFT = new Pose(24, 136, Math.toRadians(15));
+    public static Pose SAMPLE_LEFT = new Pose(20, 128, Math.toRadians(30));
     public static Pose SAMPLE_PARK = new Pose(60, 94, Math.toRadians(0));
 
     //Poses in SpecimenAuto

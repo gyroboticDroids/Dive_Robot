@@ -58,8 +58,8 @@ public class Outtake {
                 break;
 
             case IntakeConstants.RESET_POS:
-                hardware.outtakeSlide1.setPower(-0.3);
-                hardware.outtakeSlide2.setPower(-0.3);
+                hardware.outtakeSlide1.setPower(-0.2);
+                hardware.outtakeSlide2.setPower(-0.2);
 
                 if(actionTimer.getElapsedTimeSeconds() > 1)
                 {
