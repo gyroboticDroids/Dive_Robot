@@ -31,7 +31,7 @@ public class SpecimenAuto extends OpMode {
     private int actionState;
     private Path currentPath;
 
-    private Path scorePreload, intakeSpecimenLeft, outtakeSpecimenLeft, intakeSpecimenCenter, outtakeSpecimenCenter, intakeSpecimenRight, outtakeSpecimenRight;
+    private Path scorePreload, intakeSpecimenLeft, outtakeSpecimenLeft, intakeSpecimenCenter, outtakeSpecimenCenter, intakeSpecimenRight, outtakeSpecimenRight, grabSpecimenReady1, grabSpecimen, scoreSpecimen, grabSpecimenReady2;
 
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE)));
@@ -54,6 +54,9 @@ public class SpecimenAuto extends OpMode {
 
         outtakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT)));
         outtakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading());
+
+        grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT)));
+        grabSpecimenReady1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading());
     }
 
     public void autonomousPathUpdate() {
