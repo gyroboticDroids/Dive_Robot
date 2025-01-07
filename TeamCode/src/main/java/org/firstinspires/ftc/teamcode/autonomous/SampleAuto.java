@@ -33,29 +33,29 @@ public class SampleAuto extends OpMode {
     private Path scorePreload, collectSampleRight, scoreSampleRight, collectSampleMiddle, scoreSampleMiddle, collectSampleLeft, scoreSampleLeft, touchBar;
 
     public void buildPaths() {
-        scorePreload = new Path(new BezierLine(new Point(AutoConstants.START_POSE), new Point(AutoConstants.SCORE_SAMPLE)));
-        scorePreload.setLinearHeadingInterpolation(AutoConstants.START_POSE.getHeading(), AutoConstants.SCORE_SAMPLE.getHeading());
+        scorePreload = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE)));
+        scorePreload.setLinearHeadingInterpolation(AutoConstants.SAMPLE_START.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
 
-        collectSampleRight = new Path(new BezierLine(new Point(AutoConstants.SCORE_SAMPLE), new Point(AutoConstants.SAMPLE_RIGHT)));
-        collectSampleRight.setLinearHeadingInterpolation(AutoConstants.SCORE_SAMPLE.getHeading(), AutoConstants.SAMPLE_RIGHT.getHeading());
+        collectSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_RIGHT)));
+        collectSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_RIGHT.getHeading());
 
-        scoreSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_RIGHT), new Point(AutoConstants.SCORE_SAMPLE)));
-        scoreSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_RIGHT.getHeading(), AutoConstants.SCORE_SAMPLE.getHeading());
+        scoreSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_RIGHT), new Point(AutoConstants.SAMPLE_SCORE)));
+        scoreSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_RIGHT.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
 
-        collectSampleMiddle = new Path(new BezierLine(new Point(AutoConstants.SCORE_SAMPLE), new Point(AutoConstants.SAMPLE_MIDDLE)));
-        collectSampleMiddle.setLinearHeadingInterpolation(AutoConstants.SCORE_SAMPLE.getHeading(), AutoConstants.SAMPLE_MIDDLE.getHeading());
+        collectSampleMiddle = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_MIDDLE)));
+        collectSampleMiddle.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_MIDDLE.getHeading());
 
-        scoreSampleMiddle = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_MIDDLE), new Point(AutoConstants.SCORE_SAMPLE)));
-        scoreSampleMiddle.setLinearHeadingInterpolation(AutoConstants.SAMPLE_MIDDLE.getHeading(), AutoConstants.SCORE_SAMPLE.getHeading());
+        scoreSampleMiddle = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_MIDDLE), new Point(AutoConstants.SAMPLE_SCORE)));
+        scoreSampleMiddle.setLinearHeadingInterpolation(AutoConstants.SAMPLE_MIDDLE.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
 
-        collectSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SCORE_SAMPLE), new Point(AutoConstants.SAMPLE_LEFT)));
-        collectSampleLeft.setLinearHeadingInterpolation(AutoConstants.SCORE_SAMPLE.getHeading(), AutoConstants.SAMPLE_LEFT.getHeading());
+        collectSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_LEFT)));
+        collectSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_LEFT.getHeading());
 
-        scoreSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_LEFT), new Point(AutoConstants.SCORE_SAMPLE)));
-        scoreSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_LEFT.getHeading(), AutoConstants.SCORE_SAMPLE.getHeading());
+        scoreSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_LEFT), new Point(AutoConstants.SAMPLE_SCORE)));
+        scoreSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_LEFT.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
 
-        touchBar = new Path(new BezierCurve(new Point(AutoConstants.SCORE_SAMPLE), new Point(AutoConstants.PARK.getX(), AutoConstants.SCORE_SAMPLE.getY()), new Point(AutoConstants.PARK)));
-        touchBar.setLinearHeadingInterpolation(AutoConstants.SCORE_SAMPLE.getHeading(), AutoConstants.PARK.getHeading());
+        touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_PARK)));
+        touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
     }
 
     public void autonomousPathUpdate() {
@@ -250,7 +250,7 @@ public class SampleAuto extends OpMode {
 
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(AutoConstants.START_POSE);
+        follower.setStartingPose(AutoConstants.SAMPLE_START);
         buildPaths();
 
         currentPath = scorePreload;
