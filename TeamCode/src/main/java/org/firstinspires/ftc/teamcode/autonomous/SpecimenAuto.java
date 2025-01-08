@@ -27,8 +27,8 @@ public class SpecimenAuto extends OpMode {
     private Timer actionTimer;
     private Intake intake;
     private Outtake outtake;
-    private int pathState;
-    private int actionState;
+    private int pathState = -1;
+    private int actionState = -1;
     private Path currentPath;
 
     private Path scorePreload, intakeSpecimenLeft, outtakeSpecimenLeft, intakeSpecimenCenter, outtakeSpecimenCenter, intakeSpecimenRight, outtakeSpecimenRight, grabSpecimenReady1,
@@ -99,201 +99,168 @@ public class SpecimenAuto extends OpMode {
             case 0:
                 currentPath = scorePreload;
                 follower.followPath(currentPath, true);
+                setActionState(0);
                 setPathState(1);
                 break;
 
             case 1:
-                if(robotInPos){
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = intakeSpecimenLeft;
-                        follower.followPath(currentPath, true);
-                        setPathState(2);
-                    }
+                if(robotInPos && !outtake.isBusy()) {
+                    currentPath = intakeSpecimenLeft;
+                    follower.followPath(currentPath, true);
                 }
+
+                if (robotInPos) {
+                    setActionState(1);
+                }
+                setPathState(2);
                 break;
 
             case 2:
-                if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = outtakeSpecimenLeft;
-                        follower.followPath(currentPath, true);
-                        setPathState(3);
-                    }
+                if(robotInPos && intake.isBusy()) {
+                    currentPath = outtakeSpecimenLeft;
+                    follower.followPath(currentPath, true);
+                    setPathState(3);
                 }
                 break;
 
             case 3:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = intakeSpecimenCenter;
-                        follower.followPath(currentPath, true);
-                        setPathState(4);
-                    }
+                    currentPath = intakeSpecimenCenter;
+                    follower.followPath(currentPath, true);
+                    setPathState(4);
                 }
                 break;
 
             case 4:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                       currentPath = outtakeSpecimenCenter;
-                        follower.followPath(currentPath, true);
-                        setPathState(5);
-                    }
+                   currentPath = outtakeSpecimenCenter;
+                   follower.followPath(currentPath, true);
+                   setPathState(5);
                 }
                 break;
 
             case 5:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = intakeSpecimenRight;
-                        follower.followPath(currentPath, true);
-                        setPathState(6);
-                    }
+                    currentPath = intakeSpecimenRight;
+                    follower.followPath(currentPath, true);
+                    setPathState(6);
                 }
                 break;
 
             case 6:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = outtakeSpecimenRight;
-                        follower.followPath(currentPath, true);
-                        setPathState(7);
-                    }
+                    currentPath = outtakeSpecimenRight;
+                    follower.followPath(currentPath, true);
+                    setPathState(7);
                 }
                 break;
 
             case 7:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = grabSpecimenReady1;
-                        follower.followPath(currentPath,true);
-                        setPathState(8);
-                    }
+                    currentPath = grabSpecimenReady1;
+                    follower.followPath(currentPath,true);
+                    setPathState(8);
                 }
                 break;
 
             case 8:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = grabSpecimen;
-                        follower.followPath(currentPath,true);
-                        setPathState(9);
-                    }
+                    currentPath = grabSpecimen;
+                    follower.followPath(currentPath,true);
+                    setPathState(9);
                 }
                 break;
 
             case 9:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = scoreSpecimen1;
-                        follower.followPath(currentPath,true);
-                        setPathState(10);
-                    }
+                    currentPath = scoreSpecimen1;
+                    follower.followPath(currentPath,true);
+                    setPathState(10);
                 }
                 break;
 
             case 10:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = grabSpecimenReady2;
-                        follower.followPath(currentPath,true);
-                        setPathState(11);
-                    }
+                    currentPath = grabSpecimenReady2;
+                    follower.followPath(currentPath,true);
+                    setPathState(11);
                 }
                 break;
 
             case 11:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = grabSpecimen;
-                        follower.followPath(currentPath,true);
-                        setPathState(12);
-                    }
+                    currentPath = grabSpecimen;
+                    follower.followPath(currentPath,true);
+                    setPathState(12);
                 }
                 break;
 
             case 12:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = scoreSpecimen2;
-                        follower.followPath(currentPath,true);
-                        setPathState(13);
-                    }
+                    currentPath = scoreSpecimen2;
+                    follower.followPath(currentPath,true);
+                    setPathState(13);
                 }
                 break;
 
             case 13:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = grabSpecimenReady3;
-                        follower.followPath(currentPath,true);
-                        setPathState(14);
-                    }
+                    currentPath = grabSpecimenReady3;
+                    follower.followPath(currentPath,true);
+                    setPathState(14);
                 }
                 break;
 
             case 14:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = grabSpecimen;
-                        follower.followPath(currentPath,true);
-                        setPathState(15);
-                    }
+                    currentPath = grabSpecimen;
+                    follower.followPath(currentPath,true);
+                    setPathState(15);
                 }
                 break;
 
             case 15:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = scoreSpecimen3;
-                        follower.followPath(currentPath,true);
-                        setPathState(16);
-                    }
+                    currentPath = scoreSpecimen3;
+                    follower.followPath(currentPath,true);
+                    setPathState(16);
                 }
                 break;
 
             case 16:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = grabSpecimenReady4;
-                        follower.followPath(currentPath,true);
-                        setPathState(17);
-                    }
+                    currentPath = grabSpecimenReady4;
+                    follower.followPath(currentPath,true);
+                    setPathState(17);
                 }
                 break;
 
             case 17:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = grabSpecimen;
-                        follower.followPath(currentPath,true);
-                        setPathState(18);
-                    }
+                    currentPath = grabSpecimen;
+                    follower.followPath(currentPath,true);
+                    setPathState(18);
                 }
                 break;
 
             case 18:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = scoreSpecimen4;
-                        follower.followPath(currentPath,true);
-                        setPathState(19);
-                    }
+                    currentPath = scoreSpecimen4;
+                    follower.followPath(currentPath,true);
+                    setPathState(19);
                 }
                 break;
 
             case 19:
                 if(robotInPos) {
-                    if(pathTimer.getElapsedTimeSeconds() > 1) {
-                        currentPath = grabSpecimenReady5;
-                        follower.followPath(currentPath,true);
-                        setPathState(20);
-                    }
+                    currentPath = grabSpecimenReady5;
+                    follower.followPath(currentPath,true);
+                    setPathState(20);
                 }
                 break;
         }
     }
-
+//TODO:
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
@@ -304,29 +271,31 @@ public class SpecimenAuto extends OpMode {
             case 1:
                 if(!outtake.isBusy()) {
                     outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
-                    setActionState(-1);
+                    setActionState(10);
                 }
                 break;
 
             case 10:
-                outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-                intake.setState(IntakeConstants.INTAKE_SUB_READY);
-                setActionState(11);
+                if(!outtake.isBusy()) {
+                    outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
+                    setActionState(-1);
+                }
+
                 break;
 
             case 11:
-                if(!intake.isBusy()) {
+                intake.setState(IntakeConstants.INTAKE_SUB_READY);
+
+                if (actionTimer.getElapsedTimeSeconds() > 1) {
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
-                    setActionState(12);
                 }
-                break;
+                setActionState(12);
+            break;
 
             case 12:
-                if(intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 10) {
-                    intake.setState(IntakeConstants.REJECT);
-                    setActionState(13);
-                }
+                intake.setState(IntakeConstants.REJECT);
+                setActionState(13);
                 break;
 
             case 13:
