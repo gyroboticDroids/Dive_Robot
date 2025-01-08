@@ -76,8 +76,11 @@ public class Hang {
                 }
                 outtake.vertSlidesUpdate();
                 break;
-        }
 
+            case HangConstants.TOUCH_BAR:
+                hardware.hangRight.setPosition(HangConstants.RIGHT_UP);
+                break;
+        }
         onsSetState = false;
     }
 

@@ -14,4 +14,5 @@ public class HangConstants {
     public static final String HANG_READY = "hang ready";
     public static final String LVL_2 = "lvl 2";
     public static final String LVL_3 = "lvl 3";
+    public static final String TOUCH_BAR = "touch bar";
 }
