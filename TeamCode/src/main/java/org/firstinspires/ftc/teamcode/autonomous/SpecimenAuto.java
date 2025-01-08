@@ -104,7 +104,7 @@ public class SpecimenAuto extends OpMode {
                 break;
 
             case 1:
-                if(robotInPos && !outtake.isBusy()) {
+                if(robotInPos) {
                     currentPath = intakeSpecimenLeft;
                     follower.followPath(currentPath, true);
                 }
@@ -116,7 +116,7 @@ public class SpecimenAuto extends OpMode {
                 break;
 
             case 2:
-                if(robotInPos && intake.isBusy()) {
+                if(robotInPos) {
                     currentPath = outtakeSpecimenLeft;
                     follower.followPath(currentPath, true);
                     setPathState(3);
