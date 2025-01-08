@@ -25,6 +25,8 @@ import pedroPathing.constants.LConstants;
 @Autonomous(name = "4 sample auto", group = "autonomous", preselectTeleOp = "Master Tele-op")
 public class SampleAuto extends OpMode {
     private static final int OUTTAKE_UP = 500;
+    private static final double ZERO_POWER_ACCEL_MULTIPLIER = 1;
+
     private int slideRangeSubtract = 100;
 
     private Follower follower;
@@ -46,30 +48,39 @@ public class SampleAuto extends OpMode {
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE_READY)));
         scorePreload.setLinearHeadingInterpolation(AutoConstants.SAMPLE_START.getHeading(), AutoConstants.SAMPLE_SCORE_READY.getHeading());
+        scorePreload.setZeroPowerAccelerationMultiplier(ZERO_POWER_ACCEL_MULTIPLIER);
 
         intoBucket = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_READY), new Point(AutoConstants.SAMPLE_SCORE)));
         intoBucket.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_READY.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
+        intoBucket.setZeroPowerAccelerationMultiplier(ZERO_POWER_ACCEL_MULTIPLIER);
 
         collectSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_RIGHT)));
         collectSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_RIGHT.getHeading());
+        collectSampleRight.setZeroPowerAccelerationMultiplier(ZERO_POWER_ACCEL_MULTIPLIER);
 
         scoreSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_RIGHT), new Point(AutoConstants.SAMPLE_SCORE_READY)));
         scoreSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_RIGHT.getHeading(), AutoConstants.SAMPLE_SCORE_READY.getHeading());
+        scoreSampleRight.setZeroPowerAccelerationMultiplier(ZERO_POWER_ACCEL_MULTIPLIER);
 
         collectSampleCenter = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_CENTER)));
         collectSampleCenter.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_CENTER.getHeading());
+        collectSampleCenter.setZeroPowerAccelerationMultiplier(ZERO_POWER_ACCEL_MULTIPLIER);
 
         scoreSampleCenter = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_CENTER), new Point(AutoConstants.SAMPLE_SCORE_READY)));
         scoreSampleCenter.setLinearHeadingInterpolation(AutoConstants.SAMPLE_CENTER.getHeading(), AutoConstants.SAMPLE_SCORE_READY.getHeading());
+        scoreSampleCenter.setZeroPowerAccelerationMultiplier(ZERO_POWER_ACCEL_MULTIPLIER);
 
         collectSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_LEFT)));
         collectSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_LEFT.getHeading());
+        collectSampleLeft.setZeroPowerAccelerationMultiplier(ZERO_POWER_ACCEL_MULTIPLIER);
 
         scoreSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_LEFT), new Point(AutoConstants.SAMPLE_SCORE_READY)));
         scoreSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_LEFT.getHeading(), AutoConstants.SAMPLE_SCORE_READY.getHeading());
+        scoreSampleLeft.setZeroPowerAccelerationMultiplier(ZERO_POWER_ACCEL_MULTIPLIER);
 
         touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE_READY.getY()), new Point(AutoConstants.SAMPLE_PARK)));
         touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
+        touchBar.setZeroPowerAccelerationMultiplier(ZERO_POWER_ACCEL_MULTIPLIER);
     }
 
     public void autonomousPathUpdate() {

@@ -197,7 +197,7 @@ public class MasterTeleop extends OpMode {
                     intake.setState(IntakeConstants.RESET_POS);
             } else if (gamepad2.left_bumper && !prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
                     || prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
-                outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+                outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);/*Outtake*/
                 intake.setState(IntakeConstants.INTAKE_SUB_READY);
             } else if (gamepad2.left_bumper && !prevGp2LeftBumper && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
                     || prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
@@ -205,6 +205,9 @@ public class MasterTeleop extends OpMode {
             } else if ((gamepad2.right_bumper || gamepad1.right_bumper) && (prevIntakeState.equals(IntakeConstants.TRANSFER)
                     || prevIntakeState.equals(IntakeConstants.START))) {
                 intake.setState(IntakeConstants.INTAKE_SUB_READY);
+                if(!outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)){
+                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);/*Outtake*/
+                }
             } else if (gamepad2.dpad_down && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT)
                     || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
                 intake.setState(IntakeConstants.INTAKE);
