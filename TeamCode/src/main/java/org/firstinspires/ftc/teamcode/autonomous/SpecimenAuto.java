@@ -117,41 +117,51 @@ public class SpecimenAuto extends OpMode {
 
             case 2:
                 if(robotInPos) {
-                    currentPath = outtakeSpecimenLeft;
-                    follower.followPath(currentPath, true);
-                    setPathState(3);
+                    if(actionTimer.getElapsedTimeSeconds() > 2) {
+                        currentPath = outtakeSpecimenLeft;
+                        follower.followPath(currentPath, true);
+                        setPathState(3);
+                    }
                 }
                 break;
 
             case 3:
                 if(robotInPos) {
-                    currentPath = intakeSpecimenCenter;
-                    follower.followPath(currentPath, true);
-                    setPathState(4);
+                    if(actionTimer.getElapsedTimeSeconds() > 2) {
+                        currentPath = intakeSpecimenCenter;
+                        follower.followPath(currentPath, true);
+                        setPathState(4);
+                    }
                 }
                 break;
 
             case 4:
                 if(robotInPos) {
-                   currentPath = outtakeSpecimenCenter;
-                   follower.followPath(currentPath, true);
-                   setPathState(5);
+                    if(actionTimer.getElapsedTimeSeconds() > 2) {
+                        currentPath = outtakeSpecimenCenter;
+                        follower.followPath(currentPath, true);
+                        setPathState(5);
+                    }
                 }
                 break;
 
             case 5:
                 if(robotInPos) {
-                    currentPath = intakeSpecimenRight;
-                    follower.followPath(currentPath, true);
-                    setPathState(6);
+                    if(actionTimer.getElapsedTimeSeconds() > 2) {
+                        currentPath = intakeSpecimenRight;
+                        follower.followPath(currentPath, true);
+                        setPathState(6);
+                    }
                 }
                 break;
 
             case 6:
                 if(robotInPos) {
-                    currentPath = outtakeSpecimenRight;
-                    follower.followPath(currentPath, true);
-                    setPathState(7);
+                    if(actionTimer.getElapsedTimeSeconds() > 2) {
+                        currentPath = outtakeSpecimenRight;
+                        follower.followPath(currentPath, true);
+                        setPathState(7);
+                    }
                 }
                 break;
 

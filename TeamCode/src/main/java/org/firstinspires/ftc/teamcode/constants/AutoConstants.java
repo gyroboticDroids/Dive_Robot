@@ -11,12 +11,12 @@ public class AutoConstants {
     public static Pose SAMPLE_RIGHT = new Pose(20, 121, Math.toRadians(0));
     public static Pose SAMPLE_CENTER = new Pose(20, 131, Math.toRadians(0));
     public static Pose SAMPLE_LEFT = new Pose(24, 129.5, Math.toRadians(29));
-    public static Pose SAMPLE_PARK = new Pose(60, 94, Math.toRadians(0));
+    public static Pose SAMPLE_PARK = new Pose(60, 93, Math.toRadians(0));
 
-    //Poses in SpecimenAuto
+    //Poses in OldSpecimenAuto
     public static Pose SPECIMEN_START = new Pose(7.125, 68, Math.toRadians(0));
     public static Pose SPECIMEN_SCORE = new Pose(42, 68, Math.toRadians(0));
-    public static Pose SPECIMEN_INTAKE_LEFT = new Pose(24, 42, Math.toRadians(-30));
+    public static Pose SPECIMEN_INTAKE_LEFT = new Pose(60, 42, Math.toRadians(-30));
     public static Pose SPECIMEN_OUTTAKE_LEFT = new Pose(36, 42, Math.toRadians(-135));
     public static Pose SPECIMEN_INTAKE_CENTER = new Pose(24, 34, Math.toRadians(-30));
     public static Pose SPECIMEN_OUTTAKE_CENTER = new Pose(36, 34, Math.toRadians(-135));
