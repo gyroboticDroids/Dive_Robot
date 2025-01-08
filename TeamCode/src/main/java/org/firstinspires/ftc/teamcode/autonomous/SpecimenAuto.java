@@ -285,11 +285,6 @@ public class SpecimenAuto extends OpMode {
 
             case 11:
                 intake.setState(IntakeConstants.INTAKE_SUB_READY);
-
-                if (actionTimer.getElapsedTimeSeconds() > 1) {
-                    intake.setState(IntakeConstants.INTAKE);
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
-                }
                 setActionState(12);
             break;
 
@@ -300,6 +295,8 @@ public class SpecimenAuto extends OpMode {
 
             case 13:
                 if(!intake.isBusy()) {
+                    intake.setState(IntakeConstants.INTAKE);
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
                     setActionState(14);
                 }
