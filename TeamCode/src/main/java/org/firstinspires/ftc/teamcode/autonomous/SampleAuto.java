@@ -174,7 +174,6 @@ public class SampleAuto extends OpMode {
                         } else {
                             currentPath = touchBar;
                             follower.followPath(currentPath, true);
-                            DriveConstants.turnOffset = -90;
                             setActionState(20);
                             setPathState(8);
                         }

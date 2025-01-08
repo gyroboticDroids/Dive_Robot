@@ -9,7 +9,7 @@ public class AutoConstants {
     public static Pose SAMPLE_RIGHT = new Pose(16, 121, Math.toRadians(0));
     public static Pose SAMPLE_CENTER = new Pose(20, 131, Math.toRadians(0));
     public static Pose SAMPLE_LEFT = new Pose(19, 128, Math.toRadians(28));
-    public static Pose SAMPLE_PARK = new Pose(60, 94, Math.toRadians(-90));
+    public static Pose SAMPLE_PARK = new Pose(60, 94, Math.toRadians(0));
 
     //Poses in SpecimenAuto
     public static Pose SPECIMEN_START = new Pose(7.125, 68, Math.toRadians(0));
