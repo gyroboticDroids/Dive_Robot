@@ -45,7 +45,7 @@ public class MasterTeleop extends OpMode {
 
         //Sets all states to the starting states
         outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
-        intake.setState(IntakeConstants.TRANSFER);
+        intake.setState(IntakeConstants.RESET_POS);
         hang.setState(HangConstants.START);
     }
 

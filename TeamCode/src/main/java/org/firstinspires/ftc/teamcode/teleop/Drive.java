@@ -20,7 +20,7 @@ public class Drive {
 
     double turnPower;
 
-    double turnOffset = 0;
+    double turnOffset;
 
     private boolean driveBack = false;
 
@@ -28,6 +28,8 @@ public class Drive {
     {
         hardware = new Hardware(hardwareMap);
         gamepad = gamepad1;
+
+        turnOffset = DriveConstants.turnOffset;
     }
 
     public void update()
