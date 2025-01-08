@@ -25,7 +25,7 @@ import pedroPathing.constants.LConstants;
 @Autonomous(name = "4 sample auto", group = "autonomous", preselectTeleOp = "Master Tele-op")
 public class SampleAuto extends OpMode {
     private static final int OUTTAKE_UP = 500;
-    private int slideRange = 100;
+    private int slideRangeSubtract = 100;
 
     private Follower follower;
     private Timer pathTimer;
@@ -166,7 +166,7 @@ public class SampleAuto extends OpMode {
             case 6:
                 if (robotInPos) {
                     if (onsActionState) {
-                        slideRange = 500;
+                        slideRangeSubtract = 450;
                         setActionState(10);
                         onsActionState = false;
                     }
@@ -240,18 +240,18 @@ public class SampleAuto extends OpMode {
             case 11:
                 if (!intake.isBusy()) {
                     intake.setState(IntakeConstants.INTAKE);
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRange);
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract);
                     setActionState(12);
                 }
                 break;
 
             case 12:
-                if (intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - slideRange - IntakeConstants.SLIDES_ACCURACY) {
+                if (intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - slideRangeSubtract - IntakeConstants.SLIDES_ACCURACY) {
                     if (onsTimerState) {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.5) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.75) {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(13);
                     }
@@ -331,6 +331,7 @@ public class SampleAuto extends OpMode {
     public void loop() {
         outtake.update();
         intake.update();
+        hang.update();
         follower.update();
 
         autonomousPathUpdate();
