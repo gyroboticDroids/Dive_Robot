@@ -176,6 +176,11 @@ public class MasterTeleop extends OpMode {
 
     void intakeUpdate()
     {
+        if (!intake.getState().equals(IntakeConstants.RESET_POS))
+        {
+            intake.horizontalSlidesUpdate();
+        }
+
         //Stops the intake from interrupting hanging
         if (isHanging)
         {

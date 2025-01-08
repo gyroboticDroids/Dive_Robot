@@ -32,7 +32,7 @@ public class SampleAuto extends OpMode {
     private int actionState = -1;
     private boolean onsSetState;
     private boolean onsActionState;
-    private boolean onsSlideBackState;
+    private boolean onsTimerState;
     private Path currentPath;
 
     private Path scorePreload, collectSampleRight, scoreSampleRight, collectSampleCenter, scoreSampleCenter, collectSampleLeft, scoreSampleLeft, touchBar;
@@ -204,8 +204,10 @@ public class SampleAuto extends OpMode {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
-                outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
-                setActionState(14);
+                if(actionTimer.getElapsedTimeSeconds() > 0.25) {
+                    outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                    setActionState(14);
+                }
                 break;
 
             case 1:
@@ -229,12 +231,12 @@ public class SampleAuto extends OpMode {
 
             case 12:
                 if(intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - IntakeConstants.SLIDES_ACCURACY) {
-                    if(onsSlideBackState)
+                    if(onsTimerState)
                     {
                         actionTimer.resetTimer();
-                        onsSlideBackState = false;
+                        onsTimerState = false;
                     }
-                    if(actionTimer.getElapsedTimeSeconds() > 0.75) {
+                    if(actionTimer.getElapsedTimeSeconds() > 0.5) {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(13);
                     }
@@ -243,8 +245,15 @@ public class SampleAuto extends OpMode {
 
             case 13:
                 if(!intake.isBusy()) {
-                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
-                    setActionState(0);
+                    if(onsTimerState)
+                    {
+                        actionTimer.resetTimer();
+                        onsTimerState = false;
+                    }
+                    if(actionTimer.getElapsedTimeSeconds() > 0.25) {
+                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+                        setActionState(0);
+                    }
                 }
                 break;
 
@@ -269,7 +278,7 @@ public class SampleAuto extends OpMode {
 
     public void setActionState(int aState) {
         actionState = aState;
-        onsSlideBackState = true;
+        onsTimerState = true;
         actionTimer.resetTimer();
     }
 
