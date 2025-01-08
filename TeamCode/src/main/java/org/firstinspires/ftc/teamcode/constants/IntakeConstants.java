@@ -13,7 +13,7 @@ public class IntakeConstants {
     public static double PIVOT_START = 0.924;//
     public static double PIVOT_TRANSFER = 0.924;//
     public static double PIVOT_INTERMEDIATE = 0.532;//
-    public static double PIVOT_DOWN = 0.180;//
+    public static double PIVOT_DOWN = 0.190;//
 
     public static double INTAKE_FORWARD = 1;//
     public static double INTAKE_STOP = 0;//

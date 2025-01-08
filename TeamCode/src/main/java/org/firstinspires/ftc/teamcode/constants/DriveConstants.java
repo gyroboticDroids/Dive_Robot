@@ -8,5 +8,5 @@ public class DriveConstants {
 
     public static double DRIVE_TURN_P_GAIN = 0.022;
 
-    public float turnOffset = 0;
+    public static float turnOffset = 0;
 }

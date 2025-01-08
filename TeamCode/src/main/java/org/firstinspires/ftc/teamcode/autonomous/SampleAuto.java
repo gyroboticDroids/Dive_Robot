@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.constants.AutoConstants;
+import org.firstinspires.ftc.teamcode.constants.DriveConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.teleop.Intake;
@@ -36,7 +37,6 @@ public class SampleAuto extends OpMode {
     private Path currentPath;
 
     private Path scorePreload, collectSampleRight, scoreSampleRight, collectSampleCenter, scoreSampleCenter, collectSampleLeft, scoreSampleLeft, touchBar;
-    private PathChain scorePreload1;
 
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE)));
@@ -62,10 +62,6 @@ public class SampleAuto extends OpMode {
 
         touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_PARK)));
         touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
-
-        scorePreload1 = follower.pathBuilder()
-                .addPath(scorePreload)
-                .build();
     }
 
     public void autonomousPathUpdate() {
@@ -74,25 +70,24 @@ public class SampleAuto extends OpMode {
 
         switch (pathState) {
             case 0:
-                if(onsSetState){
+                if (onsSetState) {
                     setActionState(0);
                     intake.setState(IntakeConstants.RESET_POS);
                 }
 
-                if(!onsSetState && outtake.getVertSlidePos() > outtake.getVertPosition() - 2000) {
-                    currentPath = scorePreload1.getPath(0);
-                    follower.followPath(scorePreload1, true);
+                if (!onsSetState && outtake.getVertSlidePos() > outtake.getVertPosition() - 2500) {
+                    currentPath = scorePreload;
+                    follower.followPath(scorePreload, true);
                     setPathState(1);
                 }
                 break;
 
             case 1:
-                if(robotInPos){
-                    if(actionState == -1) {
-                        if(outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                if (robotInPos) {
+                    if (actionState == -1) {
+                        if (outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
                             setActionState(1);
-                        }
-                        else {
+                        } else {
                             currentPath = collectSampleRight;
                             follower.followPath(currentPath, true);
                             setPathState(2);
@@ -102,12 +97,12 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 2:
-                if(robotInPos) {
-                    if(onsActionState) {
+                if (robotInPos) {
+                    if (onsActionState) {
                         setActionState(10);
                         onsActionState = false;
                     }
-                    if(actionState == -1) {
+                    if ((actionState == -1 || actionState == 14) && outtake.getVertSlidePos() > 1000) {
                         currentPath = scoreSampleRight;
                         follower.followPath(currentPath, true);
                         setPathState(3);
@@ -116,12 +111,11 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 3:
-                if(robotInPos) {
-                    if(actionState == -1) {
-                        if(outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                if (robotInPos) {
+                    if (actionState == -1) {
+                        if (outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
                             setActionState(1);
-                        }
-                        else {
+                        } else {
                             currentPath = collectSampleCenter;
                             follower.followPath(currentPath, true);
                             setPathState(4);
@@ -131,12 +125,12 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 4:
-                if(robotInPos) {
-                    if(onsActionState) {
+                if (robotInPos) {
+                    if (onsActionState) {
                         setActionState(10);
                         onsActionState = false;
                     }
-                    if(actionState == -1) {
+                    if ((actionState == -1 || actionState == 14) && outtake.getVertSlidePos() > 1000) {
                         currentPath = scoreSampleCenter;
                         follower.followPath(currentPath, true);
                         setPathState(5);
@@ -145,12 +139,11 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 5:
-                if(robotInPos) {
-                    if(actionState == -1) {
-                        if(outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                if (robotInPos) {
+                    if (actionState == -1) {
+                        if (outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
                             setActionState(1);
-                        }
-                        else {
+                        } else {
                             currentPath = collectSampleLeft;
                             follower.followPath(currentPath, true);
                             setPathState(6);
@@ -160,12 +153,12 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 6:
-                if(robotInPos) {
-                    if(onsActionState) {
+                if (robotInPos) {
+                    if (onsActionState) {
                         setActionState(10);
                         onsActionState = false;
                     }
-                    if(actionState == -1) {
+                    if ((actionState == -1 || actionState == 14) && outtake.getVertSlidePos() > 1000) {
                         currentPath = scoreSampleLeft;
                         follower.followPath(currentPath, true);
                         setPathState(7);
@@ -174,14 +167,14 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 7:
-                if(robotInPos) {
-                    if(actionState == -1) {
-                        if(outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+                if (robotInPos) {
+                    if (actionState == -1) {
+                        if (outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
                             setActionState(1);
-                        }
-                        else {
+                        } else {
                             currentPath = touchBar;
-                            follower.followPath(currentPath,true);
+                            follower.followPath(currentPath, true);
+                            DriveConstants.turnOffset = -90;
                             setActionState(20);
                             setPathState(8);
                         }
@@ -190,7 +183,7 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 8:
-                if(robotInPos) {
+                if (robotInPos) {
                     /*TODO Level 1 Ascent */
 
                     /* Set the state to a Case we won't use or define, so it just stops running an new paths */
@@ -204,15 +197,17 @@ public class SampleAuto extends OpMode {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
-                if(actionTimer.getElapsedTimeSeconds() > 0.25) {
+                if (actionTimer.getElapsedTimeSeconds() > 0.25) {
                     outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
                     setActionState(14);
                 }
                 break;
 
             case 1:
-                outtake.setState(OuttakeConstants.SCORE_SAMPLE);
-                setActionState(14);
+                if (actionTimer.getElapsedTimeSeconds() > 0.25) {
+                    outtake.setState(OuttakeConstants.SCORE_SAMPLE);
+                    setActionState(14);
+                }
                 break;
 
             case 10:
@@ -222,7 +217,7 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 11:
-                if(!intake.isBusy()) {
+                if (!intake.isBusy()) {
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
                     setActionState(12);
@@ -230,13 +225,12 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 12:
-                if(intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - IntakeConstants.SLIDES_ACCURACY) {
-                    if(onsTimerState)
-                    {
+                if (intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - IntakeConstants.SLIDES_ACCURACY) {
+                    if (onsTimerState) {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if(actionTimer.getElapsedTimeSeconds() > 0.5) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.5) {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(13);
                     }
@@ -244,13 +238,12 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 13:
-                if(!intake.isBusy()) {
-                    if(onsTimerState)
-                    {
+                if (!intake.isBusy()) {
+                    if (onsTimerState) {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if(actionTimer.getElapsedTimeSeconds() > 0.25) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.25) {
                         outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
                         setActionState(0);
                     }
@@ -258,7 +251,7 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 14:
-                if(!outtake.isBusy()) {
+                if (!outtake.isBusy()) {
                     setActionState(-1);
                 }
                 break;
@@ -283,8 +276,7 @@ public class SampleAuto extends OpMode {
     }
 
     @Override
-    public void init()
-    {
+    public void init() {
         intake = new Intake(hardwareMap);
         intake.setState(IntakeConstants.START);
 
@@ -296,7 +288,6 @@ public class SampleAuto extends OpMode {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(AutoConstants.SAMPLE_START);
-        follower.setMaxPower(0.6);
         buildPaths();
 
         currentPath = scorePreload;
@@ -313,11 +304,17 @@ public class SampleAuto extends OpMode {
     }
 
     @Override
-    public void loop()
-    {
-        follower.update();
+    public void loop() {
         outtake.update();
         intake.update();
+
+        if (outtake.getVertPosition() > 0) {
+            follower.setMaxPower(0.4);
+        } else {
+            follower.setMaxPower(0.8);
+        }
+
+        follower.update();
 
         autonomousPathUpdate();
         autonomousActionUpdate();
