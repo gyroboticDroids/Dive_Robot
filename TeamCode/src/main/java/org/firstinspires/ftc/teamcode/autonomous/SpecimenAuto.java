@@ -107,12 +107,12 @@ public class SpecimenAuto extends OpMode {
                 if(robotInPos) {
                     currentPath = intakeSpecimenLeft;
                     follower.followPath(currentPath, true);
+                    setPathState(2);
                 }
 
 //                if (robotInPos) {
 //                    setActionState(1);
 //                }
-                setPathState(2);
                 break;
 
             case 2:
