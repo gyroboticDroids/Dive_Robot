@@ -99,7 +99,7 @@ public class SpecimenAuto extends OpMode {
             case 0:
                 currentPath = scorePreload;
                 follower.followPath(currentPath, true);
-                setActionState(0);
+                //setActionState(0);
                 setPathState(1);
                 break;
 
@@ -109,9 +109,9 @@ public class SpecimenAuto extends OpMode {
                     follower.followPath(currentPath, true);
                 }
 
-                if (robotInPos) {
-                    setActionState(1);
-                }
+//                if (robotInPos) {
+//                    setActionState(1);
+//                }
                 setPathState(2);
                 break;
 
