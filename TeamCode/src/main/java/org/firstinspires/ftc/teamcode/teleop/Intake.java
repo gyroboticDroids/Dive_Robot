@@ -85,12 +85,11 @@ public class Intake {
                 break;
 
             case IntakeConstants.TRANSFER:
-                intakeSpeed(IntakeConstants.INTAKE_STOP);
-
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
+                    intakeSpeed(IntakeConstants.INTAKE_STOP);
                     horizontalPosition = IntakeConstants.SLIDES_TRANSFER;
 
                     if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset, horizontalPosition, IntakeConstants.SLIDES_ACCURACY))
