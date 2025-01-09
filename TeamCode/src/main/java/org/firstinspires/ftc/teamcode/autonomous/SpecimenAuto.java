@@ -31,33 +31,27 @@ public class SpecimenAuto extends OpMode {
     private int actionState = -1;
     private Path currentPath;
 
-    private Path scorePreload, intakeSpecimenLeft, outtakeSpecimenLeft, intakeSpecimenCenter, outtakeSpecimenCenter, intakeSpecimenRight, outtakeSpecimenRight, grabSpecimenReady1,
-            grabSpecimen, scoreSpecimen1, grabSpecimenReady2, scoreSpecimen2, grabSpecimenReady3, scoreSpecimen3, grabSpecimenReady4, scoreSpecimen4, grabSpecimenReady5;
+    private Path scorePreload, grabSpecimen, scoreSpecimen1, transferSpecimenLeft, transferSpecimenCenter, intakeSpecimenRight, transferSpecimenRight, grabSpecimenReady1,
+            grabSpecimenReady2, scoreSpecimen2, grabSpecimenReady3, scoreSpecimen3, grabSpecimenReady4, scoreSpecimen4, grabSpecimenReady5;
 
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE)));
         scorePreload.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_START.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
 
-        intakeSpecimenLeft = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), (AutoConstants.SPECIMEN_CONTROL_POINT1), new Point(AutoConstants.SPECIMEN_INTAKE_LEFT)));
-        intakeSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_INTAKE_LEFT.getHeading());
+        transferSpecimenLeft = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE), new Point(AutoConstants.SPECIMEN_TRANSFER_LEFT)));
+        transferSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_TRANSFER_LEFT.getHeading());
 
-        outtakeSpecimenLeft = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_LEFT), new Point(AutoConstants.SPECIMEN_OUTTAKE_LEFT)));
-        outtakeSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_LEFT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE_LEFT.getHeading());
+        transferSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_TRANSFER_LEFT), new Point(AutoConstants.SPECIMEN_TRANSFER_CENTER)));
+        transferSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_TRANSFER_LEFT.getHeading(), AutoConstants.SPECIMEN_TRANSFER_CENTER.getHeading());
 
-        intakeSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_INTAKE_CENTER)));
-        intakeSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_INTAKE_CENTER.getHeading());
+        intakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_TRANSFER_CENTER), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
+        intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_TRANSFER_CENTER.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading());
 
-        outtakeSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_CENTER), new Point(AutoConstants.SPECIMEN_OUTTAKE_CENTER)));
-        outtakeSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_CENTER.getHeading(), AutoConstants.SPECIMEN_OUTTAKE_CENTER.getHeading());
+        transferSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_TRANSFER_CENTER)));
+        transferSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_TRANSFER_CENTER.getHeading());
 
-        intakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE_CENTER), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
-        intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_CENTER.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading());
-
-        outtakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT)));
-        outtakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading());
-
-        grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
-        grabSpecimenReady1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
+        grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_TRANSFER_CENTER), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
+        grabSpecimenReady1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_TRANSFER_CENTER.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
 
         grabSpecimen = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB_READY), new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB_READY.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
@@ -105,7 +99,7 @@ public class SpecimenAuto extends OpMode {
 
             case 1:
                 if(robotInPos) {
-                    currentPath = intakeSpecimenLeft;
+                    currentPath = transferSpecimenLeft;
                     follower.followPath(currentPath, true);
                     setPathState(2);
                 }
@@ -118,7 +112,7 @@ public class SpecimenAuto extends OpMode {
             case 2:
                 if(robotInPos) {
                     if(actionTimer.getElapsedTimeSeconds() > 2) {
-                        currentPath = outtakeSpecimenLeft;
+                        currentPath = transferSpecimenCenter;
                         follower.followPath(currentPath, true);
                         setPathState(3);
                     }
@@ -128,7 +122,7 @@ public class SpecimenAuto extends OpMode {
             case 3:
                 if(robotInPos) {
                     if(actionTimer.getElapsedTimeSeconds() > 2) {
-                        currentPath = intakeSpecimenCenter;
+                        currentPath = intakeSpecimenRight;
                         follower.followPath(currentPath, true);
                         setPathState(4);
                     }
@@ -138,32 +132,32 @@ public class SpecimenAuto extends OpMode {
             case 4:
                 if(robotInPos) {
                     if(actionTimer.getElapsedTimeSeconds() > 2) {
-                        currentPath = outtakeSpecimenCenter;
-                        follower.followPath(currentPath, true);
-                        setPathState(5);
-                    }
-                }
-                break;
-
-            case 5:
-                if(robotInPos) {
-                    if(actionTimer.getElapsedTimeSeconds() > 2) {
-                        currentPath = intakeSpecimenRight;
-                        follower.followPath(currentPath, true);
-                        setPathState(6);
-                    }
-                }
-                break;
-
-            case 6:
-                if(robotInPos) {
-                    if(actionTimer.getElapsedTimeSeconds() > 2) {
-                        currentPath = outtakeSpecimenRight;
+                        currentPath = transferSpecimenRight;
                         follower.followPath(currentPath, true);
                         setPathState(7);
                     }
                 }
                 break;
+
+//            case 5:
+//                if(robotInPos) {
+//                    if(actionTimer.getElapsedTimeSeconds() > 2) {
+//                        currentPath = grabSpecimenReady1;
+//                        follower.followPath(currentPath, true);
+//                        setPathState(6);
+//                    }
+//                }
+//                break;
+//
+//            case 6:
+//                if(robotInPos) {
+//                    if(actionTimer.getElapsedTimeSeconds() > 2) {
+//                        currentPath = outtakeSpecimenRight;
+//                        follower.followPath(currentPath, true);
+//                        setPathState(7);
+//                    }
+//                }
+//                break;
 
             case 7:
                 if(robotInPos) {
