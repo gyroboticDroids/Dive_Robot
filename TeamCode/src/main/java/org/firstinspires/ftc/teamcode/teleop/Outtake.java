@@ -18,6 +18,7 @@ public class Outtake {
     private boolean onsSetState = false;
     private boolean specimenOnsSetState = false;
     private boolean ons = false;
+    private boolean extend = false;
 
     private double vertPosition = 0;
 
@@ -107,25 +108,33 @@ public class Outtake {
                 break;
 
             case OuttakeConstants.GRAB_SPECIMEN_READY:
+
                 if(onsSetState)
                 {
                     vertPosition = OuttakeConstants.SLIDES_SPECIMEN_COLLECT;
+                    extend = hardware.outtakePivot.getPosition() == OuttakeConstants.PIVOT_TRANSFER;
                 }
 
-                hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
+                if(actionTimer.getElapsedTimeSeconds() > ((extend)? 0.5:0.25))
+                {
+                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
+                }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > ((extend)? 0.25:0.75))
                 {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1.5)
+                if(actionTimer.getElapsedTimeSeconds() > 1.75)
                 {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
                 }
+                else {
+                    hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
+                }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1.75 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 2 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
