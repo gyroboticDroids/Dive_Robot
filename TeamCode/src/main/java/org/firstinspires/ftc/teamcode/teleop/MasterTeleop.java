@@ -205,7 +205,7 @@ public class MasterTeleop extends OpMode {
             } else if ((gamepad2.right_bumper || gamepad1.right_bumper) && (prevIntakeState.equals(IntakeConstants.TRANSFER)
                     || prevIntakeState.equals(IntakeConstants.START))) {
                 intake.setState(IntakeConstants.INTAKE_SUB_READY);
-                if(!outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)){
+                if(outtake.getState().equals(OuttakeConstants.GRAB_SPECIMEN_READY)){
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);/*Outtake*/
                 }
             } else if (gamepad2.dpad_down && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT)
