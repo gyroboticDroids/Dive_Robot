@@ -15,7 +15,7 @@ public class AutoConstants {
 
     //Poses in SpecimenAuto
     public static Pose SPECIMEN_START = new Pose(7.125, 66.5, Math.toRadians(0));
-    public static Pose SPECIMEN_SCORE = new Pose(43, 68, Math.toRadians(0));
+    public static Pose SPECIMEN_SCORE = new Pose(42.5, 68, Math.toRadians(0));
     public static Pose SPECIMEN_TRANSFER_LEFT = new Pose(12, 24, Math.toRadians(0));
     public static Pose SPECIMEN_TRANSFER_CENTER = new Pose(12, 12, Math.toRadians(0));
     public static Pose SPECIMEN_INTAKE_RIGHT = new Pose(24, 12, Math.toRadians(-30));

@@ -93,77 +93,76 @@ public class SpecimenAuto extends OpMode {
             case 0:
                 currentPath = scorePreload;
                 follower.followPath(currentPath, true);
-                //setActionState(0);
+                setActionState(0);
                 setPathState(1);
                 break;
 
             case 1:
                 if(robotInPos) {
-                    if(actionTimer.getElapsedTimeSeconds() > 5) {
-                        currentPath = transferSpecimenLeft;
-                        follower.followPath(currentPath, true);
-                        setPathState(2);
+                    if(actionState == -1) {
+                        if(outtake.getState().equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)){
+                            setActionState(1);
+                        }
+                        else {
+                            currentPath = transferSpecimenLeft;
+                            follower.followPath(currentPath, true);
+                            setPathState(2);
+                        }
                     }
                 }
-
-//                if (robotInPos) {
-//                    setActionState(1);
-//                }
                 break;
 
             case 2:
                 if(robotInPos) {
-                    if(actionTimer.getElapsedTimeSeconds() > 5) {
-                        currentPath = transferSpecimenCenter;
-                        follower.followPath(currentPath, true);
-                        setPathState(3);
+                    if(actionState == -1) {
+                        if(intake.getState().equals(IntakeConstants.RESET_POS)){
+                            setActionState(10);
+                        }
+                        else {
+                            currentPath = transferSpecimenCenter;
+                            follower.followPath(currentPath, true);
+                            setActionState(2);
+                            setPathState(3);
+                        }
                     }
                 }
                 break;
 
             case 3:
                 if(robotInPos) {
-                    if(actionTimer.getElapsedTimeSeconds() > 5) {
-                        currentPath = intakeSpecimenRight;
-                        follower.followPath(currentPath, true);
-                        setPathState(4);
+                    if(actionState == -1) {
+                        if(outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)){
+                            setActionState(10);
+                        }
+                        else {
+                            currentPath = intakeSpecimenRight;
+                            follower.followPath(currentPath, true);
+                            setActionState(2);
+                            setPathState(4);
+                        }
                     }
                 }
                 break;
 
             case 4:
                 if(robotInPos) {
-                    if(actionTimer.getElapsedTimeSeconds() > 5) {
-                        currentPath = transferSpecimenRight;
-                        follower.followPath(currentPath, true);
-                        setPathState(7);
+                    if(actionState == -1) {
+                        if(outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)){
+                            setActionState(10);
+                        }
+                        else {
+                            currentPath = transferSpecimenRight;
+                            follower.followPath(currentPath, true);
+                            setActionState(2);
+                            setPathState(7);
+                        }
                     }
                 }
                 break;
 
-//            case 5:
-//                if(robotInPos) {
-//                    if(actionTimer.getElapsedTimeSeconds() > 2) {
-//                        currentPath = grabSpecimenReady1;
-//                        follower.followPath(currentPath, true);
-//                        setPathState(6);
-//                    }
-//                }
-//                break;
-//
-//            case 6:
-//                if(robotInPos) {
-//                    if(actionTimer.getElapsedTimeSeconds() > 2) {
-//                        currentPath = outtakeSpecimenRight;
-//                        follower.followPath(currentPath, true);
-//                        setPathState(7);
-//                    }
-//                }
-//                break;
-
             case 7:
                 if(robotInPos) {
-                    if(actionTimer.getElapsedTimeSeconds() > 5) {
+                    if(actionState == -1) {
                         currentPath = grabSpecimenReady1;
                         follower.followPath(currentPath, true);
                         setPathState(8);
@@ -297,39 +296,44 @@ public class SpecimenAuto extends OpMode {
         switch (actionState) {
             case 0:
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
-                setActionState(-1);
+                setActionState(14);
                 break;
 
             case 1:
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
+                setActionState(2);
+                break;
+
+            case 2:
                 if(!outtake.isBusy()) {
-                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
-                    setActionState(10);
+                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+                    setActionState(14);
                 }
                 break;
 
             case 10:
-                if(!outtake.isBusy()) {
-                    outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
-                    setActionState(-1);
-                }
-
+                intake.setState(IntakeConstants.INTAKE_SUB_READY);
+                setActionState(-1);
                 break;
 
             case 11:
-                intake.setState(IntakeConstants.INTAKE_SUB_READY);
-                setActionState(12);
+                if(!intake.isBusy()) {
+                    intake.setState(IntakeConstants.INTAKE);
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - 50);
+                    setActionState(12);
+                }
             break;
 
             case 12:
-                intake.setState(IntakeConstants.REJECT);
-                setActionState(13);
+                if(intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 50 - 50) {
+                    intake.setState(IntakeConstants.TRANSFER);
+                    setActionState(13);
+                }
                 break;
 
             case 13:
                 if(!intake.isBusy()) {
-                    intake.setState(IntakeConstants.INTAKE);
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX);
-                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+                    outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
                     setActionState(14);
                 }
                 break;
@@ -386,13 +390,18 @@ public class SpecimenAuto extends OpMode {
     public void loop()
     {
         follower.update();
-        //outtake.update();
-        //intake.update();
+        outtake.update();
+        intake.update();
         autonomousPathUpdate();
         autonomousActionUpdate();
 
         // Feedback to Driver Hub
         telemetry.addData("path state", pathState);
+        telemetry.addData("action state", actionState);
+        telemetry.addData("intake state", intake.getState());
+        telemetry.addData("hori slide pos", intake.getHorizontalSlidePos());
+        telemetry.addData("hori slide setpoint", intake.getHorizontalPosition());
+        telemetry.addData("intake is busy", intake.isBusy());
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());
