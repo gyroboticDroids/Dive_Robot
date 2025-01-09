@@ -28,7 +28,7 @@ public class OuttakeConstants {
     public static double PIVOT_RAISE = 0.5;//
 
     public static double WRIST_TRANSFER = 0.594;//
-    public static double WRIST_SPECIMEN = 0.581;//
+    public static double WRIST_SPECIMEN = 0.571;//
     public static double WRIST_OFF_WALL = 0.407;//
     public static double WRIST_SAMPLE = 0.44;//
     public static double WRIST_START = 0.585;//
