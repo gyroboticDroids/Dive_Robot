@@ -14,11 +14,11 @@ public class OuttakeConstants {
     public static double SLIDES_P_GAIN = 0.009;
     public static double SLIDES_ACCURACY = 70;//
 
-    public static double EXTENSION_START = 0.6367;//
-    public static double EXTENSION_TRANSFER = 0.6367;//
+    public static double EXTENSION_START = 0.6222;//
+    public static double EXTENSION_TRANSFER = 0.6222;//
     public static double EXTENSION_SPECIMEN_OFF_WALL = 0.4156;//
-    public static double EXTENSION_SPECIMEN_SCORE = 0.6367;//
-    public static double EXTENSION_SAMPLE_SCORE = 0.6367;
+    public static double EXTENSION_SPECIMEN_SCORE = 0.6222;//
+    public static double EXTENSION_SAMPLE_SCORE = 0.6222;
 
     public static double PIVOT_TRANSFER = 0.397;//
     public static double PIVOT_SPECIMEN = 0.429;//

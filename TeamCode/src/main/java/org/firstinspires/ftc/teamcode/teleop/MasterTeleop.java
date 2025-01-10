@@ -200,10 +200,10 @@ public class MasterTeleop extends OpMode {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);/*Outtake*/
                 intake.setState(IntakeConstants.INTAKE_SUB_READY);
             } else if (gamepad2.left_bumper && !prevGp2LeftBumper && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
-                    || prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
+                    || prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB) || prevIntakeState.equals(IntakeConstants.HALFWAY))) {
                 intake.setState(IntakeConstants.TRANSFER);
             } else if ((gamepad2.right_bumper || gamepad1.right_bumper) && (prevIntakeState.equals(IntakeConstants.TRANSFER)
-                    || prevIntakeState.equals(IntakeConstants.START))) {
+                    || prevIntakeState.equals(IntakeConstants.START) || prevIntakeState.equals(IntakeConstants.HALFWAY))) {
                 intake.setState(IntakeConstants.INTAKE_SUB_READY);
                 if(outtake.getState().equals(OuttakeConstants.GRAB_SPECIMEN_READY)){
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);/*Outtake*/
@@ -214,7 +214,7 @@ public class MasterTeleop extends OpMode {
             } else if (gamepad2.dpad_up && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
                     || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
                 intake.setState(IntakeConstants.REJECT);
-            } else if ((gamepad2.dpad_right || gamepad2.dpad_left) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
+            } else if (gamepad2.dpad_left && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
                     || prevIntakeState.equals(IntakeConstants.REJECT))) {
                 intake.setState(IntakeConstants.CLEAR_SUB);
             } else if (prevIntakeState.equals(IntakeConstants.RESET_POS)) {
@@ -222,8 +222,11 @@ public class MasterTeleop extends OpMode {
             } else if (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
                     || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB)) {
                 intake.horizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
-                MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 40); //Manual control for horizontal slides
+                    MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 40); //Manual control for horizontal slides
             }
+        }
+        else if(gamepad2.dpad_right && !prevIntakeState.equals(IntakeConstants.RESET_POS)){
+            intake.setState(IntakeConstants.HALFWAY);
         }
 
         //Updates intake

@@ -7,7 +7,7 @@ public class IntakeConstants {
     public static int SLIDES_TRANSFER = 78;//
     public static int SLIDES_OUT = 225;//
     public static int SLIDES_ACCURACY = 30;//
-    //public static int SLIDES_HALFWAY = 700;
+    public static int SLIDES_HALFWAY = 950;
     public static double SLIDES_P_GAIN = 0.01;
 
     public static double PIVOT_START = 0.924;//
@@ -27,4 +27,5 @@ public class IntakeConstants {
     public static final String REJECT = "reject";
     public static final String CLEAR_SUB = "clear sub";
     public static final String RESET_POS = "reset pos";
+    public static final String HALFWAY = "halfway";
 }

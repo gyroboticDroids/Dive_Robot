@@ -55,6 +55,11 @@ public class Intake {
                 }
                 break;
 
+            case IntakeConstants.HALFWAY:
+                horizontalPosition = IntakeConstants.SLIDES_HALFWAY;
+                isBusy = false;
+                break;
+
             case IntakeConstants.INTAKE_SUB_READY:
                 if (onsSetState && !(horizontalPosition > IntakeConstants.SLIDES_OUT - 10))
                 {
