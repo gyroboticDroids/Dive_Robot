@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5 specimen auto", group = "autonomous", preselectTeleOp = "Master Tele-op")
+@Autonomous(name = "3 specimen auto", group = "autonomous", preselectTeleOp = "Master Tele-op")
 public class SpecimenAuto extends OpMode {
     private int slideRangeSubtract = 200;
 
@@ -54,8 +54,8 @@ public class SpecimenAuto extends OpMode {
         transferSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_TRANSFER_CENTER)));
         transferSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_TRANSFER_CENTER.getHeading());
 
-        grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_TRANSFER_CENTER), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
-        grabSpecimenReady1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_TRANSFER_CENTER.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
+        grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_TRANSFER_LEFT), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
+        grabSpecimenReady1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_TRANSFER_LEFT.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
 
         grabSpecimen = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB_READY), new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB_READY.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
@@ -111,14 +111,14 @@ public class SpecimenAuto extends OpMode {
                         else {
                             currentPath = transferSpecimenLeft;
                             follower.followPath(currentPath, true);
-                            setPathState(2);
+                            setPathState(7);
                         }
                     }
                 }
                 break;
 
-            case 2:
-                if(robotInPos || follower.getPose().getY() < 22) {
+            /*case 2:
+                if(robotInPos || follower.getPose().getY() < 24) {
                     if(actionState == -1) {
                         if(onsIntakeOut){
                             setActionState(10);
@@ -128,7 +128,7 @@ public class SpecimenAuto extends OpMode {
                             currentPath = transferSpecimenCenter;
                             follower.followPath(currentPath, true);
                             setActionState(2);
-                            setPathState(3);
+                            setPathState(7);
                         }
                     }
                 }
@@ -166,23 +166,35 @@ public class SpecimenAuto extends OpMode {
                         }
                     }
                 }
-                break;
+                break;*/
 
             case 7:
                 if(robotInPos) {
                     if(actionState == -1) {
-                        currentPath = grabSpecimenReady1;
-                        follower.followPath(currentPath, true);
-                        setPathState(8);
+                        if (onsIntakeOut) {
+                            setActionState(10);
+                            onsIntakeOut = false;
+                        } else {
+                            currentPath = grabSpecimenReady1;
+                            follower.followPath(currentPath, true);
+                            setPathState(8);
+                        }
                     }
                 }
                 break;
 
             case 8:
                 if(robotInPos) {
-                    currentPath = grabSpecimen;
-                    follower.followPath(currentPath, true);
-                    setPathState(9);
+                    if(onsIntakeOut){
+                        pathTimer.resetTimer();
+                        onsIntakeOut = false;
+                    }
+
+                    if(pathTimer.getElapsedTimeSeconds() > 0.5) {
+                        currentPath = grabSpecimen;
+                        follower.followPath(currentPath, true);
+                        setPathState(9);
+                    }
                 }
                 break;
 
@@ -221,9 +233,16 @@ public class SpecimenAuto extends OpMode {
 
             case 11:
                 if(robotInPos) {
-                    currentPath = grabSpecimen;
-                    follower.followPath(currentPath, true);
-                    setPathState(12);
+                    if(onsIntakeOut){
+                        pathTimer.resetTimer();
+                        onsIntakeOut = false;
+                    }
+
+                    if(pathTimer.getElapsedTimeSeconds() > 0.5) {
+                        currentPath = grabSpecimen;
+                        follower.followPath(currentPath, true);
+                        setPathState(12);
+                    }
                 }
                 break;
 
@@ -253,14 +272,14 @@ public class SpecimenAuto extends OpMode {
                         else {
                             currentPath = grabSpecimenReady3;
                             follower.followPath(currentPath, true);
-                            setActionState(13);
-                            setPathState(14);
+                            setActionState(2);
+                            setPathState(-1);
                         }
                     }
                 }
                 break;
 
-            case 14:
+/*            case 14:
                 if(robotInPos) {
                     currentPath = grabSpecimen;
                     follower.followPath(currentPath, true);
@@ -294,14 +313,14 @@ public class SpecimenAuto extends OpMode {
                         else {
                             currentPath = grabSpecimenReady4;
                             follower.followPath(currentPath, true);
-                            setActionState(13);
-                            setPathState(17);
+                            setActionState(2);
+                            setPathState(-1);
                         }
                     }
                 }
-                break;
+                break;*/
 
-            case 17:
+            /*case 17:
                 if(robotInPos) {
                     currentPath = grabSpecimen;
                     follower.followPath(currentPath, true);
@@ -340,7 +359,7 @@ public class SpecimenAuto extends OpMode {
                         }
                     }
                 }
-                break;
+                break;*/
         }
     }
 //TODO: Teleport to autoActionUpdate
@@ -352,12 +371,13 @@ public class SpecimenAuto extends OpMode {
                 break;
 
             case 1:
-                outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
-                if(pathState > 4) {
-                    setActionState(14);
-                }
-                else {
-                    setActionState(2);
+                if(actionTimer.getElapsedTimeSeconds() > 0.5) {
+                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
+                    if (pathState > 4) {
+                        setActionState(14);
+                    } else {
+                        setActionState(2);
+                    }
                 }
                 break;
 
@@ -382,13 +402,13 @@ public class SpecimenAuto extends OpMode {
             break;
 
             case 12:
-                if(intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - slideRangeSubtract - 50) {
+                if(intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - slideRangeSubtract - 100) {
                     if(onsGrabSample){
                         actionTimer.resetTimer();
                         onsGrabSample = false;
                     }
 
-                    if(actionTimer.getElapsedTimeSeconds() > 0.25) {
+                    if(actionTimer.getElapsedTimeSeconds() > 0.05) {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(13);
                     }
