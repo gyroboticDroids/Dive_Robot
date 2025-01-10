@@ -171,7 +171,7 @@ public class Outtake {
                 break;
 
             case OuttakeConstants.SCORE_SPECIMEN_READY_HIGH:
-                if(specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.5)
+                if(specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.25)
                 {
                     lastVertConstant = vertPosition = OuttakeConstants.SLIDES_SPECIMEN_HIGH_SCORING;
                     specimenOnsSetState = false;
@@ -179,7 +179,7 @@ public class Outtake {
 
                 hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.25)
                 {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SPECIMEN);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SPECIMEN);
@@ -187,14 +187,14 @@ public class Outtake {
                     driveBack = true;
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1)
+                if(actionTimer.getElapsedTimeSeconds() > 0.75)
                 {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_SCORE);
 
                     driveBack = false;
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1.5 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 1.25 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
@@ -216,7 +216,7 @@ public class Outtake {
                     }
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
 
-                    if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                    if(actionTimer.getElapsedTimeSeconds() > 0.25)
                     {
                         isBusy = false;
                     }
