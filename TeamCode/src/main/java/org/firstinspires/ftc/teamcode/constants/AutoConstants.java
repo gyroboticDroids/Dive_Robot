@@ -24,4 +24,16 @@ public class AutoConstants {
 
     public static double Y_INCREMENT = 2;
     public static double X_INCREMENT = 0.1;
+
+    //Pushing constants
+    public static Pose SPECIMEN_PUSHING1 = new Pose(52, 34, Math.toRadians(0));
+    public static Pose SPECIMEN_PUSHING2 = new Pose(50, 23, Math.toRadians(0));
+    public static Pose SPECIMEN_PUSHING3 = new Pose(16, 23, Math.toRadians(0));
+    public static Pose SPECIMEN_PUSHING4 = new Pose(50, 13, Math.toRadians(0));
+    public static Pose SPECIMEN_PUSHING5 = new Pose(16, 13, Math.toRadians(0));
+
+    public static Point SPECIMEN_PUSHING_CONTROL_POINT1 = new Point(16, 48);
+    public static Point SPECIMEN_PUSHING_CONTROL_POINT2 = new Point(68, 28);
+    public static Point SPECIMEN_PUSHING_CONTROL_POINT4 = new Point(68, 17);
+
 }
