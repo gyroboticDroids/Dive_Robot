@@ -45,14 +45,14 @@ public class Outtake {
 
                 hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.25)
                 {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_START);
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_START);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_START);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 0.5 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
@@ -85,7 +85,7 @@ public class Outtake {
 
                 hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.3)
                 {
                     isBusy = false;
                 }
@@ -101,7 +101,7 @@ public class Outtake {
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1)
+                if(actionTimer.getElapsedTimeSeconds() > 0.75)
                 {
                     isBusy = false;
                 }
@@ -115,18 +115,18 @@ public class Outtake {
                     extend = hardware.outtakePivot.getPosition() == OuttakeConstants.PIVOT_TRANSFER;
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > ((extend)? 0.5:0.25))
+                if(actionTimer.getElapsedTimeSeconds() > ((extend)? 0.35:0.25))
                 {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > ((extend)? 0.25:0.75))
+                if(actionTimer.getElapsedTimeSeconds() > ((extend)? 0.25:0.5))
                 {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1.75)
+                if(actionTimer.getElapsedTimeSeconds() > 1)
                 {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
                 }
@@ -134,14 +134,14 @@ public class Outtake {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 2 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 1.25 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
                 break;
 
             case OuttakeConstants.SCORE_SPECIMEN_READY_LOW:
-                if(specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.5)
+                if(specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.25)
                 {
                     lastVertConstant = vertPosition = OuttakeConstants.SLIDES_SPECIMEN_LOW_SCORING;
                     specimenOnsSetState = false;
@@ -149,7 +149,7 @@ public class Outtake {
 
                 hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.25)
                 {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SPECIMEN);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SPECIMEN);
@@ -157,14 +157,14 @@ public class Outtake {
                     driveBack = true;
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1)
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_SCORE);
 
                     driveBack = false;
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1.5 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
@@ -187,14 +187,14 @@ public class Outtake {
                     driveBack = true;
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.75)
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_SCORE);
 
                     driveBack = false;
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1.25 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
@@ -260,7 +260,7 @@ public class Outtake {
 
                 driveBack = true;
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.75)
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     driveBack = false;
                     isBusy = false;
