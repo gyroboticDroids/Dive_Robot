@@ -3,17 +3,16 @@ package pedroPathing.tuners_tests.pid;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.pedropathing.util.Constants;
-import com.pedropathing.util.Timer;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
+import com.pedropathing.util.Constants;
+import com.pedropathing.util.Timer;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
@@ -32,8 +31,8 @@ import pedroPathing.constants.LConstants;
  * @version 1.0, 3/12/2024
  */
 @Config
-@Autonomous (name = "Straight Back And Forth", group = "PIDF Tuning")
-public class StraightBackAndForth extends OpMode {
+@Autonomous (name = "Straight Back And Forth With Stop", group = "PIDF Tuning")
+public class StraightBackAndForthWithStop extends OpMode {
     private Telemetry telemetryA;
 
     public static double DISTANCE = 40;
@@ -60,7 +59,7 @@ public class StraightBackAndForth extends OpMode {
         backwards = new Path(new BezierLine(new Point(DISTANCE,0, Point.CARTESIAN), new Point(0,0, Point.CARTESIAN)));
         backwards.setConstantHeadingInterpolation(0);
 
-        follower.followPath(forwards);
+        follower.followPath(forwards, true);
 
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         telemetryA.addLine("This will run the robot in a straight line going " + DISTANCE
@@ -69,6 +68,7 @@ public class StraightBackAndForth extends OpMode {
         telemetryA.update();
 
         timer = new Timer();
+        timer.resetTimer();
     }
 
     /**
@@ -80,11 +80,17 @@ public class StraightBackAndForth extends OpMode {
         follower.update();
         if (!follower.isBusy()) {
             if (forward) {
-                forward = false;
-                follower.followPath(backwards);
+                if(timer.getElapsedTimeSeconds() > 15) {
+                    forward = false;
+                    follower.followPath(backwards, true);
+                    timer.resetTimer();
+                }
             } else {
-                forward = true;
-                follower.followPath(forwards);
+                if(timer.getElapsedTimeSeconds() > 15) {
+                    forward = true;
+                    follower.followPath(forwards, true);
+                    timer.resetTimer();
+                }
             }
         }
 
