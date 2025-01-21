@@ -450,7 +450,7 @@ public class SpecimenAuto extends OpMode {
 
             case 2:
                 if(!outtake.isBusy()) {
-                    outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
+                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
                     setActionState(14);
                 }
                 break;
