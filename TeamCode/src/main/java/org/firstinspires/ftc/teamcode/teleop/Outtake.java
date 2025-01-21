@@ -224,13 +224,16 @@ public class Outtake {
                 break;
 
             case OuttakeConstants.SCORE_SAMPLE_READY_LOW:
-                hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SAMPLE);
-                hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SAMPLE);
-                hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SAMPLE_SCORE);
-
                 if(onsSetState)
                 {
                     vertPosition = OuttakeConstants.SLIDES_SAMPLE_LOW;
+                }
+
+                if(hardware.outtakeSlide1.getCurrentPosition() > vertPosition - OuttakeConstants.SLIDES_PIVOT_CLEAR)
+                {
+                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SAMPLE);
+                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SAMPLE);
+                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SAMPLE_SCORE);
                 }
 
                 if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
@@ -240,13 +243,16 @@ public class Outtake {
                 break;
 
             case OuttakeConstants.SCORE_SAMPLE_READY_HIGH:
-                hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SAMPLE);
-                hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SAMPLE);
-                hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SAMPLE_SCORE);
-
                 if(onsSetState)
                 {
                     vertPosition = OuttakeConstants.SLIDES_SAMPLE_HIGH;
+                }
+
+                if(hardware.outtakeSlide1.getCurrentPosition() > vertPosition - OuttakeConstants.SLIDES_PIVOT_CLEAR)
+                {
+                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SAMPLE);
+                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SAMPLE);
+                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SAMPLE_SCORE);
                 }
 
                 if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
