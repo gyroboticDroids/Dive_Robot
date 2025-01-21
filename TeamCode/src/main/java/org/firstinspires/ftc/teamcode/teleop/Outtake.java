@@ -229,11 +229,16 @@ public class Outtake {
                     vertPosition = OuttakeConstants.SLIDES_SAMPLE_LOW;
                 }
 
-                if(hardware.outtakeSlide1.getCurrentPosition() > vertPosition - OuttakeConstants.SLIDES_PIVOT_CLEAR)
+                if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_PIVOT_CLEAR))
                 {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SAMPLE);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SAMPLE);
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SAMPLE_SCORE);
+                }
+                else {
+                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_RAISE);
+                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
+                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_TRANSFER);
                 }
 
                 if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
@@ -248,11 +253,16 @@ public class Outtake {
                     vertPosition = OuttakeConstants.SLIDES_SAMPLE_HIGH;
                 }
 
-                if(hardware.outtakeSlide1.getCurrentPosition() > vertPosition - OuttakeConstants.SLIDES_PIVOT_CLEAR)
+                if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_PIVOT_CLEAR))
                 {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SAMPLE);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SAMPLE);
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SAMPLE_SCORE);
+                }
+                else {
+                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_RAISE);
+                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
+                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_TRANSFER);
                 }
 
                 if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))

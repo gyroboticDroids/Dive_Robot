@@ -45,13 +45,14 @@ public class Intake {
                 break;
 
             case IntakeConstants.RESET_POS:
-                hardware.intakeSlide.setPower(-0.3);
-
                 if(actionTimer.getElapsedTimeSeconds() > 1)
                 {
                     intakeSlideHomeOffset = hardware.intakeSlide.getCurrentPosition();
                     hardware.intakeSlide.setPower(0);
                     isBusy = false;
+                }
+                else {
+                    hardware.intakeSlide.setPower(-0.3);
                 }
                 break;
 
