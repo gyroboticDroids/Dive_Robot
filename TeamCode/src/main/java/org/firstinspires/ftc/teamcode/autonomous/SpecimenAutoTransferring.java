@@ -20,8 +20,8 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5 specimen auto intake and outtake", group = "autonomous", preselectTeleOp = "Master Tele-op")
-public class SpecimenAuto extends OpMode {
+@Autonomous(name = "3 specimen auto transferring", group = "autonomous", preselectTeleOp = "Master Tele-op")
+public class SpecimenAutoTransferring extends OpMode {
     private int slideRangeSubtract = 200;
 
     private Follower follower;
@@ -35,33 +35,27 @@ public class SpecimenAuto extends OpMode {
     private boolean onsGrabSample = false;
     private Path currentPath;
 
-    private Path scorePreload, grabSpecimen, scoreSpecimen1, intakeSpecimenLeft, outtakeSpecimenLeft, intakeSpecimenCenter, outtakeSpecimenCenter, intakeSpecimenRight, outtakeSpecimenRight, grabSpecimenReady1,
+    private Path scorePreload, grabSpecimen, scoreSpecimen1, transferSpecimenLeft, transferSpecimenCenter, intakeSpecimenRight, transferSpecimenRight, grabSpecimenReady1,
             grabSpecimenReady2, scoreSpecimen2, grabSpecimenReady3, scoreSpecimen3, grabSpecimenReady4, scoreSpecimen4, grabSpecimenReady5;
 
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE)));
         scorePreload.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_START.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
 
-        intakeSpecimenLeft = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE), new Point(AutoConstants.SPECIMEN_INTAKE_LEFT)));
-        intakeSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_INTAKE_LEFT.getHeading());
+        transferSpecimenLeft = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE), new Point(AutoConstants.SPECIMEN_TRANSFER_LEFT)));
+        transferSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_TRANSFER_LEFT.getHeading());
 
-        outtakeSpecimenLeft = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_LEFT), new Point(AutoConstants.SPECIMEN_OUTTAKE)));
-        outtakeSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_LEFT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE.getHeading());
+        transferSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_TRANSFER_LEFT), new Point(AutoConstants.SPECIMEN_TRANSFER_CENTER)));
+        transferSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_TRANSFER_LEFT.getHeading(), AutoConstants.SPECIMEN_TRANSFER_CENTER.getHeading());
 
-        intakeSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE), new Point(AutoConstants.SPECIMEN_INTAKE_CENTER)));
-        intakeSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE.getHeading(), AutoConstants.SPECIMEN_INTAKE_CENTER.getHeading());
+        intakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_TRANSFER_CENTER), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT_OLD)));
+        intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_TRANSFER_CENTER.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT_OLD.getHeading());
 
-        outtakeSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_CENTER), new Point(AutoConstants.SPECIMEN_OUTTAKE)));
-        outtakeSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_CENTER.getHeading(), AutoConstants.SPECIMEN_OUTTAKE.getHeading());
+        transferSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT_OLD), new Point(AutoConstants.SPECIMEN_TRANSFER_CENTER)));
+        transferSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_RIGHT_OLD.getHeading(), AutoConstants.SPECIMEN_TRANSFER_CENTER.getHeading());
 
-        intakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
-        intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading());
-
-        outtakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_OUTTAKE)));
-        outtakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE.getHeading());
-
-        grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
-        grabSpecimenReady1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
+        grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_TRANSFER_LEFT), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
+        grabSpecimenReady1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_TRANSFER_LEFT.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
 
         grabSpecimen = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB_READY), new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB_READY.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
@@ -117,7 +111,7 @@ public class SpecimenAuto extends OpMode {
                             setActionState(1);
                         }
                         else {
-                            currentPath = intakeSpecimenLeft;
+                            currentPath = transferSpecimenLeft;
                             follower.followPath(currentPath, true);
                             setPathState(7);
                         }
@@ -183,7 +177,7 @@ public class SpecimenAuto extends OpMode {
                             setActionState(10);
                             onsIntakeOut = false;
                         } else {
-                            currentPath = outtakeSpecimenLeft;
+                            currentPath = grabSpecimenReady1;
                             follower.followPath(currentPath, true);
                             setPathState(8);
                         }
@@ -193,15 +187,15 @@ public class SpecimenAuto extends OpMode {
 
             case 8:
                 if(robotInPos) {
-                    if(actionState == -1) {
-                        if (onsIntakeOut) {
-                            setActionState(10);
-                            onsIntakeOut = false;
-                        } else {
-                            currentPath = outtakeSpecimenLeft;
-                            follower.followPath(currentPath, true);
-                            setPathState(8);
-                        }
+                    if(onsIntakeOut){
+                        pathTimer.resetTimer();
+                        onsIntakeOut = false;
+                    }
+
+                    if(pathTimer.getElapsedTimeSeconds() > 0.5) {
+                        currentPath = grabSpecimen;
+                        follower.followPath(currentPath, true);
+                        setPathState(9);
                     }
                 }
                 break;
@@ -405,50 +399,37 @@ public class SpecimenAuto extends OpMode {
                 if(!intake.isBusy()) {
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract);
-                    setActionState(14);
+                    setActionState(12);
                 }
             break;
 
             case 12:
-                intake.setState(IntakeConstants.REJECT);
-                setActionState(13);
+                if(intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - slideRangeSubtract - 100) {
+                    if(onsGrabSample){
+                        actionTimer.resetTimer();
+                        onsGrabSample = false;
+                    }
+
+                    if(actionTimer.getElapsedTimeSeconds() > 0.05) {
+                        intake.setState(IntakeConstants.TRANSFER);
+                        setActionState(13);
+                    }
+                }
                 break;
 
             case 13:
                 if(!intake.isBusy()) {
-                    intake.setState(IntakeConstants.INTAKE_SUB_READY);
-                    setActionState(14);
+                    if(onsGrabSample){
+                        actionTimer.resetTimer();
+                        onsGrabSample = false;
+                    }
+
+                    if(actionTimer.getElapsedTimeSeconds() > 0.25) {
+                        outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
+                        setActionState(14);
+                    }
                 }
                 break;
-
-
-//            case 12:
-//                if(intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - slideRangeSubtract - 100) {
-//                    if(onsGrabSample){
-//                        actionTimer.resetTimer();
-//                        onsGrabSample = false;
-//                    }
-//
-//                    if(actionTimer.getElapsedTimeSeconds() > 0.05) {
-//                        intake.setState(IntakeConstants.TRANSFER);
-//                        setActionState(13);
-//                    }
-//                }
-//                break;
-//
-//            case 13:
-//                if(!intake.isBusy()) {
-//                    if(onsGrabSample){
-//                        actionTimer.resetTimer();
-//                        onsGrabSample = false;
-//                    }
-//
-//                    if(actionTimer.getElapsedTimeSeconds() > 0.25) {
-//                        outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
-//                        setActionState(14);
-//                    }
-//                }
-//                break;
 
             case 14:
                 if(!outtake.isBusy()) {
