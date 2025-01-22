@@ -517,7 +517,7 @@ public class SpecimenAuto extends OpMode {
                 break;
 
             case 15:
-                if(!intake.isBusy()) {
+                if(!intake.isBusy() && actionTimer.getElapsedTimeSeconds() > 1) {
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_HALFWAY);
                     setActionState(14);
