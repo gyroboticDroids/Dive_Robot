@@ -464,7 +464,7 @@ public class SpecimenAuto extends OpMode {
                 if(!intake.isBusy()) {
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract);
-                    setActionState(14);
+                    setActionState(15);
                 }
             break;
 
@@ -513,6 +513,14 @@ public class SpecimenAuto extends OpMode {
             case 14:
                 if(!outtake.isBusy()) {
                     setActionState(-1);
+                }
+                break;
+
+            case 15:
+                if(!intake.isBusy()) {
+                    intake.setState(IntakeConstants.INTAKE);
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_HALFWAY);
+                    setActionState(14);
                 }
                 break;
         }
