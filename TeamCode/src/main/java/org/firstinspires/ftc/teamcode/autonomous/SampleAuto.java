@@ -299,7 +299,7 @@ public class SampleAuto extends OpMode {
             case 13:
                 if(!intake.isBusy() && pathState < 3){
                     intake.setState(IntakeConstants.INTAKE);
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract - 1000);
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract - 1300);
                 }
 
                 if (!outtake.isBusy()) {
