@@ -230,13 +230,13 @@ public class SpecimenAuto extends OpMode {
                         } else {
                             currentPath = outtakeSpecimenLeft;
                             follower.followPath(currentPath, true);
-                            setPathState(6);
+                            setPathState(-1);
                         }
                     }
                 }
                 break;
             case 7:
-                if(robotInPos && actionTimer.getElapsedTimeSeconds() > 10) {
+                if(robotInPos && actionTimer.getElapsedTimeSeconds() > 3) {
                     if(actionState == -1) {
                         if (onsIntakeOut) {
                             setActionState(10);
@@ -469,12 +469,16 @@ public class SpecimenAuto extends OpMode {
             break;
 
             case 12:
-                intake.setState(IntakeConstants.REJECT);
-                setActionState(13);
+                if(!intake.isBusy() && actionTimer.getElapsedTimeSeconds() > 2) {
+                    intake.setState(IntakeConstants.REJECT);
+                    setActionState(13);
+
+                }
+
                 break;
 
             case 13:
-                if(!intake.isBusy() && actionTimer.getElapsedTimeSeconds() > 0.25) {
+                if(!intake.isBusy() && actionTimer.getElapsedTimeSeconds() > 2) {
                     intake.setState(IntakeConstants.INTAKE_SUB_READY);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT);
                     setActionState(14);
@@ -517,7 +521,7 @@ public class SpecimenAuto extends OpMode {
                 break;
 
             case 15:
-                if(!intake.isBusy() && actionTimer.getElapsedTimeSeconds() > 1) {
+                if(!intake.isBusy() && actionTimer.getElapsedTimeSeconds() > 2) {
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_HALFWAY);
                     setActionState(14);
