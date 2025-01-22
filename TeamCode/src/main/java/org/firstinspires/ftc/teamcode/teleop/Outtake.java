@@ -94,14 +94,14 @@ public class Outtake {
             case OuttakeConstants.TRANSFER_INTAKE:
                 hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.25)
                 {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_TRANSFER);
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_RAISE);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.75)
+                if(actionTimer.getElapsedTimeSeconds() > 0.45)
                 {
                     isBusy = false;
                 }
