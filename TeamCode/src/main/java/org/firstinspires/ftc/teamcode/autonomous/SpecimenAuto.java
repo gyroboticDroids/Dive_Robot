@@ -34,34 +34,26 @@ public class SpecimenAuto extends OpMode {
     private boolean onsIntakeOut = false;
     private boolean onsGrabSample = false;
     private Path currentPath;
+    private double currentHeading;
 
-    private Path scorePreload, grabSpecimen, scoreSpecimen1, intakeSpecimenLeft, outtakeSpecimenLeft, intakeSpecimenCenter, outtakeSpecimenCenter, intakeSpecimenRight, outtakeSpecimenRight, grabSpecimenReady1,
+    private Path scorePreload, grabSpecimen, scoreSpecimen1, intakeSpecimenLeft, intakeSpecimenCenter, intakeSpecimenRight, grabSpecimenReady1,
             grabSpecimenReady2, scoreSpecimen2, grabSpecimenReady3, scoreSpecimen3, grabSpecimenReady4, scoreSpecimen4, grabSpecimenReady5;
 
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE)));
         scorePreload.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_START.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
 
-        intakeSpecimenLeft = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_CONTROL_POINT1 ,new Point(AutoConstants.SPECIMEN_INTAKE_LEFT)));
-        intakeSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_INTAKE_LEFT.getHeading());
+        intakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
+        intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading());
 
-        outtakeSpecimenLeft = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_LEFT), new Point(AutoConstants.SPECIMEN_OUTTAKE)));
-        outtakeSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_LEFT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE.getHeading());
+        intakeSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_INTAKE_CENTER)));
+        intakeSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_INTAKE_CENTER.getHeading());
 
-        intakeSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE), new Point(AutoConstants.SPECIMEN_INTAKE_CENTER)));
-        intakeSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE.getHeading(), AutoConstants.SPECIMEN_INTAKE_CENTER.getHeading());
+        intakeSpecimenLeft = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_OUTTAKE_CENTER), AutoConstants.SPECIMEN_CONTROL_POINT1 ,new Point(AutoConstants.SPECIMEN_INTAKE_LEFT)));
+        intakeSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_CENTER.getHeading(), AutoConstants.SPECIMEN_INTAKE_LEFT.getHeading());
 
-        outtakeSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_CENTER), new Point(AutoConstants.SPECIMEN_OUTTAKE)));
-        outtakeSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_CENTER.getHeading(), AutoConstants.SPECIMEN_OUTTAKE.getHeading());
-
-        intakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE), new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT)));
-        intakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE.getHeading(), AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading());
-
-        outtakeSpecimenRight = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_INTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_OUTTAKE)));
-        outtakeSpecimenRight.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_OUTTAKE.getHeading());
-
-        grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
-        grabSpecimenReady1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
+        grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE_LEFT), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
+        grabSpecimenReady1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_LEFT.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
 
         grabSpecimen = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB_READY), new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB_READY.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
@@ -117,7 +109,7 @@ public class SpecimenAuto extends OpMode {
                             setActionState(1);
                         }
                         else {
-                            currentPath = intakeSpecimenLeft;
+                            currentPath = intakeSpecimenRight;
                             follower.followPath(currentPath, true);
                             setPathState(2);
                         }
@@ -183,8 +175,8 @@ public class SpecimenAuto extends OpMode {
                             setActionState(10);
                             onsIntakeOut = false;
                         } else {
-                            currentPath = outtakeSpecimenLeft;
-                            follower.followPath(currentPath, true);
+                            currentHeading = AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading();
+                            follower.holdPoint(AutoConstants.SPECIMEN_OUTTAKE_RIGHT);
                             setPathState(3);
                         }
                     }
@@ -213,8 +205,8 @@ public class SpecimenAuto extends OpMode {
                             setActionState(10);
                             onsIntakeOut = false;
                         } else {
-                            currentPath = outtakeSpecimenCenter;
-                            follower.followPath(currentPath, true);
+                            currentHeading = AutoConstants.SPECIMEN_OUTTAKE_CENTER.getHeading();
+                            follower.holdPoint(AutoConstants.SPECIMEN_OUTTAKE_CENTER);
                             setPathState(5);
                         }
                     }
@@ -228,8 +220,8 @@ public class SpecimenAuto extends OpMode {
                             setActionState(12);
                             onsIntakeOut = false;
                         } else {
-                            currentPath = outtakeSpecimenLeft;
-                            follower.followPath(currentPath, true);
+                            currentHeading = AutoConstants.SPECIMEN_OUTTAKE_LEFT.getHeading();
+                            follower.holdPoint(AutoConstants.SPECIMEN_OUTTAKE_LEFT);
                             setPathState(-1);
                         }
                     }
@@ -523,7 +515,7 @@ public class SpecimenAuto extends OpMode {
             case 15:
                 if(!intake.isBusy() && actionTimer.getElapsedTimeSeconds() > 2) {
                     intake.setState(IntakeConstants.INTAKE);
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_HALFWAY);
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT);
                     setActionState(14);
                 }
                 break;
