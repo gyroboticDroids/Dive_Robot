@@ -192,7 +192,7 @@ public class SpecimenAuto extends OpMode {
                         } else {
                             currentPath = intakeSpecimenCenter;
                             follower.followPath(currentPath, true);
-                            setPathState(4);
+                            setPathState(-1);
                         }
                     }
                 }
@@ -462,7 +462,8 @@ public class SpecimenAuto extends OpMode {
 
             case 12:
                 if(!intake.isBusy() && actionTimer.getElapsedTimeSeconds() > 2) {
-                    intake.setState(IntakeConstants.REJECT);
+
+                    intake.setState(IntakeConstants.CLEAR_SUB);
                     setActionState(13);
 
                 }
