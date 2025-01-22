@@ -37,46 +37,50 @@ public class SampleAuto extends OpMode {
     private int pathState = -1;
     private int actionState = -1;
     private boolean onsTimerState;
+    private boolean onsIntakeState;
     private boolean onsScoreState;
+    private boolean onsMoveState;
     private Path currentPath;
     private double currentHeading;
+    private boolean robotInPos;
+    private boolean intakeReady = true;
 
     private Path scorePreload, /*intoBucket,*/ collectSampleRight, scoreSampleRight, collectSampleCenter, scoreSampleCenter, collectSampleLeft, scoreSampleLeft, touchBar;
 
     public void buildPaths() {
-        scorePreload = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE)));
-        scorePreload.setLinearHeadingInterpolation(AutoConstants.SAMPLE_START.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading(), 0.6);
+        scorePreload = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE_RIGHT)));
+        scorePreload.setLinearHeadingInterpolation(AutoConstants.SAMPLE_START.getHeading(), AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), 0.6);
 
         //intoBucket = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_READY), new Point(AutoConstants.SAMPLE_SCORE)));
         //intoBucket.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_READY.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
         //intoBucket.setZeroPowerAccelerationMultiplier(ZERO_POWER_ACCEL_MULTIPLIER);
 
-        collectSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_RIGHT)));
-        collectSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_RIGHT.getHeading(), 0.8);
+        collectSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_RIGHT), new Point(AutoConstants.SAMPLE_RIGHT)));
+        collectSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), AutoConstants.SAMPLE_RIGHT.getHeading(), 0.8);
 
-        scoreSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_RIGHT), new Point(AutoConstants.SAMPLE_SCORE)));
-        scoreSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_RIGHT.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading(), 0.8);
+        scoreSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_RIGHT), new Point(AutoConstants.SAMPLE_SCORE_CENTER)));
+        scoreSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_RIGHT.getHeading(), AutoConstants.SAMPLE_SCORE_CENTER.getHeading(), 0.8);
 
-        collectSampleCenter = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_CENTER)));
-        collectSampleCenter.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_CENTER.getHeading(), 0.8);
+        collectSampleCenter = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_CENTER), new Point(AutoConstants.SAMPLE_CENTER)));
+        collectSampleCenter.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_CENTER.getHeading(), AutoConstants.SAMPLE_CENTER.getHeading(), 0.8);
 
-        scoreSampleCenter = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_CENTER), new Point(AutoConstants.SAMPLE_SCORE)));
-        scoreSampleCenter.setLinearHeadingInterpolation(AutoConstants.SAMPLE_CENTER.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading(), 0.8);
+        scoreSampleCenter = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_CENTER), new Point(AutoConstants.SAMPLE_SCORE_LEFT)));
+        scoreSampleCenter.setLinearHeadingInterpolation(AutoConstants.SAMPLE_CENTER.getHeading(), AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), 0.8);
 
-        collectSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_LEFT)));
-        collectSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_LEFT.getHeading(), 0.8);
+        collectSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_LEFT), new Point(AutoConstants.SAMPLE_LEFT)));
+        collectSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), AutoConstants.SAMPLE_LEFT.getHeading(), 0.8);
 
-        scoreSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_LEFT), new Point(AutoConstants.SAMPLE_SCORE)));
-        scoreSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_LEFT.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading(), 0.8);
+        scoreSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_LEFT), new Point(AutoConstants.SAMPLE_SCORE_LEFT)));
+        scoreSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_LEFT.getHeading(), AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), 0.8);
 
-        touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_PARK)));
-        touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
+        touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_LEFT), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE_LEFT.getY()), new Point(AutoConstants.SAMPLE_PARK)));
+        touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
     }
 
     public void autonomousPathUpdate() {
-        boolean robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1) &&
+        robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1) &&
                 MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1) &&
-                MathFunctions.roughlyEquals(currentHeading, follower.getPose().getHeading(), Math.toRadians(2));
+                MathFunctions.roughlyEquals(currentHeading, follower.getPose().getHeading(), Math.toRadians(5));
 
         switch (pathState) {
             case 0:
@@ -97,10 +101,18 @@ public class SampleAuto extends OpMode {
                             onsScoreState = false;
                         }
                         else {
-                            currentHeading = Math.toRadians(-15);
-                            follower.holdPoint(new Point(AutoConstants.SAMPLE_SCORE.getX(), AutoConstants.SAMPLE_SCORE.getY()), currentHeading);
+                            currentPath = scoreSampleRight;
+                            currentHeading = currentPath.getHeadingGoal(1);
+                            follower.followPath(currentPath, true);
                             setActionState(0);
                             setPathState(2);
+                        }
+                    } else if (actionState == 7) {
+                        if(onsMoveState) {
+                            currentPath = collectSampleRight;
+                            currentHeading = currentPath.getHeadingGoal(1);
+                            follower.followPath(currentPath, true);
+                            onsMoveState = false;
                         }
                     }
                 }
@@ -114,10 +126,18 @@ public class SampleAuto extends OpMode {
                             onsScoreState = false;
                         }
                         else {
-                            currentHeading = Math.toRadians(0);
-                            follower.holdPoint(new Point(AutoConstants.SAMPLE_SCORE.getX(), AutoConstants.SAMPLE_SCORE.getY()), currentHeading);
+                            currentPath = scoreSampleCenter;
+                            currentHeading = currentPath.getHeadingGoal(1);
+                            follower.followPath(currentPath, true);
                             setActionState(0);
                             setPathState(3);
+                        }
+                    }else if (actionState == 7) {
+                        if(onsMoveState) {
+                            currentPath = collectSampleCenter;
+                            currentHeading = currentPath.getHeadingGoal(1);
+                            follower.followPath(currentPath, true);
+                            onsMoveState = false;
                         }
                     }
                 }
@@ -128,30 +148,25 @@ public class SampleAuto extends OpMode {
                     if (actionState == -1) {
                         if(onsScoreState) {
                             setActionState(5);
+                            intakeReady = false;
                             onsScoreState = false;
                         }
                         else {
-                            currentHeading = Math.toRadians(10);
-                            follower.holdPoint(new Point(AutoConstants.SAMPLE_SCORE.getX(), AutoConstants.SAMPLE_SCORE.getY()), currentHeading);
+                            currentPath = scoreSampleLeft;
+                            currentHeading = currentPath.getHeadingGoal(1);
+                            follower.followPath(currentPath, true);
                             setActionState(0);
                             setPathState(-1);
                         }
-                    }
-                }
-                break;
-
-            case 4:
-                if (robotInPos) {
-                    if (actionState == -1) {
-                        if(onsScoreState) {
-                            setActionState(5);
-                            onsScoreState = false;
+                    }else if (outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
+                        if(onsMoveState) {
+                            currentPath = collectSampleLeft;
+                            currentHeading = currentPath.getHeadingGoal(1);
+                            follower.followPath(currentPath, true);
+                            onsMoveState = false;
                         }
                         else {
-                            currentHeading = Math.toRadians(0);
-                            follower.holdPoint(new Point(AutoConstants.SAMPLE_SCORE.getX(), AutoConstants.SAMPLE_SCORE.getY()), currentHeading);
-                            setActionState(0);
-                            setPathState(-1);
+                            intakeReady = true;
                         }
                     }
                 }
@@ -225,9 +240,11 @@ public class SampleAuto extends OpMode {
             case 6:
                 if (!intake.isBusy() && !outtake.isBusy()) {
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-                    intake.setState(IntakeConstants.INTAKE);
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract);
-                    setActionState(7);
+                    if(intakeReady) {
+                        intake.setState(IntakeConstants.INTAKE);
+                        intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract);
+                        setActionState(7);
+                    }
                 }
                 break;
 
@@ -237,7 +254,7 @@ public class SampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.75) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0) {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(8);
                     }
@@ -250,7 +267,7 @@ public class SampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.25) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.1) {
                         outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
                         setActionState(14);
                     }
@@ -272,12 +289,14 @@ public class SampleAuto extends OpMode {
     public void setPathState(int pState) {
         pathState = pState;
         onsScoreState = true;
+        onsMoveState = true;
         pathTimer.resetTimer();
     }
 
     public void setActionState(int aState) {
         actionState = aState;
         onsTimerState = true;
+        onsIntakeState = true;
         actionTimer.resetTimer();
     }
 
@@ -328,6 +347,7 @@ public class SampleAuto extends OpMode {
         telemetry.addData("hori slide pos", intake.getHorizontalSlidePos());
         telemetry.addData("hori slide setpoint", intake.getHorizontalPosition());
         telemetry.addData("intake is busy", intake.isBusy());
+        telemetry.addData("robot in pos", robotInPos);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());

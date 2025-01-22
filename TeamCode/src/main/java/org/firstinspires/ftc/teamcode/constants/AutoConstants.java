@@ -7,11 +7,15 @@ public class AutoConstants {
     //Poses used in SampleAuto
     public static Pose SAMPLE_START = new Pose(7.125, 113.6, Math.toRadians(0));
     public static Pose SAMPLE_SCORE_READY = new Pose(16, 127, Math.toRadians(-45));
-    public static Pose SAMPLE_SCORE = new Pose(15, 132, Math.toRadians(-30));
-    public static Pose SAMPLE_RIGHT = new Pose(20, 121, Math.toRadians(0));
-    public static Pose SAMPLE_CENTER = new Pose(20, 131, Math.toRadians(0));
-    public static Pose SAMPLE_LEFT = new Pose(24, 129.5, Math.toRadians(26));
+    public static Pose SAMPLE_SCORE_RIGHT = new Pose(17, 133, Math.toRadians(-23));
+    public static Pose SAMPLE_SCORE_CENTER = new Pose(18, 136, Math.toRadians(-8));
+    public static Pose SAMPLE_SCORE_LEFT = new Pose(13, 130, Math.toRadians(-45));
+    public static Pose SAMPLE_RIGHT = new Pose(19, 130, Math.toRadians(-23));
+    public static Pose SAMPLE_CENTER = new Pose(20, 135, Math.toRadians(-8));
+    public static Pose SAMPLE_LEFT = new Pose(19, 129.5, Math.toRadians(7));
     public static Pose SAMPLE_PARK = new Pose(60, 92, Math.toRadians(0));
+
+    public static Pose SAMPLE_SCORE = new Pose(13, 128, Math.toRadians(-45));
 
     //Poses in SpecimenAuto
     public static Pose SPECIMEN_START = new Pose(7.125, 66.5, Math.toRadians(0));
@@ -22,6 +26,8 @@ public class AutoConstants {
     public static Pose SPECIMEN_OUTTAKE = new Pose(32, 32, Math.toRadians(-135));
     public static Pose SPECIMEN_GRAB_READY = new Pose(12, 34, Math.toRadians(0));
     public static Pose SPECIMEN_GRAB = new Pose(7.125, 34, Math.toRadians(0));
+
+    public static Point SPECIMEN_CONTROL_POINT1 = new Point(12, 68);
 
     public static double Y_INCREMENT = 2;
     public static double X_INCREMENT = 0.07;
