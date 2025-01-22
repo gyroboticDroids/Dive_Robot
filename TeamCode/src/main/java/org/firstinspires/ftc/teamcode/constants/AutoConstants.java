@@ -21,16 +21,16 @@ public class AutoConstants {
     //Poses in SpecimenAuto
     public static Pose SPECIMEN_START = new Pose(7.125, 66.5, Math.toRadians(0));
     public static Pose SPECIMEN_SCORE = new Pose(42.5, 68, Math.toRadians(0));
-    public static Pose SPECIMEN_INTAKE_LEFT = new Pose(24, 42, Math.toRadians(-25));
+    public static Pose SPECIMEN_INTAKE_LEFT = new Pose(24, 42, Math.toRadians(-35));
     public static Pose SPECIMEN_OUTTAKE_LEFT = new Pose(24, 42, Math.toRadians(-145));
-    public static Pose SPECIMEN_INTAKE_CENTER = new Pose(24, 30, Math.toRadians(-25));
+    public static Pose SPECIMEN_INTAKE_CENTER = new Pose(24, 30, Math.toRadians(-35));
     public static Pose SPECIMEN_OUTTAKE_CENTER = new Pose(24, 30, Math.toRadians(-145));
-    public static Pose SPECIMEN_INTAKE_RIGHT = new Pose(24, 18, Math.toRadians(-25));
+    public static Pose SPECIMEN_INTAKE_RIGHT = new Pose(24, 18, Math.toRadians(-35));
     public static Pose SPECIMEN_OUTTAKE_RIGHT = new Pose(24, 18, Math.toRadians(-145));
     public static Pose SPECIMEN_GRAB_READY = new Pose(12, 34, Math.toRadians(0));
     public static Pose SPECIMEN_GRAB = new Pose(7.125, 34, Math.toRadians(0));
 
-    public static Point SPECIMEN_CONTROL_POINT1 = new Point(12, 68);
+    public static Point SPECIMEN_CONTROL_POINT1 = new Point(6, 72);
 
     public static double Y_INCREMENT = 2;
     public static double X_INCREMENT = 0.07;
