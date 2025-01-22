@@ -229,13 +229,18 @@ public class SampleAuto extends OpMode {
         switch (actionState) {
             case 0:
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
-                setActionState(14);
+
+                if(pathState < 4) {
+                    intake.setState(IntakeConstants.INTAKE_SUB_READY);
+                    setActionState(13);
+                } else {
+                    setActionState(14);
+                }
                 break;
 
             case 5:
                 if (actionTimer.getElapsedTimeSeconds() > 0.15) {
                     outtake.setState(OuttakeConstants.SCORE_SAMPLE);
-                    intake.setState(IntakeConstants.INTAKE_SUB_READY);
                     setActionState(6);
                 }
                 break;
@@ -288,6 +293,17 @@ public class SampleAuto extends OpMode {
                 if (!outtake.isBusy()) {
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
                     setActionState(14);
+                }
+                break;
+
+            case 13:
+                if(!intake.isBusy() && pathState < 3){
+                    intake.setState(IntakeConstants.INTAKE);
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract - 1000);
+                }
+
+                if (!outtake.isBusy()) {
+                    setActionState(-1);
                 }
                 break;
 
