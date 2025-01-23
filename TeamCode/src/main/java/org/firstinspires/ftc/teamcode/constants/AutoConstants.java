@@ -6,17 +6,17 @@ import com.pedropathing.pathgen.Point;
 public class AutoConstants {
     //Poses used in SampleAuto
     public static Pose SAMPLE_START = new Pose(7.125, 113.6, Math.toRadians(0));
-    public static Pose SAMPLE_SCORE_RIGHT = new Pose(16.5, 133, Math.toRadians(-23));
-    public static Pose SAMPLE_SCORE_CENTER = new Pose(19, 136, Math.toRadians(-13));
-    public static Pose SAMPLE_SCORE_LEFT = new Pose(19, 136, Math.toRadians(-8));
-    public static Pose SAMPLE_RIGHT = new Pose(18.5, 131.5, Math.toRadians(-23));
-    public static Pose SAMPLE_CENTER = new Pose(21, 135.5, Math.toRadians(-13));
+    public static Pose SAMPLE_SCORE_RIGHT = new Pose(16, 133, Math.toRadians(-23));
+    public static Pose SAMPLE_SCORE_CENTER = new Pose(18.5, 136, Math.toRadians(-13));
+    public static Pose SAMPLE_SCORE_LEFT = new Pose(18.5, 136, Math.toRadians(-8));
+    public static Pose SAMPLE_RIGHT = new Pose(19, 131.5, Math.toRadians(-23));
+    public static Pose SAMPLE_CENTER = new Pose(20.5, 135.5, Math.toRadians(-13));
     public static Pose SAMPLE_LEFT = new Pose(19, 129, Math.toRadians(24));
-    public static Pose SAMPLE_SUB = new Pose(60, 92, Math.toRadians(-90));
+    public static Pose SAMPLE_SUB = new Pose(60, 92.5, Math.toRadians(-90));
     public static Pose SAMPLE_PARK = new Pose(60, 92, Math.toRadians(0));
 
     public static Pose SAMPLE_SCORE_READY = new Pose(16, 127, Math.toRadians(-45));
-    public static Pose SAMPLE_SCORE = new Pose(13, 130, Math.toRadians(-45));
+    public static Pose SAMPLE_SCORE = new Pose(13.5, 129.5, Math.toRadians(-45));
 
     //Poses in SpecimenAuto
     public static Pose SPECIMEN_START = new Pose(7.125, 66.5, Math.toRadians(0));

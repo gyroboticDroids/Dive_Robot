@@ -21,7 +21,7 @@ public class OuttakeConstants {
     public static double EXTENSION_SPECIMEN_SCORE = 0.6833;//
     public static double EXTENSION_SAMPLE_SCORE = 0.6833;
 
-    public static double PIVOT_TRANSFER = 0.394;//
+    public static double PIVOT_TRANSFER = 0.396;//
     public static double PIVOT_SPECIMEN = 0.43;//
     public static double PIVOT_OFF_WALL = 0.606;//
     public static double PIVOT_SAMPLE = 0.536;//

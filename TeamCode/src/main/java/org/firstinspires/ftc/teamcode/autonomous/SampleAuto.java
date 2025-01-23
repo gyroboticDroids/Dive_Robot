@@ -72,12 +72,15 @@ public class SampleAuto extends OpMode {
 
         collectSampleSub = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_LEFT), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SUB)));
         collectSampleSub.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), AutoConstants.SAMPLE_SUB.getHeading());
+        collectSampleSub.setZeroPowerAccelerationMultiplier(4);
 
         scoreSampleSub = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SUB), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
         scoreSampleSub.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SUB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
+        scoreSampleSub.setZeroPowerAccelerationMultiplier(3);
 
         touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE_LEFT.getY()), new Point(AutoConstants.SAMPLE_PARK)));
         touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
+        touchBar.setZeroPowerAccelerationMultiplier(3);
     }
 
     public void autonomousPathUpdate() {
@@ -87,10 +90,7 @@ public class SampleAuto extends OpMode {
 
         switch (pathState) {
             case 0:
-                intake.setState(IntakeConstants.RESET_POS);
                 setActionState(0);
-
-                currentPath = scorePreload;
                 currentHeading = currentPath.getHeadingGoal(1);
                 follower.followPath(currentPath, true);
                 setPathState(1);
@@ -214,7 +214,7 @@ public class SampleAuto extends OpMode {
 
             case 6:
                 if (robotInPos) {
-                    if (actionState == -1) {
+                    if (actionState == -1 || actionState == 11) {
                         if(onsScoreState){
                             setActionState(10);
                             onsScoreState = false;
@@ -311,6 +311,8 @@ public class SampleAuto extends OpMode {
                 if(!intake.isBusy() && pathState < 3){
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract - 1300);
+                } else if (!intake.isBusy() && pathState == 4) {
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT + 100);
                 }
 
                 if (!outtake.isBusy()) {
@@ -340,7 +342,7 @@ public class SampleAuto extends OpMode {
                         intake.horizontalSlidesManual(30);
                     }
 
-                    if(actionTimer.getElapsedTimeSeconds() > 1.5)
+                    if(actionTimer.getElapsedTimeSeconds() > 1)
                     {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(17);
@@ -397,8 +399,16 @@ public class SampleAuto extends OpMode {
 
         currentPath = scorePreload;
 
+        intake.setState(IntakeConstants.RESET_POS);
         telemetry.addLine("initialized!");
         telemetry.update();
+    }
+
+    @Override
+    public void init_loop()
+    {
+        //Resets intake pos
+        intake.update();
     }
 
     @Override
