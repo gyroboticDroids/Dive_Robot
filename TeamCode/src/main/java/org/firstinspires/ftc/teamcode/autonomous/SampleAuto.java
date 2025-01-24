@@ -72,7 +72,7 @@ public class SampleAuto extends OpMode {
 
         collectSampleSub = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_LEFT), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SUB)));
         collectSampleSub.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), AutoConstants.SAMPLE_SUB.getHeading());
-        collectSampleSub.setZeroPowerAccelerationMultiplier(4);
+        collectSampleSub.setZeroPowerAccelerationMultiplier(3.5);
 
         scoreSampleSub = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SUB), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
         scoreSampleSub.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SUB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
@@ -364,7 +364,7 @@ public class SampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.1) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.3) {
                         outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
                         setActionState(0);
                     }
@@ -407,8 +407,6 @@ public class SampleAuto extends OpMode {
         currentPath = scorePreload;
 
         intake.setState(IntakeConstants.RESET_POS);
-        telemetry.addLine("initialized!");
-        telemetry.update();
     }
 
     @Override
@@ -420,6 +418,9 @@ public class SampleAuto extends OpMode {
         if (!intake.isBusy() && intake.getState().equals(IntakeConstants.RESET_POS))
         {
             intake.setState(IntakeConstants.TRANSFER);
+
+            telemetry.addLine("initialized!");
+            telemetry.update();
         }
     }
 
