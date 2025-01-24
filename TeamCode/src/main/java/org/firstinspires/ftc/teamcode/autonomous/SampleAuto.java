@@ -26,7 +26,7 @@ import pedroPathing.constants.LConstants;
 public class SampleAuto extends OpMode {
     private static final int OUTTAKE_UP = 500;
 
-    private int slideRangeSubtract = 100;
+    private int slideRangeSubtract = 0;
 
     private Follower follower;
     private Timer pathTimer;
@@ -125,6 +125,7 @@ public class SampleAuto extends OpMode {
                 if (robotInPos) {
                     if (actionState == -1) {
                         if(onsScoreState) {
+                            slideRangeSubtract = 100;
                             setActionState(5);
                             onsScoreState = false;
                         }
@@ -180,7 +181,6 @@ public class SampleAuto extends OpMode {
                     if (actionState == -1) {
                         if(onsScoreState) {
                             setActionState(10);
-                            hang.setState(HangConstants.TOUCH_BAR);
                             onsScoreState = false;
                         }
                     }else if (actionState == 11) {
@@ -217,6 +217,7 @@ public class SampleAuto extends OpMode {
                     if (actionState == -1 || actionState == 11) {
                         if(onsScoreState){
                             setActionState(10);
+                            hang.setState(HangConstants.TOUCH_BAR);
                             onsScoreState = false;
                         }else {
                             currentPath = touchBar;
@@ -257,13 +258,19 @@ public class SampleAuto extends OpMode {
                 break;
 
             case 6:
-                if (!intake.isBusy() && !outtake.isBusy()) {
-                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+                if (outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY) && intake.getHorizontalPosition() == IntakeConstants.SLIDES_MAX - slideRangeSubtract) {
+                    setActionState(7);
+                }
+
+                if (!intake.isBusy()) {
                     if(intakeReady) {
                         intake.setState(IntakeConstants.INTAKE);
                         intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract);
-                        setActionState(7);
                     }
+                }
+
+                if(!outtake.isBusy()) {
+                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
                 }
                 break;
 
@@ -273,7 +280,7 @@ public class SampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.1) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.5) {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(8);
                     }
@@ -409,6 +416,11 @@ public class SampleAuto extends OpMode {
     {
         //Resets intake pos
         intake.update();
+
+        if (!intake.isBusy() && intake.getState().equals(IntakeConstants.RESET_POS))
+        {
+            intake.setState(IntakeConstants.TRANSFER);
+        }
     }
 
     @Override
