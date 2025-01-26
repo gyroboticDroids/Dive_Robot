@@ -48,8 +48,8 @@ public class SampleAutoOld extends OpMode {
     private Path scorePreload, intoBucket, collectSampleRight, scoreSampleRight, collectSampleCenter, scoreSampleCenter, collectSampleLeft, scoreSampleLeft, touchBar;
 
     public void buildPaths() {
-        scorePreload = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE_READY)));
-        scorePreload.setLinearHeadingInterpolation(AutoConstants.SAMPLE_START.getHeading(), AutoConstants.SAMPLE_SCORE_READY.getHeading());
+        scorePreload = new Path(new BezierLine(new Point(AutoConstants.FIVE_SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE_READY)));
+        scorePreload.setLinearHeadingInterpolation(AutoConstants.FIVE_SAMPLE_START.getHeading(), AutoConstants.SAMPLE_SCORE_READY.getHeading());
         scorePreload.setZeroPowerAccelerationMultiplier(ZERO_POWER_ACCEL_MULTIPLIER);
 
         intoBucket = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_READY), new Point(AutoConstants.SAMPLE_SCORE)));
@@ -323,7 +323,7 @@ public class SampleAutoOld extends OpMode {
 
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(AutoConstants.SAMPLE_START);
+        follower.setStartingPose(AutoConstants.FIVE_SAMPLE_START);
         follower.setMaxPower(0.5);
         buildPaths();
 
