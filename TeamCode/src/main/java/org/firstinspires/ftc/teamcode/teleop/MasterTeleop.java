@@ -31,6 +31,7 @@ public class MasterTeleop extends OpMode {
         drive = new Drive(hardwareMap, gamepad1);
         outtake = new Outtake(hardwareMap);
         intake = new Intake(hardwareMap);
+        intake.setIntakeWheelsKeepSpinning(false);
         hang = new Hang(hardwareMap);
 
         //Sets up timer

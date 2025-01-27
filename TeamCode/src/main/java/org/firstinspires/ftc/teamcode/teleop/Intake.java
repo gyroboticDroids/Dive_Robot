@@ -13,6 +13,7 @@ public class Intake {
 
     private boolean onsSetState;
     private boolean isBusy = false;
+    private boolean intakeWheelsKeepSpinning = false;
 
     private double horizontalPosition = 0;
     private int intakeSlideHomeOffset = 0;
@@ -95,7 +96,13 @@ public class Intake {
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    intakeSpeed(IntakeConstants.INTAKE_STOP);
+                    if(!intakeWheelsKeepSpinning) {
+                        intakeSpeed(IntakeConstants.INTAKE_STOP);
+                    }
+                    else if ((hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset) < IntakeConstants.SLIDES_OUT){
+                        intakeSpeed(IntakeConstants.INTAKE_STOP);
+                    }
+
                     horizontalPosition = IntakeConstants.SLIDES_TRANSFER;
 
                     if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset, horizontalPosition, IntakeConstants.SLIDES_ACCURACY))
@@ -168,6 +175,10 @@ public class Intake {
 
     public double getMotorPower() {
         return motorPower;
+    }
+
+    public void setIntakeWheelsKeepSpinning(boolean val) {
+        intakeWheelsKeepSpinning = val;
     }
 
     public void horizontalSlidesUpdate()

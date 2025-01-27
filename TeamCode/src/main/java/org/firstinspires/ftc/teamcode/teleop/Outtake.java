@@ -276,7 +276,7 @@ public class Outtake {
 
                 driveBack = true;
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.25)
                 {
                     driveBack = false;
                     isBusy = false;

@@ -92,8 +92,8 @@ public class SixSampleAuto extends OpMode {
     }
 
     public void autonomousPathUpdate() {
-        robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1) &&
-                MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1) &&
+        robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1.5) &&
+                MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1.5) &&
                 MathFunctions.roughlyEquals(currentHeading, follower.getPose().getHeading(), Math.toRadians(5));
 
         switch (pathState) {
@@ -118,15 +118,15 @@ public class SixSampleAuto extends OpMode {
                             follower.followPath(currentPath, true);
                             setPathState(2);
                         }
-                    } else if (actionState == 22) {
+                    } else if (intake.getState().equals(IntakeConstants.INTAKE)) {
                         if(onsMoveState) {
                             currentPath = collectSampleObs;
                             currentHeading = currentPath.getHeadingGoal(1);
                             follower.followPath(currentPath, true);
                             onsMoveState = false;
+                        }else {
+                            intakeReady = true;
                         }
-                    }else {
-                        intakeReady = true;
                     }
                 }
                 break;
@@ -204,8 +204,9 @@ public class SixSampleAuto extends OpMode {
                             follower.followPath(currentPath, true);
                             onsMoveState = false;
                         }
-                    } else {
-                        intakeReady = true;
+                        else {
+                            intakeReady = true;
+                        }
                     }
                 }
                 break;
@@ -274,13 +275,15 @@ public class SixSampleAuto extends OpMode {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
-                outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                if(!outtake.isBusy()) {
+                    outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
 
-                if(pathState < 6) {
-                    intake.setState(IntakeConstants.INTAKE_SUB_READY);
-                    setActionState(13);
-                } else {
-                    setActionState(14);
+                    if (pathState < 6) {
+                        intake.setState(IntakeConstants.INTAKE_SUB_READY);
+                        setActionState(13);
+                    } else {
+                        setActionState(14);
+                    }
                 }
                 break;
 
@@ -314,7 +317,7 @@ public class SixSampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.5) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0) {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(8);
                     }
@@ -380,7 +383,7 @@ public class SixSampleAuto extends OpMode {
                         onsIntakeState = false;
                     }
                     else {
-                        intake.horizontalSlidesManual(30);
+                        intake.horizontalSlidesManual(50);
                     }
 
                     if(actionTimer.getElapsedTimeSeconds() > 1)
@@ -433,7 +436,7 @@ public class SixSampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.5) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0) {
                         if(intakeReady) {
                             intake.setState(IntakeConstants.TRANSFER);
                             setActionState(23);
@@ -474,7 +477,7 @@ public class SixSampleAuto extends OpMode {
     @Override
     public void init() {
         intake = new Intake(hardwareMap);
-        intake.setState(IntakeConstants.START);
+        intake.setIntakeWheelsKeepSpinning(true);
 
         outtake = new Outtake(hardwareMap);
         hang = new Hang(hardwareMap);
