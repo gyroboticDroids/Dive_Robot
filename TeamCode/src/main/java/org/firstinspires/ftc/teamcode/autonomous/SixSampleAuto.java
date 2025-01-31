@@ -40,8 +40,13 @@ public class SixSampleAuto extends OpMode {
     private boolean onsIntakeState;
     private boolean onsScoreState;
     private boolean onsMoveState;
+    private boolean prevGp1Dpad = false;
+    private boolean prevGp1Start = false;
     private Path currentPath;
     private double currentHeading;
+    private double xSubPos = 60;
+    private boolean alliancePartnerAuto = true;
+    private boolean builtPaths = false;
     private boolean robotInPos;
     private boolean intakeReady = true;
 
@@ -52,13 +57,24 @@ public class SixSampleAuto extends OpMode {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SIX_SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE_OBS)));
         scorePreload.setLinearHeadingInterpolation(AutoConstants.SIX_SAMPLE_START.getHeading(), AutoConstants.SAMPLE_SCORE_OBS.getHeading(), 0.6);
 
-        collectSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_OBS), new Point(AutoConstants.SAMPLE_OBS)));
-        collectSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_OBS.getHeading(), AutoConstants.SAMPLE_OBS.getHeading(), 0.8);
-        collectSampleObs.setZeroPowerAccelerationMultiplier(3.5);
+        if(alliancePartnerAuto) {
+            collectSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_OBS), new Point(AutoConstants.SAMPLE_OBS)));
+            collectSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_OBS.getHeading(), AutoConstants.SAMPLE_OBS.getHeading(), 0.8);
+            collectSampleObs.setZeroPowerAccelerationMultiplier(3.5);
 
-        scoreSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_OBS), new Point(AutoConstants.SAMPLE_SCORE_RIGHT)));
-        scoreSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_OBS.getHeading(), AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), 0.6);
-        scoreSampleObs.setZeroPowerAccelerationMultiplier(2);
+            scoreSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_OBS), new Point(AutoConstants.SAMPLE_SCORE_RIGHT)));
+            scoreSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_OBS.getHeading(), AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), 0.6);
+            scoreSampleObs.setZeroPowerAccelerationMultiplier(2);
+        }
+        else {
+            collectSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_OBS), new Point(AutoConstants.SAMPLE_ALLIANCE_PARTNER)));
+            collectSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_OBS.getHeading(), AutoConstants.SAMPLE_ALLIANCE_PARTNER.getHeading(), 0.8);
+            collectSampleObs.setZeroPowerAccelerationMultiplier(3.5);
+
+            scoreSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_ALLIANCE_PARTNER), new Point(AutoConstants.SAMPLE_SCORE_RIGHT)));
+            scoreSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_ALLIANCE_PARTNER.getHeading(), AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), 0.6);
+            scoreSampleObs.setZeroPowerAccelerationMultiplier(2);
+        }
 
         collectSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_RIGHT), new Point(AutoConstants.SAMPLE_RIGHT)));
         collectSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), AutoConstants.SAMPLE_RIGHT.getHeading(), 0.8);
@@ -78,17 +94,19 @@ public class SixSampleAuto extends OpMode {
         scoreSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_LEFT), new Point(AutoConstants.SAMPLE_SCORE_LEFT)));
         scoreSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_LEFT.getHeading(), AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), 0.8);
 
-        collectSampleSub = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_LEFT), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SUB)));
+        collectSampleSub = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_LEFT), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(xSubPos, AutoConstants.SAMPLE_SUB.getY())));
         collectSampleSub.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), AutoConstants.SAMPLE_SUB.getHeading());
         collectSampleSub.setZeroPowerAccelerationMultiplier(3.5);
 
-        scoreSampleSub = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SUB), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
+        scoreSampleSub = new Path(new BezierCurve(new Point(xSubPos, AutoConstants.SAMPLE_SUB.getY()), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
         scoreSampleSub.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SUB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
         scoreSampleSub.setZeroPowerAccelerationMultiplier(3);
 
         touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE_LEFT.getY()), new Point(AutoConstants.SAMPLE_PARK)));
         touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
         touchBar.setZeroPowerAccelerationMultiplier(3);
+
+        builtPaths = true;
     }
 
     public void autonomousPathUpdate() {
@@ -507,8 +525,44 @@ public class SixSampleAuto extends OpMode {
             intake.setState(IntakeConstants.TRANSFER);
 
             telemetry.addLine("initialized!");
-            telemetry.update();
         }
+
+        if(!prevGp1Dpad && gamepad1.dpad_up){
+            xSubPos++;
+            builtPaths = false;
+        } else if (!prevGp1Dpad && gamepad1.dpad_down) {
+            xSubPos--;
+            builtPaths = false;
+        }
+
+        xSubPos = MathFunctions.clamp(xSubPos, 58, 80);
+
+        if(gamepad1.dpad_left) {
+            alliancePartnerAuto = false;
+            builtPaths = false;
+        } else if(gamepad1.dpad_right) {
+            alliancePartnerAuto = true;
+            builtPaths = false;
+        }
+
+        if(!prevGp1Start && gamepad1.start){
+            buildPaths();
+        }
+
+        prevGp1Dpad = gamepad1.dpad_up || gamepad1.dpad_down;
+        prevGp1Start = gamepad1.start;
+
+        telemetry.addData("Sub offset (g1 dpad up and down)", xSubPos);
+        telemetry.addData("Alliance partner auto (g1 dpad left and right)", alliancePartnerAuto);
+
+        if(!builtPaths){
+            telemetry.addLine("DON'T FORGET TO BUILD PATHS TO SAVE CHANGES (g1 start)");
+        }
+        else {
+            telemetry.addLine("Paths built");
+        }
+
+        telemetry.update();
     }
 
     @Override

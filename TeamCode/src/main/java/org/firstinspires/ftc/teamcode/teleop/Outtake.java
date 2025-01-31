@@ -59,9 +59,6 @@ public class Outtake {
                 break;
 
             case IntakeConstants.RESET_POS:
-                hardware.outtakeSlide1.setPower(-0.2);
-                hardware.outtakeSlide2.setPower(-0.2);
-
                 if(actionTimer.getElapsedTimeSeconds() > 1)
                 {
                     hardware.outtakeSlide1.setPower(0);
@@ -70,6 +67,10 @@ public class Outtake {
                     hardware.outtakeSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                     hardware.outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                     isBusy = false;
+                }
+                else {
+                    hardware.outtakeSlide1.setPower(-0.3);
+                    hardware.outtakeSlide2.setPower(-0.3);
                 }
                 break;
 
