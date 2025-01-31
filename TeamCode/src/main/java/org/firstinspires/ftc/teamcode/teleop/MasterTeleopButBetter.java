@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 
-@TeleOp(name = "Master Tele-op", group = "Tele-op")
+@TeleOp(name = "Master Tele-op Improved", group = "Tele-op")
 public class MasterTeleopButBetter extends OpMode {
 
     //Defines classes
