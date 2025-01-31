@@ -172,7 +172,6 @@ public class MasterTeleopButBetter extends OpMode {
 
     //Variables used for intakeUpdate
     private String prevIntakeState = IntakeConstants.START;
-    private boolean prevGp2LeftBumper = false;
 
     void intakeUpdate()
     {
@@ -226,7 +225,6 @@ public class MasterTeleopButBetter extends OpMode {
 
         //Previous intake state
         prevIntakeState = intake.getState();
-        prevGp2LeftBumper = gamepad2.left_bumper;
     }
 
     private boolean prevGp1Start = false;
