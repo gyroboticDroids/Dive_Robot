@@ -45,7 +45,7 @@ public class MasterTeleopButBetter extends OpMode {
         teleopTimer.resetTimer();
 
         //Sets all states to the starting states
-        outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+        outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
         intake.setState(IntakeConstants.RESET_POS);
         hang.setState(HangConstants.START);
     }
@@ -128,7 +128,7 @@ public class MasterTeleopButBetter extends OpMode {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
             } else if ((gamepad2.y || gamepad2.b) && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && intake.getState().equals(IntakeConstants.TRANSFER) && !intake.isBusy()) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
-            } else if (gamepad2.b && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevOuttakeState.equals(OuttakeConstants.START))) {
+            } else if (gamepad2.b && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevOuttakeState.equals(OuttakeConstants.START))) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
             } else if (gamepad2.b && prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY)) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);

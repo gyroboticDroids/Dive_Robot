@@ -81,8 +81,8 @@ public class Outtake {
                 }
 
                 hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_TRANSFER);
-                hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_TRANSFER);
-                hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_TRANSFER);
+                hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_TRANSFER_READY);
+                hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_TRANSFER_READY);
 
                 hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
 
@@ -93,41 +93,37 @@ public class Outtake {
                 break;
 
             case OuttakeConstants.TRANSFER_INTAKE:
-                hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
+                hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_TRANSFER);
+                hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_TRANSFER);
+                hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_TRANSFER);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.25)
+                if(actionTimer.getElapsedTimeSeconds() > 0.1)
                 {
-                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_TRANSFER);
-                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_RAISE);
-                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
+                    hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.45)
+                if(actionTimer.getElapsedTimeSeconds() > 0.3)
+                {
+                    vertPosition = OuttakeConstants.SLIDES_TRANSFER_UP;
+                }
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.4 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
                 break;
 
             case OuttakeConstants.GRAB_SPECIMEN_READY:
-
-                if(onsSetState)
+                if(actionTimer.getElapsedTimeSeconds() > 0.2)
                 {
                     vertPosition = OuttakeConstants.SLIDES_SPECIMEN_COLLECT;
-                    extend = hardware.outtakePivot.getPosition() == OuttakeConstants.PIVOT_TRANSFER;
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > ((extend)? 0.35:0.25))
-                {
-                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
-                }
+                hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
+                hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
+                hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
 
-                if(actionTimer.getElapsedTimeSeconds() > ((extend)? 0.25:0.5))
-                {
-                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
-                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
-                }
-
-                if(actionTimer.getElapsedTimeSeconds() > 1)
+                if(actionTimer.getElapsedTimeSeconds() > 0.75)
                 {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
                 }
@@ -135,7 +131,7 @@ public class Outtake {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1.25 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
@@ -144,7 +140,7 @@ public class Outtake {
             case OuttakeConstants.SCORE_SPECIMEN_READY_LOW:
                 if(specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.25)
                 {
-                    lastVertConstant = vertPosition = OuttakeConstants.SLIDES_SPECIMEN_LOW_SCORING;
+                    vertPosition = OuttakeConstants.SLIDES_SPECIMEN_LOW_SCORING;
                     specimenOnsSetState = false;
                 }
 
@@ -155,14 +151,14 @@ public class Outtake {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SPECIMEN);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SPECIMEN);
 
-                    driveBack = true;
+                    //driveBack = true;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_SCORE);
 
-                    driveBack = false;
+                    //driveBack = false;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
@@ -174,7 +170,7 @@ public class Outtake {
             case OuttakeConstants.SCORE_SPECIMEN_READY_HIGH:
                 if(specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.25)
                 {
-                    lastVertConstant = vertPosition = OuttakeConstants.SLIDES_SPECIMEN_HIGH_SCORING;
+                    vertPosition = OuttakeConstants.SLIDES_SPECIMEN_HIGH_SCORING;
                     specimenOnsSetState = false;
                 }
 
@@ -185,14 +181,14 @@ public class Outtake {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SPECIMEN);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SPECIMEN);
 
-                    driveBack = true;
+                    //driveBack = true;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_SCORE);
 
-                    driveBack = false;
+                    //driveBack = false;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
@@ -202,25 +198,22 @@ public class Outtake {
                 break;
 
             case OuttakeConstants.SCORE_SPECIMEN:
-                if(onsSetState)
+                hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.25)
                 {
-                    vertPosition = lastVertConstant + OuttakeConstants.SLIDES_SPECIMEN_INCREASE;
-                    ons = true;
+                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_TRANSFER);
                 }
 
-                if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 1)
                 {
-                    if(ons)
-                    {
-                        actionTimer.resetTimer();
-                        ons = false;
-                    }
-                    hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
+                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_TRANSFER_READY);
+                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_TRANSFER_READY);
+                }
 
-                    if(actionTimer.getElapsedTimeSeconds() > 0.25)
-                    {
-                        isBusy = false;
-                    }
+                if(actionTimer.getElapsedTimeSeconds() > 1.25)
+                {
+                    isBusy = false;
                 }
                 break;
 
