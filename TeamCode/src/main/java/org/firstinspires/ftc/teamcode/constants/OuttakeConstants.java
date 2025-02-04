@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.constants;
 public class OuttakeConstants {
     //Outtake
     public static int SLIDES_SAMPLE_LOW = 1660;//
-    public static int SLIDES_SAMPLE_HIGH = 3500;//
+    public static int SLIDES_SAMPLE_HIGH = 3550;//
     public static int SLIDES_SPECIMEN_COLLECT = 0;//
     public static int SLIDES_SPECIMEN_LOW_SCORING = 750;//
     public static int SLIDES_SPECIMEN_HIGH_SCORING = 2250;//
@@ -13,13 +13,13 @@ public class OuttakeConstants {
     public static int SLIDES_MAX_LIMIT = 3700;//
     public static double SLIDES_P_GAIN = 0.0075;
     public static double SLIDES_ACCURACY = 70;//
-    public static double SLIDES_PIVOT_CLEAR = 150;//
+    public static double SLIDES_PIVOT_CLEAR = 400;//
 
-    public static double EXTENSION_START = 0.6833;//
-    public static double EXTENSION_TRANSFER = 0.6833;//
+    public static double EXTENSION_START = 0.684;//
+    public static double EXTENSION_TRANSFER = 0.684;//
     public static double EXTENSION_SPECIMEN_OFF_WALL = 0.5394;//
     public static double EXTENSION_SPECIMEN_SCORE = 0.3322;//
-    public static double EXTENSION_SAMPLE_SCORE = 0.6833;
+    public static double EXTENSION_SAMPLE_SCORE = 0.684;
 
     public static double PIVOT_TRANSFER_READY = 0.752;//
     public static double PIVOT_TRANSFER = 0.832;//
@@ -27,7 +27,7 @@ public class OuttakeConstants {
     public static double PIVOT_OFF_WALL = 0;//
     public static double PIVOT_SAMPLE = 0.250;//
     public static double PIVOT_START = 0.778;//
-    public static double PIVOT_RAISE = 0.5;//
+    public static double PIVOT_RAISE = 0.4;//
 
     public static double WRIST_TRANSFER_READY = 0.104;//
     public static double WRIST_TRANSFER = 0.064;//
@@ -35,7 +35,8 @@ public class OuttakeConstants {
     public static double WRIST_OFF_WALL = 0.95;//
     public static double WRIST_SAMPLE = 0.826;//
     public static double WRIST_START = 0.297;//
-    public static double WRIST_RAISE = 0.5;//
+    public static double WRIST_RAISE = 0.6;//
+    public static double WRIST_CLEAR_SPECIMEN = 0.25;//
 
     public static double CLAW_OPEN = 0.262;//
     public static double CLAW_CLOSED = 0.716;//

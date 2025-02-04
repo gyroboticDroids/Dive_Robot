@@ -98,21 +98,23 @@ public class Outtake {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.3)
+                if(actionTimer.getElapsedTimeSeconds() > 0.2)
                 {
                     vertPosition = OuttakeConstants.SLIDES_TRANSFER_UP;
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.4 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 0.25 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
                 break;
 
             case OuttakeConstants.GRAB_SPECIMEN_READY:
-                vertPosition = OuttakeConstants.SLIDES_SPECIMEN_COLLECT;
+                if(actionTimer.getElapsedTimeSeconds() > 0.2) {
+                    vertPosition = OuttakeConstants.SLIDES_SPECIMEN_COLLECT;
+                }
 
-                if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY)) {
+                if(hardware.outtakeSlide1.getCurrentPosition() <= OuttakeConstants.SLIDES_TRANSFER_UP + OuttakeConstants.SLIDES_ACCURACY) {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
@@ -203,10 +205,10 @@ public class Outtake {
                 if(actionTimer.getElapsedTimeSeconds() > 1.25)
                 {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_RAISE);
-                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
+                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_CLEAR_SPECIMEN);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1.5)
+                if(actionTimer.getElapsedTimeSeconds() > 1.75)
                 {
                     isBusy = false;
                 }

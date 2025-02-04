@@ -240,13 +240,15 @@ public class FiveSampleAuto extends OpMode {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
-                outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                if(!outtake.isBusy()) {
+                    outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
 
-                if(pathState < 5) {
-                    intake.setState(IntakeConstants.INTAKE_SUB_READY);
-                    setActionState(13);
-                } else {
-                    setActionState(14);
+                    if (pathState < 5) {
+                        intake.setState(IntakeConstants.INTAKE_SUB_READY);
+                        setActionState(13);
+                    } else {
+                        setActionState(14);
+                    }
                 }
                 break;
 

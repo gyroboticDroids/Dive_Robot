@@ -100,7 +100,7 @@ public class SixSampleAuto extends OpMode {
 
         scoreSampleSub = new Path(new BezierCurve(new Point(xSubPos, AutoConstants.SAMPLE_SUB.getY()), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
         scoreSampleSub.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SUB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
-        scoreSampleSub.setZeroPowerAccelerationMultiplier(3);
+        scoreSampleSub.setZeroPowerAccelerationMultiplier(2);
 
         touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE_LEFT.getY()), new Point(AutoConstants.SAMPLE_PARK)));
         touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
@@ -419,7 +419,7 @@ public class SixSampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.3) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.1) {
                         outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
                         setActionState(0);
                     }
@@ -469,7 +469,7 @@ public class SixSampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.1) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.10) {
                         outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
                         setActionState(0);
                     }
@@ -523,8 +523,6 @@ public class SixSampleAuto extends OpMode {
         if (!intake.isBusy() && intake.getState().equals(IntakeConstants.RESET_POS))
         {
             intake.setState(IntakeConstants.TRANSFER);
-
-            telemetry.addLine("initialized!");
         }
 
         if(!prevGp1Dpad && gamepad1.dpad_up){

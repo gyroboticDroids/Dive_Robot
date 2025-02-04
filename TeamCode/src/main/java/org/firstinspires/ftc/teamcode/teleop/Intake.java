@@ -94,7 +94,7 @@ public class Intake {
             case IntakeConstants.TRANSFER:
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.5)
+                if(actionTimer.getElapsedTimeSeconds() > 0.4)
                 {
                     if(!intakeWheelsKeepSpinning) {
                         intakeSpeed(IntakeConstants.INTAKE_STOP);

@@ -4,9 +4,9 @@ public class IntakeConstants {
     //Intake
     public static int SLIDES_START = 0;//
     public static int SLIDES_MAX = 1970;//
-    public static int SLIDES_TRANSFER = 5;//
+    public static int SLIDES_TRANSFER = 60;//
     public static int SLIDES_OUT = 225;//
-    public static int SLIDES_ACCURACY = 30;//
+    public static int SLIDES_ACCURACY = 40;//
     public static int SLIDES_HALFWAY = 950;
     public static double SLIDES_P_GAIN = 0.01;
 
