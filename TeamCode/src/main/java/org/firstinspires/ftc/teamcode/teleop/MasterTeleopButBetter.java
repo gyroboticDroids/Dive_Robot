@@ -78,6 +78,7 @@ public class MasterTeleopButBetter extends OpMode {
         telemetry.addLine("-------------------Drive---------------------");
         telemetry.addData("target heading", drive.targetHeading);
         telemetry.addData("current heading", Math.toDegrees(drive.botHeading));
+        telemetry.addData("is manual turning", drive.isManualTurning());
 
         telemetry.addLine("-------------------Outtake-------------------");
         telemetry.addData("outtake state", outtake.getState());
@@ -105,7 +106,6 @@ public class MasterTeleopButBetter extends OpMode {
     //Variables used in outtakeUpdate class
     private String prevOuttakeState = OuttakeConstants.START;
     private boolean prevGp2Y = false;
-    private boolean prevGp2B = false;
 
     void outtakeUpdate()
     {
@@ -123,23 +123,22 @@ public class MasterTeleopButBetter extends OpMode {
                 outtake.setState(OuttakeConstants.START);
             //} else if (gamepad2.back && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.START))) {
             //    outtake.setState(OuttakeConstants.RESET_POS);
-            } else if (gamepad2.x && !(prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)
-                    || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE))) {
-                outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-            } else if ((gamepad2.y || gamepad2.b) && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && intake.getState().equals(IntakeConstants.TRANSFER) && !intake.isBusy()) {
+            } else if ((gamepad2.x || gamepad2.b) && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && intake.getState().equals(IntakeConstants.TRANSFER) && !intake.isBusy()) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
             } else if (gamepad2.b && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevOuttakeState.equals(OuttakeConstants.START))) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
             } else if (gamepad2.b && prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY)) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
-            } else if (gamepad2.y && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE)) {
+            } else if (gamepad2.x && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE)) {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
             }  else if (gamepad2.a && (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE);
             } else if (gamepad2.a && (prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
-            } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN) || prevOuttakeState.equals(OuttakeConstants.RESET_POS)) {
+            } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevOuttakeState.equals(OuttakeConstants.RESET_POS)) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+            } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
+                outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
             } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)
                     || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)
                     || prevOuttakeState.equals(OuttakeConstants.START)) {
@@ -148,9 +147,9 @@ public class MasterTeleopButBetter extends OpMode {
         }
 
         //Control for states that can run while the outtake is busy
-        if (gamepad2.b && !prevGp2B && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)) {
+        if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)) {
             outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_LOW);
-        } else if (gamepad2.b && !prevGp2B && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)) {
+        } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)) {
             outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
         } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
             outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_LOW);
@@ -166,7 +165,6 @@ public class MasterTeleopButBetter extends OpMode {
 
         //Previous states and button presses
         prevOuttakeState = outtake.getState();
-        prevGp2B = gamepad2.b;
         prevGp2Y = gamepad2.y;
     }
 
@@ -191,7 +189,7 @@ public class MasterTeleopButBetter extends OpMode {
             //        intake.setState(IntakeConstants.RESET_POS);
             } else if (prevIntakeState.equals(IntakeConstants.RESET_POS)) {
                 intake.setState(IntakeConstants.TRANSFER);
-            } else if ((gamepad2.left_bumper || gamepad2.b || gamepad2.y) && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
+            } else if ((gamepad2.left_bumper || gamepad2.b || gamepad2.x) && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
                     || prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB) || prevIntakeState.equals(IntakeConstants.HALFWAY))) {
                 intake.setState(IntakeConstants.TRANSFER);
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);/*Outtake*/

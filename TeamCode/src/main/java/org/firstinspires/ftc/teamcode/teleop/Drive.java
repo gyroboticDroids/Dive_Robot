@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -15,6 +16,7 @@ public class Drive {
     double rx;
 
     boolean resetHeading;
+    boolean manualTurning = false;
     double botHeading;
     double targetHeading = 0;
 
@@ -58,12 +60,16 @@ public class Drive {
 
         y = gpad.left_stick_y * multiplier;
         x = -gpad.left_stick_x * multiplier;
-        rx = (gpad.left_trigger - gpad.right_trigger) * 4 * multiplier;
+        rx = (gpad.left_trigger - gpad.right_trigger) * 0.4 * multiplier;
+        manualTurning = Math.abs(gpad.left_trigger + gpad.right_trigger) > 0.05;
         resetHeading = gpad.back;
 
-        targetHeading = (gpad.y)? 0:(gpad.x)? 90: (gpad.a)? -45: (gpad.b)? -90:targetHeading;
-
-        targetHeading += rx;
+        if(manualTurning) {
+            targetHeading = Math.toDegrees(botHeading);
+            turnPower = rx;
+        } else {
+            targetHeading = (gpad.y) ? 0 : (gpad.x) ? 90 : (gpad.a) ? -45 : (gpad.b) ? -90 : targetHeading;
+        }
     }
 
     public void autoMovement(double xSpeed, double ySpeed, double targHeading)
@@ -92,7 +98,9 @@ public class Drive {
 
         rotX = rotX * 1.1;  // Counteract imperfect strafing
 
-        autoTurn();
+        if(!manualTurning) {
+            autoTurn();
+        }
 
         // Denominator is the largest motor power (absolute value) or 1
         // This ensures all the powers maintain the same ratio,
@@ -127,6 +135,10 @@ public class Drive {
 
     public boolean isDriveBack() {
         return driveBack;
+    }
+
+    public boolean isManualTurning() {
+        return manualTurning;
     }
 
     public void setDriveBack(boolean driveBack) {

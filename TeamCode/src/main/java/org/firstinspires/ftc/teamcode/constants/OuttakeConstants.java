@@ -11,7 +11,7 @@ public class OuttakeConstants {
     public static int SLIDES_START = 0;//
     public static int SLIDES_HANG = 3700;//
     public static int SLIDES_MAX_LIMIT = 3700;//
-    public static double SLIDES_P_GAIN = 0.009;
+    public static double SLIDES_P_GAIN = 0.0075;
     public static double SLIDES_ACCURACY = 70;//
     public static double SLIDES_PIVOT_CLEAR = 150;//
 
@@ -25,7 +25,7 @@ public class OuttakeConstants {
     public static double PIVOT_TRANSFER = 0.832;//
     public static double PIVOT_SPECIMEN = 0.869;//
     public static double PIVOT_OFF_WALL = 0;//
-    public static double PIVOT_SAMPLE = 0.226;//
+    public static double PIVOT_SAMPLE = 0.250;//
     public static double PIVOT_START = 0.778;//
     public static double PIVOT_RAISE = 0.5;//
 

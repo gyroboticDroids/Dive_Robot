@@ -17,8 +17,6 @@ public class Outtake {
     private boolean isBusy = false;
     private boolean onsSetState = false;
     private boolean specimenOnsSetState = false;
-    private boolean ons = false;
-    private boolean extend = false;
 
     private double vertPosition = 0;
 
@@ -31,8 +29,6 @@ public class Outtake {
 
         setState(OuttakeConstants.START);
     }
-
-    private double lastVertConstant = 0;
 
     public void update() {
         switch (state)
@@ -114,14 +110,13 @@ public class Outtake {
                 break;
 
             case OuttakeConstants.GRAB_SPECIMEN_READY:
-                if(actionTimer.getElapsedTimeSeconds() > 0.2)
-                {
-                    vertPosition = OuttakeConstants.SLIDES_SPECIMEN_COLLECT;
-                }
+                vertPosition = OuttakeConstants.SLIDES_SPECIMEN_COLLECT;
 
-                hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
-                hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
-                hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
+                if(MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY)) {
+                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
+                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
+                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
+                }
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.75)
                 {
@@ -205,13 +200,13 @@ public class Outtake {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_TRANSFER);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1)
+                if(actionTimer.getElapsedTimeSeconds() > 1.25)
                 {
-                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_TRANSFER_READY);
-                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_TRANSFER_READY);
+                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_RAISE);
+                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1.25)
+                if(actionTimer.getElapsedTimeSeconds() > 1.5)
                 {
                     isBusy = false;
                 }
