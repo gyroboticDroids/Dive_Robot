@@ -110,8 +110,9 @@ public class Outtake {
                 break;
 
             case OuttakeConstants.GRAB_SPECIMEN_READY:
-                if(actionTimer.getElapsedTimeSeconds() > 0.2) {
+                if(actionTimer.getElapsedTimeSeconds() > 0.2 && specimenOnsSetState) {
                     vertPosition = OuttakeConstants.SLIDES_SPECIMEN_COLLECT;
+                    specimenOnsSetState = false;
                 }
 
                 if(hardware.outtakeSlide1.getCurrentPosition() <= OuttakeConstants.SLIDES_TRANSFER_UP + OuttakeConstants.SLIDES_ACCURACY) {
@@ -195,20 +196,16 @@ public class Outtake {
                 break;
 
             case OuttakeConstants.SCORE_SPECIMEN:
-                hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
+                hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_RAISE);
+                hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.25)
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.5)
                 {
-                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_TRANSFER);
+                    hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 1.25)
-                {
-                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_RAISE);
-                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_CLEAR_SPECIMEN);
-                }
-
-                if(actionTimer.getElapsedTimeSeconds() > 1.75)
+                if(actionTimer.getElapsedTimeSeconds() > 0.65)
                 {
                     isBusy = false;
                 }

@@ -144,6 +144,8 @@ public class MasterTeleop extends OpMode {
                     || prevOuttakeState.equals(OuttakeConstants.START)) {
                 outtake.vertSlidesManual(-gamepad2.left_stick_y); //Manual control for vert slides
             }
+        } else if (prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) || prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
+            outtake.vertSlidesManual(-gamepad2.left_stick_y); //Manual control for vert slides
         }
 
         //Control for states that can run while the outtake is busy
