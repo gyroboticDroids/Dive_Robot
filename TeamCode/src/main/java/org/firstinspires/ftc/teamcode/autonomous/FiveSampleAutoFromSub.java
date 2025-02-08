@@ -22,8 +22,10 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "6 sample auto", group = "autonomous", preselectTeleOp = "Master Tele-op")
-public class SixSampleAuto extends OpMode {
+@Autonomous(name = "5 sample auto from sub", group = "autonomous", preselectTeleOp = "Master Tele-op")
+public class FiveSampleAutoFromSub extends OpMode {
+    private static final int OUTTAKE_UP = 500;
+
     private int slideRangeSubtract = 0;
 
     private Follower follower;
@@ -43,36 +45,16 @@ public class SixSampleAuto extends OpMode {
     private Path currentPath;
     private double currentHeading;
     private double xSubPos = 60;
-    private boolean alliancePartnerAuto = true;
     private boolean builtPaths = false;
     private boolean robotInPos;
     private boolean intakeReady = true;
 
-    private Path scorePreload, collectSampleObs, scoreSampleObs, collectSampleRight, scoreSampleRight, collectSampleCenter, scoreSampleCenter, collectSampleLeft, scoreSampleLeft,
+    private Path scorePreload, collectSampleRight, scoreSampleRight, collectSampleCenter, scoreSampleCenter, collectSampleLeft, scoreSampleLeft,
             collectSampleSub, scoreSampleSub, touchBar;
 
     public void buildPaths() {
-        scorePreload = new Path(new BezierLine(new Point(AutoConstants.SIX_SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE_OBS)));
-        scorePreload.setLinearHeadingInterpolation(AutoConstants.SIX_SAMPLE_START.getHeading(), AutoConstants.SAMPLE_SCORE_OBS.getHeading(), 0.6);
-
-        if(alliancePartnerAuto) {
-            collectSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_OBS), new Point(AutoConstants.SAMPLE_OBS)));
-            collectSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_OBS.getHeading(), AutoConstants.SAMPLE_OBS.getHeading(), 0.8);
-            collectSampleObs.setZeroPowerAccelerationMultiplier(3.5);
-
-            scoreSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_OBS), new Point(AutoConstants.SAMPLE_SCORE_RIGHT)));
-            scoreSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_OBS.getHeading(), AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), 0.6);
-            scoreSampleObs.setZeroPowerAccelerationMultiplier(2);
-        }
-        else {
-            collectSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_OBS), new Point(AutoConstants.SAMPLE_ALLIANCE_PARTNER)));
-            collectSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_OBS.getHeading(), AutoConstants.SAMPLE_ALLIANCE_PARTNER.getHeading(), 0.8);
-            collectSampleObs.setZeroPowerAccelerationMultiplier(3.5);
-
-            scoreSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_ALLIANCE_PARTNER), new Point(AutoConstants.SAMPLE_SCORE_RIGHT)));
-            scoreSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_ALLIANCE_PARTNER.getHeading(), AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), 0.6);
-            scoreSampleObs.setZeroPowerAccelerationMultiplier(2);
-        }
+        scorePreload = new Path(new BezierLine(new Point(AutoConstants.FIVE_SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE_RIGHT)));
+        scorePreload.setLinearHeadingInterpolation(AutoConstants.FIVE_SAMPLE_START.getHeading(), AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), 0.6);
 
         collectSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_RIGHT), new Point(AutoConstants.SAMPLE_RIGHT)));
         collectSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), AutoConstants.SAMPLE_RIGHT.getHeading(), 0.8);
@@ -108,8 +90,8 @@ public class SixSampleAuto extends OpMode {
     }
 
     public void autonomousPathUpdate() {
-        robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1.5) &&
-                MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1.5) &&
+        robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1) &&
+                MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1) &&
                 MathFunctions.roughlyEquals(currentHeading, follower.getPose().getHeading(), Math.toRadians(5));
 
         switch (pathState) {
@@ -122,33 +104,6 @@ public class SixSampleAuto extends OpMode {
 
             case 1:
                 if (robotInPos) {
-                    if (actionState == -1 || intake.getState().equals(IntakeConstants.TRANSFER)) {
-                        if(onsScoreState) {
-                            intakeReady = false;
-                            setActionState(20);
-                            onsScoreState = false;
-                        }
-                        else {
-                            currentPath = scoreSampleObs;
-                            currentHeading = currentPath.getHeadingGoal(1);
-                            follower.followPath(currentPath, true);
-                            setPathState(2);
-                        }
-                    } else if (intake.getState().equals(IntakeConstants.INTAKE)) {
-                        if(onsMoveState) {
-                            currentPath = collectSampleObs;
-                            currentHeading = currentPath.getHeadingGoal(1);
-                            follower.followPath(currentPath, true);
-                            onsMoveState = false;
-                        }else {
-                            intakeReady = true;
-                        }
-                    }
-                }
-                break;
-
-            case 2:
-                if (robotInPos) {
                     if (actionState == -1) {
                         if(onsScoreState) {
                             setActionState(5);
@@ -159,7 +114,7 @@ public class SixSampleAuto extends OpMode {
                             currentHeading = currentPath.getHeadingGoal(1);
                             follower.followPath(currentPath, true);
                             setActionState(0);
-                            setPathState(3);
+                            setPathState(2);
                         }
                     } else if (actionState == 7) {
                         if(onsMoveState) {
@@ -172,7 +127,7 @@ public class SixSampleAuto extends OpMode {
                 }
                 break;
 
-            case 3:
+            case 2:
                 if (robotInPos) {
                     if (actionState == -1) {
                         if(onsScoreState) {
@@ -185,7 +140,7 @@ public class SixSampleAuto extends OpMode {
                             currentHeading = currentPath.getHeadingGoal(1);
                             follower.followPath(currentPath, true);
                             setActionState(0);
-                            setPathState(4);
+                            setPathState(3);
                         }
                     }else if (actionState == 7) {
                         if(onsMoveState) {
@@ -198,7 +153,7 @@ public class SixSampleAuto extends OpMode {
                 }
                 break;
 
-            case 4:
+            case 3:
                 if (robotInPos) {
                     if (actionState == -1) {
                         if(onsScoreState) {
@@ -211,7 +166,7 @@ public class SixSampleAuto extends OpMode {
                             currentHeading = currentPath.getHeadingGoal(1);
                             follower.followPath(currentPath, true);
                             setActionState(0);
-                            setPathState(5);
+                            setPathState(4);
                         }
                     }else if (outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                         if(onsMoveState) {
@@ -227,7 +182,7 @@ public class SixSampleAuto extends OpMode {
                 }
                 break;
 
-            case 5:
+            case 4:
                 if (robotInPos) {
                     if (actionState == -1) {
                         if(onsScoreState) {
@@ -239,13 +194,13 @@ public class SixSampleAuto extends OpMode {
                             currentPath = collectSampleSub;
                             currentHeading = currentPath.getHeadingGoal(1);
                             follower.followPath(currentPath, true);
-                            setPathState(6);
+                            setPathState(5);
                         }
                     }
                 }
                 break;
 
-            case 6:
+            case 5:
                 if (robotInPos) {
                     if (actionState == -1) {
                         if(onsScoreState) {
@@ -257,13 +212,13 @@ public class SixSampleAuto extends OpMode {
                             currentPath = scoreSampleSub;
                             currentHeading = currentPath.getHeadingGoal(1);
                             follower.followPath(currentPath, true);
-                            setPathState(7);
+                            setPathState(6);
                         }
                     }
                 }
                 break;
 
-            case 7:
+            case 6:
                 if (robotInPos) {
                     if (actionState == -1 || actionState == 11) {
                         if(onsScoreState){
@@ -294,7 +249,7 @@ public class SixSampleAuto extends OpMode {
                 if(!outtake.isBusy()) {
                     outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
 
-                    if (pathState < 6) {
+                    if (pathState < 5) {
                         intake.setState(IntakeConstants.INTAKE_SUB_READY);
                         setActionState(13);
                     } else {
@@ -333,7 +288,7 @@ public class SixSampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.5) {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(8);
                     }
@@ -368,10 +323,10 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 13:
-                if(!intake.isBusy() && pathState < 4 && pathState != 1){
+                if(!intake.isBusy() && pathState < 3){
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract - 1300);
-                } else if (!intake.isBusy() && pathState == 5) {
+                } else if (!intake.isBusy() && pathState == 4) {
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT + 100);
                 }
 
@@ -399,7 +354,7 @@ public class SixSampleAuto extends OpMode {
                         onsIntakeState = false;
                     }
                     else {
-                        intake.horizontalSlidesManual(50);
+                        intake.horizontalSlidesManual(30);
                     }
 
                     if(actionTimer.getElapsedTimeSeconds() > 1)
@@ -417,57 +372,7 @@ public class SixSampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.1) {
-                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
-                        setActionState(0);
-                    }
-                }
-                break;
-
-            case 20:
-                if (actionTimer.getElapsedTimeSeconds() > 0.15) {
-                    outtake.setState(OuttakeConstants.SCORE_SAMPLE);
-                    setActionState(21);
-                }
-                break;
-
-            case 21:
-                if (outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY) && intake.getHorizontalPosition() == IntakeConstants.SLIDES_MAX - 100) {
-                    setActionState(22);
-                }
-
-                if (!intake.isBusy()) {
-                    intake.setState(IntakeConstants.INTAKE);
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - 100);
-                }
-
-                if(!outtake.isBusy()) {
-                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-                }
-                break;
-
-            case 22:
-                if (intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - 100 - IntakeConstants.SLIDES_ACCURACY) {
-                    if (onsTimerState) {
-                        actionTimer.resetTimer();
-                        onsTimerState = false;
-                    }
-                    if (actionTimer.getElapsedTimeSeconds() > 0) {
-                        if(intakeReady) {
-                            intake.setState(IntakeConstants.TRANSFER);
-                            setActionState(23);
-                        }
-                    }
-                }
-                break;
-
-            case 23:
-                if (!intake.isBusy()) {
-                    if (onsTimerState) {
-                        actionTimer.resetTimer();
-                        onsTimerState = false;
-                    }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.10) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.3) {
                         outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
                         setActionState(0);
                     }
@@ -504,7 +409,7 @@ public class SixSampleAuto extends OpMode {
 
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
-        follower.setStartingPose(AutoConstants.SIX_SAMPLE_START);
+        follower.setStartingPose(AutoConstants.FIVE_SAMPLE_START);
         buildPaths();
 
         currentPath = scorePreload;
@@ -533,14 +438,6 @@ public class SixSampleAuto extends OpMode {
 
         xSubPos = MathFunctions.clamp(xSubPos, 58, 80);
 
-        if(gamepad1.dpad_left) {
-            alliancePartnerAuto = false;
-            builtPaths = false;
-        } else if(gamepad1.dpad_right) {
-            alliancePartnerAuto = true;
-            builtPaths = false;
-        }
-
         if(!prevGp1Start && gamepad1.start){
             buildPaths();
         }
@@ -549,7 +446,6 @@ public class SixSampleAuto extends OpMode {
         prevGp1Start = gamepad1.start;
 
         telemetry.addData("Sub offset (g1 dpad up and down)", xSubPos);
-        telemetry.addData("Alliance partner auto (g1 dpad left and right)", alliancePartnerAuto);
 
         if(!builtPaths){
             telemetry.addLine("DON'T FORGET TO BUILD PATHS TO SAVE CHANGES (g1 start)");

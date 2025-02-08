@@ -9,6 +9,7 @@ import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.constants.AutoConstants;
@@ -20,6 +21,7 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
+@Disabled
 @Autonomous(name = "5 specimen auto intake and outtake", group = "autonomous", preselectTeleOp = "Master Tele-op")
 public class SpecimenAuto extends OpMode {
     private int slideRangeSubtract = 200;

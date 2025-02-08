@@ -12,7 +12,7 @@ public class AutoConstants {
     public static Pose SAMPLE_SCORE_CENTER = new Pose(18, 136, Math.toRadians(-13));
     public static Pose SAMPLE_SCORE_LEFT = new Pose(18, 136, Math.toRadians(-8));
     public static Pose SAMPLE_OBS = new Pose(5.5, 55, Math.toRadians(-90));
-    public static Pose SAMPLE_ALLIANCE_PARTNER = new Pose(5.5, 100, Math.toRadians(-90));
+    public static Pose SAMPLE_ALLIANCE_PARTNER = new Pose(5.5, 107, Math.toRadians(-90));
     public static Pose SAMPLE_RIGHT = new Pose(19, 131.5, Math.toRadians(-23));
     public static Pose SAMPLE_CENTER = new Pose(20.5, 135.5, Math.toRadians(-13));
     public static Pose SAMPLE_LEFT = new Pose(19, 129, Math.toRadians(24));

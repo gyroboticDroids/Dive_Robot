@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.teleop.Drive;
 import org.firstinspires.ftc.teamcode.teleop.Intake;
 import org.firstinspires.ftc.teamcode.teleop.Outtake;
 
+@Disabled
 @Autonomous(name = "1 specimen auto", group = "Autonomous", preselectTeleOp = "Master Tele-op")
 public class OneSpecAuto extends OpMode {
     private static final double MOVEMENT_POWER = 0.4;
