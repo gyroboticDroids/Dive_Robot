@@ -51,7 +51,7 @@ public class SpecimenAuto extends OpMode {
         intakeSpecimenCenter = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE_RIGHT), new Point(AutoConstants.SPECIMEN_INTAKE_CENTER)));
         intakeSpecimenCenter.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_RIGHT.getHeading(), AutoConstants.SPECIMEN_INTAKE_CENTER.getHeading());
 
-        intakeSpecimenLeft = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_OUTTAKE_CENTER), AutoConstants.SPECIMEN_CONTROL_POINT1 ,new Point(AutoConstants.SPECIMEN_INTAKE_LEFT)));
+        intakeSpecimenLeft = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE_CENTER), new Point(AutoConstants.SPECIMEN_INTAKE_LEFT)));
         intakeSpecimenLeft.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_OUTTAKE_CENTER.getHeading(), AutoConstants.SPECIMEN_INTAKE_LEFT.getHeading());
 
         grabSpecimenReady1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_OUTTAKE_LEFT), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
