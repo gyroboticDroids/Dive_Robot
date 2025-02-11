@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.pedropathing.localization.GoBildaPinpointDriver;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -32,6 +33,8 @@ public class Hardware {
 
     public CRServo intakeRight;
     public CRServo intakeLeft;
+
+    public RevColorSensorV3 colorSensor;
 
     //Hang
     public Servo hangRight;
@@ -80,6 +83,7 @@ public class Hardware {
         intakePivot = hardwareMap.get(Servo.class, "intakePivot");
         intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
         intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
+        colorSensor = hardwareMap.get(RevColorSensorV3.class, "color");
 
         intakeSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intakeSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

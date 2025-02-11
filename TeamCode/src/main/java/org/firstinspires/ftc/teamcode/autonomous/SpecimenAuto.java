@@ -21,10 +21,8 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Disabled
 @Autonomous(name = "5 specimen auto intake and outtake", group = "autonomous", preselectTeleOp = "Master Tele-op")
 public class SpecimenAuto extends OpMode {
-    private int slideRangeSubtract = 200;
 
     private Follower follower;
     private Timer pathTimer;
@@ -146,7 +144,7 @@ public class SpecimenAuto extends OpMode {
                             setActionState(15);
                             onsIntakeOut = false;
                         } else {
-                            follower.setMaxPower(0.5);
+                            follower.setMaxPower(0.7);
                             currentPath = intakeSpecimenCenter;
                             currentHeading = currentPath.getHeadingGoal(1);
                             follower.followPath(currentPath, true);
@@ -179,7 +177,7 @@ public class SpecimenAuto extends OpMode {
                             setActionState(15);
                             onsIntakeOut = false;
                         } else {
-                            follower.setMaxPower(0.5);
+                            follower.setMaxPower(0.7);
                             currentPath = intakeSpecimenLeft;
                             currentHeading = currentPath.getHeadingGoal(1);
                             follower.followPath(currentPath, true);

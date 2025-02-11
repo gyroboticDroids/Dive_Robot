@@ -46,7 +46,7 @@ public class MasterTeleop extends OpMode {
 
         //Sets all states to the starting states
         outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-        intake.setState(IntakeConstants.RESET_POS);
+        intake.setState(IntakeConstants.TRANSFER);
         hang.setState(HangConstants.START);
     }
 
@@ -93,6 +93,7 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("horizontal spt pos", intake.getHorizontalPosition());
         telemetry.addData("horizontal fdbk pos", intake.getHorizontalSlidePos());
         telemetry.addData("horizontal power", intake.getMotorPower());
+        telemetry.addData("sample color", intake.getSampleColor());
 
         telemetry.addLine("-------------------Hang----------------------");
         telemetry.addData("hang state", hang.getState());
@@ -135,7 +136,8 @@ public class MasterTeleop extends OpMode {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE);
             } else if (gamepad2.a && (prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
-            } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevOuttakeState.equals(OuttakeConstants.RESET_POS) || ((gamepad2.x || gamepad2.b) && prevOuttakeState.equals(OuttakeConstants.START))) {
+            } else if ((gamepad2.y && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE)) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevOuttakeState.equals(OuttakeConstants.RESET_POS) ||
+                    ((gamepad2.x || gamepad2.b) && prevOuttakeState.equals(OuttakeConstants.START))) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
             } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);

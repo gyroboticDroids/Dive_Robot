@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import android.graphics.Color;
+
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.Hardware;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
+import org.firstinspires.ftc.teamcode.constants.TransferConstants;
 
 public class Intake {
     private final Hardware hardware;
@@ -19,13 +22,16 @@ public class Intake {
     private int intakeSlideHomeOffset = 0;
     private String state;
 
+    //Color sensor: 0 = none, 1 = yellow, 2 = red, 3 = blue
+    private int color = 0;
+
     public Intake (HardwareMap hardwareMap)
     {
         hardware = new Hardware(hardwareMap);
 
         actionTimer = new Timer();
 
-        setState(IntakeConstants.START);
+        intakeSlideHomeOffset = -TransferConstants.horiSlidePos;
     }
 
     public void update() {
@@ -169,6 +175,19 @@ public class Intake {
     {
         horizontalPosition += position;
         horizontalPosition = MathFunctions.clamp(horizontalPosition, IntakeConstants.SLIDES_OUT, IntakeConstants.SLIDES_MAX);
+    }
+
+    public int getSampleColor() {
+        if(hardware.colorSensor.red() > 1500) {
+            color = 2;
+        } else if(hardware.colorSensor.blue() > 1500 && hardware.colorSensor.green() < 1500) {
+            color = 3;
+        } else if(hardware.colorSensor.blue() > 1500 && hardware.colorSensor.green() < 1500) {
+            color = 3;
+        } else {
+            color = 0;
+        }
+        return color;
     }
 
     double motorPower;

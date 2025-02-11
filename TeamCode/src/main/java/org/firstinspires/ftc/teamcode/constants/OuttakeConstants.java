@@ -15,31 +15,30 @@ public class OuttakeConstants {
     public static double SLIDES_ACCURACY = 70;//
     public static double SLIDES_PIVOT_CLEAR = 400;//
 
-    public static double EXTENSION_START = 0.684;//
-    public static double EXTENSION_TRANSFER = 0.684;//
-    public static double EXTENSION_SPECIMEN_OFF_WALL = 0.5394;//
-    public static double EXTENSION_SPECIMEN_SCORE = 0.684;//
-    public static double EXTENSION_SAMPLE_SCORE = 0.684;
+    public static double EXTENSION_START = 0.704;//
+    public static double EXTENSION_TRANSFER = 0.631;
+    public static double EXTENSION_SPECIMEN_OFF_WALL = 0.543;//
+    public static double EXTENSION_SPECIMEN_SCORE = 0.704;//
+    public static double EXTENSION_SAMPLE_SCORE = 0.704;
 
-    public static double PIVOT_TRANSFER_READY = 0.752;//
-    public static double PIVOT_TRANSFER = 0.832;//
-    public static double PIVOT_SPECIMEN = 0.619;//
-    public static double PIVOT_OFF_WALL = 0;//
-    public static double PIVOT_SAMPLE = 0.250;//
-    public static double PIVOT_START = 0.778;//
-    public static double PIVOT_RAISE = 0.4;//
+    public static double PIVOT_TRANSFER_READY = 0.754;//
+    public static double PIVOT_TRANSFER = 0.836;//
+    public static double PIVOT_SPECIMEN = 0.728;//
+    public static double PIVOT_OFF_WALL = 0.124;//
+    public static double PIVOT_SAMPLE = 0.35;//
+    public static double PIVOT_START = 0.711;//
+    public static double PIVOT_RAISE = 0.471;//
 
-    public static double WRIST_TRANSFER_READY = 0.104;//
-    public static double WRIST_TRANSFER = 0.064;//
-    public static double WRIST_SPECIMEN = 0.269;//
-    public static double WRIST_OFF_WALL = 0.95;//
-    public static double WRIST_SAMPLE = 0.826;//
-    public static double WRIST_START = 0.297;//
-    public static double WRIST_RAISE = 0.6;//
-    public static double WRIST_CLEAR_SPECIMEN = 0.25;//
+    public static double WRIST_TRANSFER_READY = 0.097;//
+    public static double WRIST_TRANSFER = 0.029;//
+    public static double WRIST_SPECIMEN = 0.301;//
+    public static double WRIST_OFF_WALL = 0.936;//
+    public static double WRIST_SAMPLE = 0.844;//
+    public static double WRIST_START = 0.308;//
+    public static double WRIST_RAISE = 0.603;//
 
-    public static double CLAW_OPEN = 0.262;//
-    public static double CLAW_CLOSED = 0.716;//
+    public static double CLAW_OPEN = 0.429;//
+    public static double CLAW_CLOSED = 0.876;//
 
     //States
     public static final String START = "start";

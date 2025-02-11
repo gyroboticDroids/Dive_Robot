@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.constants.AutoConstants;
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
+import org.firstinspires.ftc.teamcode.constants.TransferConstants;
 import org.firstinspires.ftc.teamcode.teleop.Hang;
 import org.firstinspires.ftc.teamcode.teleop.Intake;
 import org.firstinspires.ftc.teamcode.teleop.Outtake;
@@ -44,6 +45,7 @@ public class SixSampleAuto extends OpMode {
     private double currentHeading;
     private double xSubPos = 60;
     private boolean alliancePartnerAuto = true;
+    private boolean allianceColorRed = true;
     private boolean builtPaths = false;
     private boolean robotInPos;
     private boolean intakeReady = true;
@@ -402,12 +404,11 @@ public class SixSampleAuto extends OpMode {
                         intake.horizontalSlidesManual(50);
                     }
 
-                    if(actionTimer.getElapsedTimeSeconds() > 1)
+                    if(actionTimer.getElapsedTimeSeconds() > 1.5 || intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3))
                     {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(17);
                     }
-
                 }
                 break;
 
@@ -541,6 +542,12 @@ public class SixSampleAuto extends OpMode {
             builtPaths = false;
         }
 
+        if(gamepad1.b) {
+            allianceColorRed = true;
+        } else if(gamepad1.x) {
+            allianceColorRed = false;
+        }
+
         if(!prevGp1Start && gamepad1.start){
             buildPaths();
         }
@@ -550,6 +557,8 @@ public class SixSampleAuto extends OpMode {
 
         telemetry.addData("Sub offset (g1 dpad up and down)", xSubPos);
         telemetry.addData("Alliance partner auto (g1 dpad left and right)", alliancePartnerAuto);
+
+        telemetry.addData("Is alliance color red (g1 x and b)", allianceColorRed);
 
         if(!builtPaths){
             telemetry.addLine("DON'T FORGET TO BUILD PATHS TO SAVE CHANGES (g1 start)");
@@ -565,7 +574,13 @@ public class SixSampleAuto extends OpMode {
     public void start() {
         pathTimer.resetTimer();
         actionTimer.resetTimer();
+        TransferConstants.isAllianceRed = allianceColorRed;
         setPathState(0);
+    }
+
+    @Override
+    public void stop() {
+        TransferConstants.horiSlidePos = intake.getHorizontalSlidePos();
     }
 
     @Override
@@ -585,6 +600,7 @@ public class SixSampleAuto extends OpMode {
         telemetry.addData("hori slide pos", intake.getHorizontalSlidePos());
         telemetry.addData("hori slide setpoint", intake.getHorizontalPosition());
         telemetry.addData("intake is busy", intake.isBusy());
+        telemetry.addData("intake sample color", intake.getSampleColor());
         telemetry.addData("robot in pos", robotInPos);
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
