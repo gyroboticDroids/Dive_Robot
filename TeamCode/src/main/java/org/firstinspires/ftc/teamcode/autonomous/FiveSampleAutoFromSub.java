@@ -24,8 +24,6 @@ import pedroPathing.constants.LConstants;
 
 @Autonomous(name = "5 sample auto from sub", group = "autonomous", preselectTeleOp = "Master Tele-op")
 public class FiveSampleAutoFromSub extends OpMode {
-    private static final int OUTTAKE_UP = 500;
-
     private int slideRangeSubtract = 0;
 
     private Follower follower;
@@ -42,6 +40,7 @@ public class FiveSampleAutoFromSub extends OpMode {
     private boolean onsMoveState;
     private boolean prevGp1Dpad = false;
     private boolean prevGp1Start = false;
+    private boolean allianceColorRed = true;
     private Path currentPath;
     private double currentHeading;
     private double xSubPos = 60;
@@ -357,7 +356,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                         intake.horizontalSlidesManual(30);
                     }
 
-                    if(actionTimer.getElapsedTimeSeconds() > 1)
+                    if(actionTimer.getElapsedTimeSeconds() > 1.5 || intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3))
                     {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(17);
@@ -436,6 +435,12 @@ public class FiveSampleAutoFromSub extends OpMode {
             builtPaths = false;
         }
 
+        if(gamepad1.b) {
+            allianceColorRed = true;
+        } else if(gamepad1.x) {
+            allianceColorRed = false;
+        }
+
         xSubPos = MathFunctions.clamp(xSubPos, 58, 80);
 
         if(!prevGp1Start && gamepad1.start){
@@ -446,6 +451,7 @@ public class FiveSampleAutoFromSub extends OpMode {
         prevGp1Start = gamepad1.start;
 
         telemetry.addData("Sub offset (g1 dpad up and down)", xSubPos);
+        telemetry.addData("Is alliance color red (g1 x and b)", allianceColorRed);
 
         if(!builtPaths){
             telemetry.addLine("DON'T FORGET TO BUILD PATHS TO SAVE CHANGES (g1 start)");
