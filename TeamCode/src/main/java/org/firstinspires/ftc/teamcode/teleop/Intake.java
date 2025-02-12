@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import android.graphics.Color;
-
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.hardware.HardwareMap;
