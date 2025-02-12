@@ -12,7 +12,7 @@ public class ColorSensorTest extends OpMode {
 
     @Override
     public void init(){
-        colorSensor = hardwareMap.get(RevColorSensorV3.class, "color sensor");
+        colorSensor = hardwareMap.get(RevColorSensorV3.class, "color");
     }
 
     @Override

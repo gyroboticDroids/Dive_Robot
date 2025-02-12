@@ -100,6 +100,10 @@ public class Intake {
             case IntakeConstants.TRANSFER:
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
 
+                if(getSampleColor() > 0) {
+                    intakeSpeed(IntakeConstants.INTAKE_STOP);
+                }
+
                 if(actionTimer.getElapsedTimeSeconds() > 0.4)
                 {
                     if(!intakeWheelsKeepSpinning) {
@@ -178,12 +182,12 @@ public class Intake {
     }
 
     public int getSampleColor() {
-        if(hardware.colorSensor.red() > 1500) {
-            color = 2;
-        } else if(hardware.colorSensor.blue() > 1500 && hardware.colorSensor.green() < 1500) {
-            color = 3;
-        } else if(hardware.colorSensor.blue() > 1500 && hardware.colorSensor.green() < 1500) {
-            color = 3;
+        if(hardware.colorSensor.red() > 1500 && hardware.colorSensor.green() < 1000) {
+            color = 2;//red
+        } else if(hardware.colorSensor.red() > 2000 && hardware.colorSensor.green() > 3000) {
+            color = 1;//yellow
+        } else if(hardware.colorSensor.blue() > 1500) {
+            color = 3;//blue
         } else {
             color = 0;
         }

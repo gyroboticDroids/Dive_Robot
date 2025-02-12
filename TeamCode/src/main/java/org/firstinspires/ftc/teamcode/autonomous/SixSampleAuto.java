@@ -43,7 +43,7 @@ public class SixSampleAuto extends OpMode {
     private boolean prevGp1Start = false;
     private Path currentPath;
     private double currentHeading;
-    private double xSubPos = 60;
+    private double xSubPos = 55;
     private boolean alliancePartnerAuto = true;
     private boolean allianceColorRed = true;
     private boolean builtPaths = false;
@@ -532,7 +532,7 @@ public class SixSampleAuto extends OpMode {
             builtPaths = false;
         }
 
-        xSubPos = MathFunctions.clamp(xSubPos, 58, 80);
+        xSubPos = MathFunctions.clamp(xSubPos, 55, 80);
 
         if(gamepad1.dpad_left) {
             alliancePartnerAuto = false;
@@ -555,7 +555,7 @@ public class SixSampleAuto extends OpMode {
         prevGp1Dpad = gamepad1.dpad_up || gamepad1.dpad_down;
         prevGp1Start = gamepad1.start;
 
-        telemetry.addData("Sub offset (g1 dpad up and down)", xSubPos);
+        telemetry.addData("Sub offset (g1 dpad up and down)", xSubPos - 49);
         telemetry.addData("Alliance partner auto (g1 dpad left and right)", alliancePartnerAuto);
 
         telemetry.addData("Is alliance color red (g1 x and b)", allianceColorRed);
@@ -581,6 +581,7 @@ public class SixSampleAuto extends OpMode {
     @Override
     public void stop() {
         TransferConstants.horiSlidePos = intake.getHorizontalSlidePos();
+        TransferConstants.heading = Math.toDegrees(follower.getPose().getHeading());
     }
 
     @Override

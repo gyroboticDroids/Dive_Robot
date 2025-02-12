@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.constants.DriveConstants;
 import org.firstinspires.ftc.teamcode.Hardware;
+import org.firstinspires.ftc.teamcode.constants.TransferConstants;
 
 public class Drive {
     private final Hardware hardware;
@@ -31,7 +32,8 @@ public class Drive {
         hardware = new Hardware(hardwareMap);
         gamepad = gamepad1;
 
-        turnOffset = DriveConstants.turnOffset;
+        turnOffset = -Math.toRadians(TransferConstants.heading);
+        targetHeading = TransferConstants.heading;
     }
 
     public void update()
