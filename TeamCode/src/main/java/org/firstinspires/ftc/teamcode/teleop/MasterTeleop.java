@@ -94,6 +94,7 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("horizontal fdbk pos", intake.getHorizontalSlidePos());
         telemetry.addData("horizontal power", intake.getMotorPower());
         telemetry.addData("sample color", intake.getSampleColor());
+        telemetry.addData("intake speed", intake.getIntakeSpeed());
 
         telemetry.addLine("-------------------Hang----------------------");
         telemetry.addData("hang state", hang.getState());
@@ -189,11 +190,11 @@ public class MasterTeleop extends OpMode {
             //All buttons and statements that change outtake states
             if (gamepad2.start && (prevIntakeState.equals(IntakeConstants.TRANSFER) || prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY))) {
                 intake.setState(IntakeConstants.START);
-            //} else if (gamepad2.back && prevIntakeState.equals(IntakeConstants.TRANSFER)) {
-            //        intake.setState(IntakeConstants.RESET_POS);
+            } else if (gamepad2.back && prevIntakeState.equals(IntakeConstants.TRANSFER)) {
+                    intake.setState(IntakeConstants.RESET_POS);
             } else if (prevIntakeState.equals(IntakeConstants.RESET_POS)) {
                 intake.setState(IntakeConstants.TRANSFER);
-            } else if ((gamepad2.left_bumper || gamepad2.b || gamepad2.x) && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
+            } else if (gamepad2.left_bumper || (gamepad2.b || gamepad2.x) && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.START)
                     || prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB) || prevIntakeState.equals(IntakeConstants.HALFWAY))) {
                 intake.setState(IntakeConstants.TRANSFER);
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);/*Outtake*/

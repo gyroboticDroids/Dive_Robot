@@ -31,8 +31,8 @@ public class Hardware {
 
     public Servo intakePivot;
 
-    public CRServo intakeRight;
-    public CRServo intakeLeft;
+    public Servo intakeRight;
+    public Servo intakeLeft;
 
     public RevColorSensorV3 colorSensor;
 
@@ -81,8 +81,8 @@ public class Hardware {
         //Intake
         intakeSlide = hardwareMap.get(DcMotor.class, "horizontalSlide");
         intakePivot = hardwareMap.get(Servo.class, "intakePivot");
-        intakeRight = hardwareMap.get(CRServo.class, "intakeRight");
-        intakeLeft = hardwareMap.get(CRServo.class, "intakeLeft");
+        intakeRight = hardwareMap.get(Servo.class, "intakeRight");
+        intakeLeft = hardwareMap.get(Servo.class, "intakeLeft");
         colorSensor = hardwareMap.get(RevColorSensorV3.class, "color");
 
         intakeSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

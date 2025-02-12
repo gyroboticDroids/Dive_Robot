@@ -100,12 +100,12 @@ public class Outtake {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.2)
+                if(actionTimer.getElapsedTimeSeconds() > 0.3)
                 {
                     vertPosition = OuttakeConstants.SLIDES_TRANSFER_UP;
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.25 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 0.35 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }
@@ -113,7 +113,7 @@ public class Outtake {
 
             case OuttakeConstants.GRAB_SPECIMEN_READY:
                 if(onsSetState){
-                    fromTransfer = hardware.outtakeSlide1.getCurrentPosition() <= OuttakeConstants.SLIDES_TRANSFER_UP + OuttakeConstants.SLIDES_ACCURACY;
+                    fromTransfer = hardware.outtakeExtension.getPosition() == OuttakeConstants.EXTENSION_TRANSFER;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.2 && specimenOnsSetState) {

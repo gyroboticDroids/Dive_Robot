@@ -126,15 +126,15 @@ public class TestMotors extends OpMode {
                 hardware.intakeSlide.setPower(gamepad1.left_stick_y);
 
                 hardware.intakePivot.setPosition(MathFunctions.clamp(hardware.intakePivot.getPosition() + gamepad1.right_stick_y * SENSITIVITY, 0, 1));
-                hardware.intakeLeft.setPower(gamepad2.left_stick_y);
-                hardware.intakeRight.setPower(gamepad2.right_stick_y);
+                hardware.intakeLeft.setPosition(gamepad2.left_stick_y);
+                hardware.intakeRight.setPosition(gamepad2.right_stick_y);
 
                 telemetry.addData("slide power (g1 left stick y)", hardware.intakeSlide.getPower());
                 telemetry.addData("slide position", hardware.intakeSlide.getCurrentPosition());
 
                 telemetry.addData("pivot position (g1 right stick y)", hardware.intakePivot.getPosition());
-                telemetry.addData("intake left power (g2 left stick y)", hardware.intakeLeft.getPower());
-                telemetry.addData("intake right power (g2 right stick y)", hardware.intakeRight.getPower());
+                telemetry.addData("intake left power (g2 left stick y)", hardware.intakeLeft.getPosition());
+                telemetry.addData("intake right power (g2 right stick y)", hardware.intakeRight.getPosition());
                 break;
 
             case 3:

@@ -8,16 +8,16 @@ public class IntakeConstants {
     public static int SLIDES_OUT = 225;//
     public static int SLIDES_ACCURACY = 40;//
     public static int SLIDES_HALFWAY = 950;
-    public static double SLIDES_P_GAIN = 0.01;
+    public static double SLIDES_P_GAIN = 0.009;
 
     public static double PIVOT_START = 0.924;//
     public static double PIVOT_TRANSFER = 0.924;//
     public static double PIVOT_INTERMEDIATE = 0.532;//
     public static double PIVOT_DOWN = 0.195;//
 
-    public static double INTAKE_FORWARD = 0.8;//
-    public static double INTAKE_STOP = 0;//
-    public static double INTAKE_REVERSE = -1;//
+    public static double INTAKE_FORWARD = 0.55;//
+    public static double INTAKE_STOP = 0.5;//
+    public static double INTAKE_REVERSE = 0.45;//
 
     //States
     public static final String START = "start";
@@ -28,4 +28,10 @@ public class IntakeConstants {
     public static final String CLEAR_SUB = "clear sub";
     public static final String RESET_POS = "reset pos";
     public static final String HALFWAY = "halfway";
+
+    //Methods
+    public static double linearPivot(int currentSlidePos)
+    {
+        return 0.0000395415 * currentSlidePos + 0.190103;
+    }
 }

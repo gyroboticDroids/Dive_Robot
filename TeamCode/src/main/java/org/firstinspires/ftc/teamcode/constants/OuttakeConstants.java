@@ -11,7 +11,7 @@ public class OuttakeConstants {
     public static int SLIDES_START = 0;//
     public static int SLIDES_HANG = 3700;//
     public static int SLIDES_MAX_LIMIT = 3700;//
-    public static double SLIDES_P_GAIN = 0.0075;
+    public static double SLIDES_P_GAIN = 0.0073;
     public static double SLIDES_ACCURACY = 70;//
     public static double SLIDES_PIVOT_CLEAR = 400;//
 

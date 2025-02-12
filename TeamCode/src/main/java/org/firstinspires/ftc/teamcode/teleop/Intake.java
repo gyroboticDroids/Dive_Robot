@@ -90,7 +90,7 @@ public class Intake {
             case IntakeConstants.INTAKE:
                 intakeSpeed(IntakeConstants.INTAKE_FORWARD);
 
-                hardware.intakePivot.setPosition(IntakeConstants.PIVOT_DOWN);
+                hardware.intakePivot.setPosition(IntakeConstants.linearPivot(getHorizontalSlidePos()));
 
                 if((actionTimer.getElapsedTimeSeconds() > 0.5))
                 {
@@ -107,7 +107,7 @@ public class Intake {
                         onsIntakeState = false;
                     }
 
-                    if(actionTimer.getElapsedTimeSeconds() + timerOffset > 0.1) {
+                    if(actionTimer.getElapsedTimeSeconds() + timerOffset > 0.8) {
                         intakeSpeed(IntakeConstants.INTAKE_STOP);
                     }
                 }
@@ -142,7 +142,7 @@ public class Intake {
 
             case IntakeConstants.CLEAR_SUB:
                 intakeSpeed(IntakeConstants.INTAKE_REVERSE);
-                hardware.intakePivot.setPosition(IntakeConstants.PIVOT_DOWN);
+                hardware.intakePivot.setPosition(IntakeConstants.linearPivot(getHorizontalSlidePos()));
 
                 if((actionTimer.getElapsedTimeSeconds() > 0.5))
                 {
@@ -158,12 +158,16 @@ public class Intake {
 
     public void intakeSpeed(double speed)
     {
-        hardware.intakeRight.setPower(speed);
-        hardware.intakeLeft.setPower(speed);
+        hardware.intakeRight.setPosition(speed);
+        hardware.intakeLeft.setPosition(speed);
     }
 
     public double getHorizontalPosition() {
         return horizontalPosition;
+    }
+
+    public double getIntakeSpeed() {
+        return hardware.intakeLeft.getPosition();
     }
 
     public void setHorizontalPosition(double horizontalPosition) {

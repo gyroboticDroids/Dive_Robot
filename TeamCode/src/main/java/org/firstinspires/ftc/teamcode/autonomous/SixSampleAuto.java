@@ -60,20 +60,20 @@ public class SixSampleAuto extends OpMode {
         if(alliancePartnerAuto) {
             collectSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_OBS), new Point(AutoConstants.SAMPLE_OBS)));
             collectSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_OBS.getHeading(), AutoConstants.SAMPLE_OBS.getHeading(), 0.8);
-            collectSampleObs.setZeroPowerAccelerationMultiplier(3.5);
+            collectSampleObs.setZeroPowerAccelerationMultiplier(3);
 
             scoreSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_OBS), new Point(AutoConstants.SAMPLE_SCORE_RIGHT)));
             scoreSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_OBS.getHeading(), AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), 0.6);
-            scoreSampleObs.setZeroPowerAccelerationMultiplier(2);
+            scoreSampleObs.setZeroPowerAccelerationMultiplier(1.75);
         }
         else {
             collectSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_OBS), new Point(AutoConstants.SAMPLE_ALLIANCE_PARTNER)));
             collectSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_OBS.getHeading(), AutoConstants.SAMPLE_ALLIANCE_PARTNER.getHeading(), 0.8);
-            collectSampleObs.setZeroPowerAccelerationMultiplier(3.5);
+            collectSampleObs.setZeroPowerAccelerationMultiplier(3);
 
             scoreSampleObs = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_ALLIANCE_PARTNER), new Point(AutoConstants.SAMPLE_SCORE_RIGHT)));
             scoreSampleObs.setLinearHeadingInterpolation(AutoConstants.SAMPLE_ALLIANCE_PARTNER.getHeading(), AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), 0.6);
-            scoreSampleObs.setZeroPowerAccelerationMultiplier(2);
+            scoreSampleObs.setZeroPowerAccelerationMultiplier(1.75);
         }
 
         collectSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_RIGHT), new Point(AutoConstants.SAMPLE_RIGHT)));
@@ -532,7 +532,7 @@ public class SixSampleAuto extends OpMode {
             builtPaths = false;
         }
 
-        xSubPos = MathFunctions.clamp(xSubPos, 55, 80);
+        xSubPos = MathFunctions.clamp(xSubPos, 55, 55 + 38);
 
         if(gamepad1.dpad_left) {
             alliancePartnerAuto = false;
