@@ -15,8 +15,11 @@ public class Intake {
     private final Timer actionTimer;
 
     private boolean onsSetState;
+    private boolean onsIntakeState;
     private boolean isBusy = false;
     private boolean intakeWheelsKeepSpinning = false;
+
+    private double timerOffset = 0;
 
     private double horizontalPosition = 0;
     private int intakeSlideHomeOffset = 0;
@@ -101,7 +104,14 @@ public class Intake {
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
 
                 if(getSampleColor() > 0) {
-                    intakeSpeed(IntakeConstants.INTAKE_STOP);
+                    if(onsIntakeState){
+                        timerOffset = actionTimer.getElapsedTimeSeconds();
+                        onsIntakeState = false;
+                    }
+
+                    if(actionTimer.getElapsedTimeSeconds() + timerOffset > 0.1) {
+                        intakeSpeed(IntakeConstants.INTAKE_STOP);
+                    }
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.4)
@@ -169,6 +179,7 @@ public class Intake {
     public void setState(String s)
     {
         onsSetState = true;
+        onsIntakeState = true;
         isBusy = true;
         actionTimer.resetTimer();
         state = s;
