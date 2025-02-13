@@ -84,7 +84,7 @@ public class FiveSampleAutoFromSub extends OpMode {
 
         touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE_LEFT.getY()), new Point(AutoConstants.SAMPLE_PARK)));
         touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
-        touchBar.setZeroPowerAccelerationMultiplier(3);
+        touchBar.setZeroPowerAccelerationMultiplier(2);
 
         builtPaths = true;
     }
@@ -131,7 +131,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                 if (robotInPos) {
                     if (actionState == -1) {
                         if(onsScoreState) {
-                            slideRangeSubtract = 100;
+                            slideRangeSubtract = 0;
                             setActionState(5);
                             onsScoreState = false;
                         }
@@ -207,7 +207,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                             setActionState(15);
                             onsScoreState = false;
                         }
-                    }else if (actionState == 17) {
+                    }else if (actionState == 17 && !intake.isBusy()) {
                         if(onsMoveState) {
                             currentPath = scoreSampleSub;
                             currentHeading = currentPath.getHeadingGoal(1);
@@ -456,7 +456,7 @@ public class FiveSampleAutoFromSub extends OpMode {
         prevGp1Dpad = gamepad1.dpad_up || gamepad1.dpad_down;
         prevGp1Start = gamepad1.start;
 
-        telemetry.addData("Sub offset (g1 dpad up and down)", xSubPos - 49);
+        telemetry.addData("Sub offset (g1 dpad up and down) [22 is middle]", xSubPos - 49);
         telemetry.addData("Is alliance color red (g1 x and b)", allianceColorRed);
 
         if(!builtPaths){

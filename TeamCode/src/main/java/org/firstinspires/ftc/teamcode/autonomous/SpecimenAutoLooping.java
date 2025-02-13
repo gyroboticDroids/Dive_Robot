@@ -23,7 +23,7 @@ import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
 @Autonomous(name = "4 specimen auto pushing", group = "autonomous", preselectTeleOp = "Master Tele-op")
-public class SpecimenAutoPushing extends OpMode {
+public class SpecimenAutoLooping extends OpMode {
     private int slideRangeSubtract = 200;
 
     private Follower follower;
@@ -47,10 +47,11 @@ public class SpecimenAutoPushing extends OpMode {
         scorePreload.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_START.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
         scorePreload.setZeroPowerAccelerationMultiplier(2);
 
-        pushing = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_PUSHING_CONTROL_POINT1 ,new Point(AutoConstants.SPECIMEN_PUSHING1)))
+        .addPath(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_PUSHING_CONTROL_POINT1 ,new Point(AutoConstants.SPECIMEN_PUSHING1)))
                 .setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_PUSHING1.getHeading())
                 .setZeroPowerAccelerationMultiplier(3)
+        pushing = follower.pathBuilder()
+
                 .addPath(new BezierCurve(new Point(AutoConstants.SPECIMEN_PUSHING1), AutoConstants.SPECIMEN_PUSHING_CONTROL_POINT2 ,new Point(AutoConstants.SPECIMEN_PUSHING2)))
                 .setLinearHeadingInterpolation(AutoConstants.SPECIMEN_PUSHING1.getHeading(), AutoConstants.SPECIMEN_PUSHING2.getHeading())
                 .setZeroPowerAccelerationMultiplier(3)

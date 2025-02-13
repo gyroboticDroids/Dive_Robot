@@ -20,24 +20,20 @@ public class AutoConstants {
     public static Pose SAMPLE_PARK = new Pose(60, 92.5, Math.toRadians(0));
 
     public static Pose SAMPLE_SCORE_READY = new Pose(16, 127, Math.toRadians(-45));
-    public static Pose SAMPLE_SCORE = new Pose(13.5, 129.5, Math.toRadians(-45));
+    public static Pose SAMPLE_SCORE = new Pose(14, 129, Math.toRadians(-45));
 
     //Poses in SpecimenAuto
     public static Pose SPECIMEN_START = new Pose(7.125, 65.5, Math.toRadians(0));
-    public static Pose SPECIMEN_SCORE = new Pose(42.5, 68, Math.toRadians(0));
-    public static Pose SPECIMEN_INTAKE_LEFT = new Pose(20, 39, Math.toRadians(-30));
-    public static Pose SPECIMEN_OUTTAKE_LEFT = new Pose(20, SPECIMEN_INTAKE_LEFT.getY(), Math.toRadians(-145));
-    public static Pose SPECIMEN_INTAKE_CENTER = new Pose(20, 28, Math.toRadians(-30));
-    public static Pose SPECIMEN_OUTTAKE_CENTER = new Pose(20, SPECIMEN_INTAKE_CENTER.getY(), Math.toRadians(-145));
-    public static Pose SPECIMEN_INTAKE_RIGHT = new Pose(20, 18, Math.toRadians(-30));
-    public static Pose SPECIMEN_OUTTAKE_RIGHT = new Pose(20, SPECIMEN_INTAKE_RIGHT.getY(), Math.toRadians(-145));
-    public static Pose SPECIMEN_GRAB_READY = new Pose(12, 34, Math.toRadians(0));
-    public static Pose SPECIMEN_GRAB = new Pose(7.125, 34, Math.toRadians(0));
+    public static Pose SPECIMEN_SCORE = new Pose(42.5, 65.5, Math.toRadians(0));
 
-    public static Point SPECIMEN_CONTROL_POINT1 = new Point(6, 72);
+    public static Pose SPECIMEN_GRAB_READY = new Pose(15, 36, Math.toRadians(0));
+    public static Pose SPECIMEN_GRAB_FIRST = new Pose(7.125, 13, Math.toRadians(0));
+    public static Pose SPECIMEN_GRAB = new Pose(7.125, 36, Math.toRadians(0));
 
-    public static double Y_INCREMENT = 2;
-    public static double X_INCREMENT = 0.07;
+    public static Point SPECIMEN_CONTROL_POINT = new Point(12, 55);
+
+    public static double Y_INCREMENT = 3;
+    public static double X_INCREMENT = 0.1;
 
     //Pushing constants
     public static Pose SPECIMEN_PUSHING1 = new Pose(52, 34, Math.toRadians(0));
@@ -55,4 +51,11 @@ public class AutoConstants {
     public static Pose SPECIMEN_TRANSFER_CENTER = new Pose(22, 15, Math.toRadians(0));
     public static Pose SPECIMEN_INTAKE_RIGHT_OLD = new Pose(24, 12, Math.toRadians(-27));
 
+    //Turning
+    public static Pose SPECIMEN_INTAKE_LEFT = new Pose(20, 39, Math.toRadians(-30));
+    public static Pose SPECIMEN_OUTTAKE_LEFT = new Pose(20, SPECIMEN_INTAKE_LEFT.getY(), Math.toRadians(-145));
+    public static Pose SPECIMEN_INTAKE_CENTER = new Pose(20, 28, Math.toRadians(-30));
+    public static Pose SPECIMEN_OUTTAKE_CENTER = new Pose(20, SPECIMEN_INTAKE_CENTER.getY(), Math.toRadians(-145));
+    public static Pose SPECIMEN_INTAKE_RIGHT = new Pose(20, 18, Math.toRadians(-30));
+    public static Pose SPECIMEN_OUTTAKE_RIGHT = new Pose(20, SPECIMEN_INTAKE_RIGHT.getY(), Math.toRadians(-145));
 }
