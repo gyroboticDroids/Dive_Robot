@@ -84,7 +84,7 @@ public class FiveSampleAutoFromSub extends OpMode {
 
         touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE_LEFT.getY()), new Point(AutoConstants.SAMPLE_PARK)));
         touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
-        touchBar.setZeroPowerAccelerationMultiplier(2);
+        touchBar.setZeroPowerAccelerationMultiplier(1.5);
 
         builtPaths = true;
     }
@@ -327,7 +327,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract - 1300);
                 } else if (!intake.isBusy() && pathState == 4) {
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT + 100);
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT + 200);
                 }
 
                 if (!outtake.isBusy()) {

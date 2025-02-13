@@ -78,7 +78,7 @@ public class SpecimenAutoPushing extends OpMode {
 
         grabSpecimenReady2 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 1, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 1), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
         grabSpecimenReady2.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
-        grabSpecimenReady2.setZeroPowerAccelerationMultiplier(2.5);
+        grabSpecimenReady2.setZeroPowerAccelerationMultiplier(1.5);
 
         scoreSpecimen2 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 2, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 2)));
         scoreSpecimen2.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
@@ -86,7 +86,7 @@ public class SpecimenAutoPushing extends OpMode {
 
         grabSpecimenReady3 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 3, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 2), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
         grabSpecimenReady3.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
-        grabSpecimenReady3.setZeroPowerAccelerationMultiplier(2.5);
+        grabSpecimenReady3.setZeroPowerAccelerationMultiplier(1.5);
 
         scoreSpecimen3 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 3, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 3)));
         scoreSpecimen3.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
@@ -94,7 +94,7 @@ public class SpecimenAutoPushing extends OpMode {
 
         grabSpecimenReady4 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 3, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 3), new Point(AutoConstants.SPECIMEN_GRAB_READY.getX() - 3, AutoConstants.SPECIMEN_GRAB_READY.getY() - 3)));
         grabSpecimenReady4.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
-        grabSpecimenReady4.setZeroPowerAccelerationMultiplier(2.5);
+        grabSpecimenReady4.setZeroPowerAccelerationMultiplier(1.5);
     }
 
     public void autonomousPathUpdate() {
@@ -176,7 +176,7 @@ public class SpecimenAutoPushing extends OpMode {
                         onsIntakeOut = false;
                     }
 
-                    if(pathTimer.getElapsedTimeSeconds() > 0.25) {
+                    if(pathTimer.getElapsedTimeSeconds() > 0.5) {
                         currentPath = grabSpecimen;
                         follower.followPath(currentPath, true);
                         setPathState(12);
@@ -225,7 +225,7 @@ public class SpecimenAutoPushing extends OpMode {
                         onsIntakeOut = false;
                     }
 
-                    if(pathTimer.getElapsedTimeSeconds() > 0.25) {
+                    if(pathTimer.getElapsedTimeSeconds() > 0.5) {
                         currentPath = grabSpecimen;
                         follower.followPath(currentPath, true);
                         setPathState(15);
