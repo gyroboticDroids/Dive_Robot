@@ -27,8 +27,9 @@ public class AutoConstants {
     public static Pose SPECIMEN_SCORE = new Pose(42.5, 65.5, Math.toRadians(0));
 
     public static Pose SPECIMEN_GRAB_READY = new Pose(15, 36, Math.toRadians(0));
-    public static Pose SPECIMEN_GRAB_FIRST = new Pose(7.125, 13, Math.toRadians(0));
+    public static Pose SPECIMEN_GRAB_2 = new Pose(7.125, 13, Math.toRadians(0));
     public static Pose SPECIMEN_GRAB = new Pose(7.125, 36, Math.toRadians(0));
+    public static Pose SPECIMEN_GRAB_1 = new Pose(7.125, 23, Math.toRadians(0));
 
     public static Point SPECIMEN_CONTROL_POINT = new Point(12, 55);
 
@@ -39,6 +40,7 @@ public class AutoConstants {
     public static Pose SPECIMEN_PUSHING1 = new Pose(52, 34, Math.toRadians(0));
     public static Pose SPECIMEN_PUSHING2 = new Pose(51, 23, Math.toRadians(0));
     public static Pose SPECIMEN_PUSHING3 = new Pose(30, 23, Math.toRadians(0));
+    public static Pose SPECIMEN_PUSHING4_READY = new Pose(51, 23, Math.toRadians(0));
     public static Pose SPECIMEN_PUSHING4 = new Pose(51, 11, Math.toRadians(0));
     public static Pose SPECIMEN_PUSHING5 = new Pose(20, 13, Math.toRadians(0));
 
