@@ -17,7 +17,7 @@ public class AutoConstants {
     public static Pose SAMPLE_CENTER = new Pose(20.5, 135.5, Math.toRadians(-13));
     public static Pose SAMPLE_LEFT = new Pose(19, 129, Math.toRadians(24));
     public static Pose SAMPLE_SUB = new Pose(60, 92.5, Math.toRadians(-90));
-    public static Pose SAMPLE_PARK = new Pose(60, 92, Math.toRadians(0));
+    public static Pose SAMPLE_PARK = new Pose(60, 92.5, Math.toRadians(0));
 
     public static Pose SAMPLE_SCORE_READY = new Pose(16, 127, Math.toRadians(-45));
     public static Pose SAMPLE_SCORE = new Pose(13.5, 129.5, Math.toRadians(-45));

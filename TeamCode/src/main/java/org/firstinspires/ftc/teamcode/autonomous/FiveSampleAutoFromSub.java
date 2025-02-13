@@ -76,11 +76,11 @@ public class FiveSampleAutoFromSub extends OpMode {
 
         collectSampleSub = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_LEFT), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(xSubPos, AutoConstants.SAMPLE_SUB.getY())));
         collectSampleSub.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), AutoConstants.SAMPLE_SUB.getHeading());
-        collectSampleSub.setZeroPowerAccelerationMultiplier(3.5);
+        collectSampleSub.setZeroPowerAccelerationMultiplier(3);
 
         scoreSampleSub = new Path(new BezierCurve(new Point(xSubPos, AutoConstants.SAMPLE_SUB.getY()), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
         scoreSampleSub.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SUB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
-        scoreSampleSub.setZeroPowerAccelerationMultiplier(2);
+        scoreSampleSub.setZeroPowerAccelerationMultiplier(1.75);
 
         touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE_LEFT.getY()), new Point(AutoConstants.SAMPLE_PARK)));
         touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
@@ -288,7 +288,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.5) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.75 || intake.getSampleColor() > 0) {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(8);
                     }
@@ -354,7 +354,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                         onsIntakeState = false;
                     }
                     else {
-                        intake.horizontalSlidesManual(30);
+                        intake.horizontalSlidesManual(25);
                     }
 
                     if(actionTimer.getElapsedTimeSeconds() > 2.5 || intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3))
@@ -431,7 +431,6 @@ public class FiveSampleAutoFromSub extends OpMode {
         if (!intake.isBusy() && intake.getState().equals(IntakeConstants.RESET_POS))
         {
             intake.setState(IntakeConstants.TRANSFER);
-            telemetry.addLine("Initialised!");
         }
 
         if(!prevGp1Dpad && gamepad1.dpad_up){

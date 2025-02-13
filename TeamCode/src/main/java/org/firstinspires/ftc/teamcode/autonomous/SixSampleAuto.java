@@ -510,7 +510,7 @@ public class SixSampleAuto extends OpMode {
 
         currentPath = scorePreload;
 
-        intake.setState(IntakeConstants.RESET_POS);
+        intake.setState(IntakeConstants.START);
     }
 
     @Override
@@ -518,6 +518,10 @@ public class SixSampleAuto extends OpMode {
     {
         //Resets intake pos
         intake.update();
+
+        if(actionTimer.getElapsedTimeSeconds() > 4 && !(intake.getState().equals(IntakeConstants.RESET_POS) || intake.getState().equals(IntakeConstants.TRANSFER))){
+            intake.setState(IntakeConstants.RESET_POS);
+        }
 
         if (!intake.isBusy() && intake.getState().equals(IntakeConstants.RESET_POS))
         {

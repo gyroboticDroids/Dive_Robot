@@ -99,6 +99,10 @@ public class Intake {
                 break;
 
             case IntakeConstants.TRANSFER:
+                if(onsSetState && hardware.intakeSlide.getCurrentPosition() > IntakeConstants.SLIDES_OUT) {
+                    intakeSpeed(IntakeConstants.INTAKE_SLOW_FORWARD);
+                }
+
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
 
                 if(getSampleColor() > 0) {
