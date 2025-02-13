@@ -46,7 +46,7 @@ public class MasterTeleop extends OpMode {
 
         //Sets all states to the starting states
         outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-        intake.setState(IntakeConstants.TRANSFER);
+        intake.setState(IntakeConstants.INTAKE_SUB_READY);
         hang.setState(HangConstants.START);
     }
 
@@ -77,8 +77,9 @@ public class MasterTeleop extends OpMode {
         //Telemetry
         telemetry.addLine("-------------------Drive---------------------");
         telemetry.addData("target heading", drive.targetHeading);
-        telemetry.addData("current heading", Math.toDegrees(drive.botHeading));
+        telemetry.addData("current heading", Math.toDegrees(drive.getBotHeading()));
         telemetry.addData("is manual turning", drive.isManualTurning());
+        telemetry.addData("turn power", drive.getTurnPower());
 
         telemetry.addLine("-------------------Outtake-------------------");
         telemetry.addData("outtake state", outtake.getState());

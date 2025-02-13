@@ -16,6 +16,7 @@ import org.firstinspires.ftc.teamcode.constants.AutoConstants;
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
+import org.firstinspires.ftc.teamcode.constants.TransferConstants;
 import org.firstinspires.ftc.teamcode.teleop.Hang;
 import org.firstinspires.ftc.teamcode.teleop.Intake;
 import org.firstinspires.ftc.teamcode.teleop.Outtake;
@@ -508,6 +509,12 @@ public class FiveSampleAutoFromObs extends OpMode {
         pathTimer.resetTimer();
         actionTimer.resetTimer();
         setPathState(0);
+    }
+
+    @Override
+    public void stop() {
+        TransferConstants.horiSlidePos = intake.getHorizontalSlidePos();
+        TransferConstants.heading = Math.toDegrees(follower.getPose().getHeading());
     }
 
     @Override

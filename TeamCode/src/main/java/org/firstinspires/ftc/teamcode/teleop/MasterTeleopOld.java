@@ -79,7 +79,7 @@ public class MasterTeleopOld extends OpMode {
         //Telemetry
         telemetry.addLine("-------------------Drive---------------------");
         telemetry.addData("target heading", drive.targetHeading);
-        telemetry.addData("current heading", Math.toDegrees(drive.botHeading));
+        telemetry.addData("current heading", Math.toDegrees(drive.getBotHeading()));
 
         telemetry.addLine("-------------------Outtake-------------------");
         telemetry.addData("outtake state", outtake.getState());

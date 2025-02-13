@@ -12,11 +12,15 @@ public class TestMotors extends OpMode {
     private int state = 0;
     private boolean prevGp1Start;
     private boolean gpsAtRest = true;
+    private boolean gp1BOrXPressed = false;
+
+    private double speed = 0.5;
 
     @Override
     public void init()
     {
         hardware = new Hardware(hardwareMap);
+        hardware.setUpDrive();
     }
 
     @Override
@@ -97,6 +101,11 @@ public class TestMotors extends OpMode {
                 telemetry.addData("rear right power (g1 left stick y + y)", hardware.rearRight.getPower());
 
                 telemetry.addData("direction", Math.toDegrees(hardware.pinpointDriver.getHeading()));
+
+                telemetry.addData("gamepad 1 left y", gamepad1.left_stick_y);
+                telemetry.addData("gamepad 1 right y", gamepad1.right_stick_y);
+                telemetry.addData("gamepad 2 left y", gamepad2.left_stick_y);
+                telemetry.addData("gamepad 2 right y", gamepad2.right_stick_y);
                 break;
 
             case 1:
@@ -126,15 +135,23 @@ public class TestMotors extends OpMode {
                 hardware.intakeSlide.setPower(gamepad1.left_stick_y);
 
                 hardware.intakePivot.setPosition(MathFunctions.clamp(hardware.intakePivot.getPosition() + gamepad1.right_stick_y * SENSITIVITY, 0, 1));
-                hardware.intakeLeft.setPosition(gamepad2.left_stick_y);
-                hardware.intakeRight.setPosition(gamepad2.right_stick_y);
+                //hardware.intakeLeft.setPosition((gamepad2.left_stick_y / 2) + 0.5);
+                //hardware.intakeRight.setPosition((gamepad2.right_stick_y / 2) + 0.5);
+
+                if(!gp1BOrXPressed && gamepad1.b){
+                    speed += 0.01;
+                } else if (!gp1BOrXPressed && gamepad1.x) {
+                    speed -= 0.01;
+                }
+                hardware.intakeLeft.setPosition(speed);
+                hardware.intakeRight.setPosition(speed);
 
                 telemetry.addData("slide power (g1 left stick y)", hardware.intakeSlide.getPower());
                 telemetry.addData("slide position", hardware.intakeSlide.getCurrentPosition());
 
                 telemetry.addData("pivot position (g1 right stick y)", hardware.intakePivot.getPosition());
-                telemetry.addData("intake left power (g2 left stick y)", hardware.intakeLeft.getPosition());
-                telemetry.addData("intake right power (g2 right stick y)", hardware.intakeRight.getPosition());
+                telemetry.addData("intake left power (g1 x and b)", hardware.intakeLeft.getPosition());
+                telemetry.addData("intake right power (g1 x and b)", hardware.intakeRight.getPosition());
                 break;
 
             case 3:
@@ -151,6 +168,7 @@ public class TestMotors extends OpMode {
         telemetry.update();
 
         prevGp1Start = gamepad1.start;
+        gp1BOrXPressed = gamepad1.b || gamepad1.x;
         gpsAtRest = gamepad1.atRest() || gamepad2.atRest();
     }
 }

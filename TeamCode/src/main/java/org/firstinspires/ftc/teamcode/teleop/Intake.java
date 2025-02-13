@@ -217,6 +217,10 @@ public class Intake {
         intakeWheelsKeepSpinning = val;
     }
 
+    public void setIntakeWheelsSpeed(double speed) {
+        intakeSpeed(speed);
+    }
+
     public void horizontalSlidesUpdate()
     {
         horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, IntakeConstants.SLIDES_MAX);

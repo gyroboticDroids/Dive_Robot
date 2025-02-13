@@ -15,6 +15,7 @@ import org.firstinspires.ftc.teamcode.constants.AutoConstants;
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
+import org.firstinspires.ftc.teamcode.constants.TransferConstants;
 import org.firstinspires.ftc.teamcode.teleop.Hang;
 import org.firstinspires.ftc.teamcode.teleop.Intake;
 import org.firstinspires.ftc.teamcode.teleop.Outtake;
@@ -43,7 +44,7 @@ public class FiveSampleAutoFromSub extends OpMode {
     private boolean allianceColorRed = true;
     private Path currentPath;
     private double currentHeading;
-    private double xSubPos = 60;
+    private double xSubPos = 55;
     private boolean builtPaths = false;
     private boolean robotInPos;
     private boolean intakeReady = true;
@@ -356,7 +357,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                         intake.horizontalSlidesManual(30);
                     }
 
-                    if(actionTimer.getElapsedTimeSeconds() > 1.5 || intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3))
+                    if(actionTimer.getElapsedTimeSeconds() > 2.5 || intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3))
                     {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(17);
@@ -405,6 +406,7 @@ public class FiveSampleAutoFromSub extends OpMode {
 
         pathTimer = new Timer();
         actionTimer = new Timer();
+        actionTimer.resetTimer();
 
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
@@ -413,7 +415,7 @@ public class FiveSampleAutoFromSub extends OpMode {
 
         currentPath = scorePreload;
 
-        intake.setState(IntakeConstants.RESET_POS);
+        intake.setState(IntakeConstants.START);
     }
 
     @Override
@@ -422,9 +424,14 @@ public class FiveSampleAutoFromSub extends OpMode {
         //Resets intake pos
         intake.update();
 
+        if(actionTimer.getElapsedTimeSeconds() > 4 && !(intake.getState().equals(IntakeConstants.RESET_POS) || intake.getState().equals(IntakeConstants.TRANSFER))){
+            intake.setState(IntakeConstants.RESET_POS);
+        }
+
         if (!intake.isBusy() && intake.getState().equals(IntakeConstants.RESET_POS))
         {
             intake.setState(IntakeConstants.TRANSFER);
+            telemetry.addLine("Initialised!");
         }
 
         if(!prevGp1Dpad && gamepad1.dpad_up){
@@ -435,13 +442,13 @@ public class FiveSampleAutoFromSub extends OpMode {
             builtPaths = false;
         }
 
+        xSubPos = MathFunctions.clamp(xSubPos, 55, 55 + 38);
+
         if(gamepad1.b) {
             allianceColorRed = true;
         } else if(gamepad1.x) {
             allianceColorRed = false;
         }
-
-        xSubPos = MathFunctions.clamp(xSubPos, 58, 80);
 
         if(!prevGp1Start && gamepad1.start){
             buildPaths();
@@ -450,7 +457,7 @@ public class FiveSampleAutoFromSub extends OpMode {
         prevGp1Dpad = gamepad1.dpad_up || gamepad1.dpad_down;
         prevGp1Start = gamepad1.start;
 
-        telemetry.addData("Sub offset (g1 dpad up and down)", xSubPos);
+        telemetry.addData("Sub offset (g1 dpad up and down)", xSubPos - 49);
         telemetry.addData("Is alliance color red (g1 x and b)", allianceColorRed);
 
         if(!builtPaths){
@@ -468,6 +475,12 @@ public class FiveSampleAutoFromSub extends OpMode {
         pathTimer.resetTimer();
         actionTimer.resetTimer();
         setPathState(0);
+    }
+
+    @Override
+    public void stop() {
+        TransferConstants.horiSlidePos = intake.getHorizontalSlidePos();
+        TransferConstants.heading = Math.toDegrees(follower.getPose().getHeading());
     }
 
     @Override

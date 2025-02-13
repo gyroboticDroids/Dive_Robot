@@ -18,7 +18,8 @@ public class Drive {
 
     boolean resetHeading;
     boolean manualTurning = false;
-    double botHeading;
+
+    private double botHeading;
     double targetHeading = 0;
 
     double turnPower;
@@ -30,6 +31,7 @@ public class Drive {
     public Drive(HardwareMap hardwareMap, Gamepad gamepad1)
     {
         hardware = new Hardware(hardwareMap);
+        hardware.setUpDrive();
         gamepad = gamepad1;
 
         turnOffset = -Math.toRadians(TransferConstants.heading);
@@ -60,8 +62,8 @@ public class Drive {
     {
         double multiplier = (Math.abs(gpad.right_stick_x) + Math.abs(gpad.right_stick_y) > 0)? DriveConstants.DRIVE_SLOW_SPEED_MULTIPLIER : DriveConstants.DRIVE_SPEED_MULTIPLIER;
 
-        y = gpad.left_stick_y * multiplier;
-        x = -gpad.left_stick_x * multiplier;
+        y = -gpad.left_stick_y * multiplier;
+        x = gpad.left_stick_x * multiplier;
         rx = (gpad.left_trigger - gpad.right_trigger) * 0.4 * multiplier;
         manualTurning = Math.abs(gpad.left_trigger + gpad.right_trigger) > 0.05;
         resetHeading = gpad.back;
@@ -74,8 +76,7 @@ public class Drive {
         }
     }
 
-    public void autoMovement(double xSpeed, double ySpeed, double targHeading)
-    {
+    public void autoMovement(double xSpeed, double ySpeed, double targHeading) {
         y = -ySpeed;
         x = xSpeed;
         targetHeading = targHeading;
@@ -108,10 +109,10 @@ public class Drive {
         // This ensures all the powers maintain the same ratio,
         // but only if at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(rotY) + Math.abs(rotX) + Math.abs(turnPower), 1);
-        double frontLeftPower = (rotY + rotX + turnPower) / denominator;
-        double backLeftPower = (rotY - rotX + turnPower) / denominator;
-        double frontRightPower = (rotY - rotX - turnPower) / denominator;
-        double backRightPower = (rotY + rotX - turnPower) / denominator;
+        double frontLeftPower = (rotY + rotX - turnPower) / denominator;
+        double backLeftPower = (rotY - rotX - turnPower) / denominator;
+        double frontRightPower = (rotY - rotX + turnPower) / denominator;
+        double backRightPower = (rotY + rotX + turnPower) / denominator;
 
         hardware.frontLeft.setPower(frontLeftPower);
         hardware.rearLeft.setPower(backLeftPower);
@@ -133,6 +134,14 @@ public class Drive {
 
         turnPower = DriveConstants.DRIVE_TURN_P_GAIN * error;
         turnPower = Math.min(Math.max(turnPower, -0.4), 0.4);
+    }
+
+    public double getBotHeading() {
+        return botHeading;
+    }
+
+    public double getTurnPower() {
+        return turnPower;
     }
 
     public boolean isDriveBack() {
