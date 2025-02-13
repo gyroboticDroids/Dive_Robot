@@ -8,6 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import pedroPathing.constants.LConstants;
+
 public class Hardware {
     //Drive
     public DcMotor frontLeft;
@@ -57,11 +59,11 @@ public class Hardware {
         rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         pinpointDriver = hardwareMap.get(GoBildaPinpointDriver.class,"pinpoint");
-        pinpointDriver.setOffsets(-12.0, -60.0); //these are tuned for 3110-0002-0001 Product Insight #1
-        pinpointDriver.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        pinpointDriver.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.REVERSED);
+        //pinpointDriver.setOffsets(31.75, -142.875); //these are tuned for 3110-0002-0001 Product Insight #1
+        //pinpointDriver.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        //pinpointDriver.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.REVERSED);
 
-        pinpointDriver.resetPosAndIMU();
+        //pinpointDriver.resetPosAndIMU();
 
         //Outtake
         outtakeSlide1 = hardwareMap.get(DcMotor.class, "vertSlide1");
