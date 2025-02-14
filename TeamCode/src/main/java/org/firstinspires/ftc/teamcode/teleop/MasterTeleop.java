@@ -130,7 +130,7 @@ public class MasterTeleop extends OpMode {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
             } else if (gamepad2.b && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevOuttakeState.equals(OuttakeConstants.START))) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
-            } else if (gamepad2.b && prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY)) {
+            } else if (gamepad2.b && prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) && prevIntakeState.equals(IntakeConstants.TRANSFER)) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
             } else if (gamepad2.x && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE)) {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
@@ -138,8 +138,8 @@ public class MasterTeleop extends OpMode {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE);
             } else if (gamepad2.a && (prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
-            } else if ((gamepad2.y && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE)) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevOuttakeState.equals(OuttakeConstants.RESET_POS) ||
-                    ((gamepad2.x || gamepad2.b) && prevOuttakeState.equals(OuttakeConstants.START))) {
+            } else if (gamepad2.y && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY)) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevOuttakeState.equals(OuttakeConstants.RESET_POS) ||
+                    ((gamepad2.x || gamepad2.b) && (prevOuttakeState.equals(OuttakeConstants.START) || prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) && !prevIntakeState.equals(IntakeConstants.TRANSFER)))) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
             } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
