@@ -113,7 +113,7 @@ public class Outtake {
 
             case OuttakeConstants.GRAB_SPECIMEN_READY:
                 if(onsSetState){
-                    fromTransfer = hardware.outtakeExtension.getPosition() == OuttakeConstants.EXTENSION_TRANSFER;
+                    fromTransfer = vertPosition == OuttakeConstants.SLIDES_TRANSFER_UP;
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.2 && specimenOnsSetState) {

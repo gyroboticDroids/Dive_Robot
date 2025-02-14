@@ -182,6 +182,7 @@ public class MasterTeleop extends OpMode {
         //Stops the intake from interrupting hanging
         if (isHanging)
         {
+            intake.horizontalSlidesUpdate();
             return;
         }
 
