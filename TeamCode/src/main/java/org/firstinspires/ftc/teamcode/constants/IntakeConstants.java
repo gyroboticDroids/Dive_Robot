@@ -5,10 +5,11 @@ public class IntakeConstants {
     public static int SLIDES_START = 0;//
     public static int SLIDES_MAX = 1970;//
     public static int SLIDES_TRANSFER = 30;//
-    public static int SLIDES_OUT = 225;//
+    public static int SLIDES_OUT = 325;//
     public static int SLIDES_ACCURACY = 40;//
     public static int SLIDES_HALFWAY = 950;
-    public static double SLIDES_P_GAIN = 0.009;
+    public static double SLIDES_P_GAIN = 0.008;
+    public static double SLIDES_TICKS_PER_INCH = 84.8;
 
     public static double PIVOT_START = 0.924;//
     public static double PIVOT_TRANSFER = 0.924;//

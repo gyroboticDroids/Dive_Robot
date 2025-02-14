@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
+import org.firstinspires.ftc.teamcode.constants.TransferConstants;
 
 @TeleOp(name = "Master Tele-op", group = "Tele-op")
 public class MasterTeleop extends OpMode {
@@ -36,6 +37,14 @@ public class MasterTeleop extends OpMode {
 
         //Sets up timer
         teleopTimer = new Timer();
+    }
+
+    @Override
+    public void stop()
+    {
+        TransferConstants.horiSlidePos = 0;
+        TransferConstants.heading = 0;
+        TransferConstants.isAllianceRed = true;
     }
 
     @Override

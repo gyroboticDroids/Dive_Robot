@@ -11,7 +11,7 @@ public class AutoConstants {
     public static Pose SAMPLE_SCORE_RIGHT = new Pose(15.5, 133, Math.toRadians(-23));
     public static Pose SAMPLE_SCORE_CENTER = new Pose(18, 136, Math.toRadians(-13));
     public static Pose SAMPLE_SCORE_LEFT = new Pose(18, 136, Math.toRadians(-8));
-    public static Pose SAMPLE_OBS = new Pose(5.5, 55, Math.toRadians(-90));
+    public static Pose SAMPLE_OBS = new Pose(5.5, 58, Math.toRadians(-90));
     public static Pose SAMPLE_ALLIANCE_PARTNER = new Pose(5.5, 107, Math.toRadians(-90));
     public static Pose SAMPLE_RIGHT = new Pose(19, 131.5, Math.toRadians(-23));
     public static Pose SAMPLE_CENTER = new Pose(20.5, 135.5, Math.toRadians(-13));
@@ -34,7 +34,7 @@ public class AutoConstants {
     public static Point SPECIMEN_CONTROL_POINT = new Point(12, 55);
 
     public static double Y_INCREMENT = 3;
-    public static double X_INCREMENT = 0.1;
+    public static double X_INCREMENT = 0.05;
 
     //Pushing constants
     public static Pose SPECIMEN_PUSHING1 = new Pose(52, 34, Math.toRadians(0));
@@ -46,7 +46,7 @@ public class AutoConstants {
 
     public static Point SPECIMEN_PUSHING_CONTROL_POINT1 = new Point(16, 48);
     public static Point SPECIMEN_PUSHING_CONTROL_POINT2 = new Point(62, 28);
-    public static Point SPECIMEN_PUSHING_CONTROL_POINT4 = new Point(62, 20);
+    public static Point SPECIMEN_PUSHING_CONTROL_POINT4 = new Point(66, 22);
 
     //Transferring constants
     public static Pose SPECIMEN_TRANSFER_LEFT = new Pose(22, 24, Math.toRadians(0));

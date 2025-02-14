@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "4 specimen auto pushing", group = "autonomous", preselectTeleOp = "Master Tele-op")
+@Autonomous(name = "4 specimen auto pushing", group = "autonomous specimens", preselectTeleOp = "Master Tele-op")
 public class SpecimenAutoPushing extends OpMode {
     private int slideRangeSubtract = 200;
 
@@ -78,7 +78,7 @@ public class SpecimenAutoPushing extends OpMode {
 
         grabSpecimenReady2 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 1, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 1), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
         grabSpecimenReady2.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
-        grabSpecimenReady2.setZeroPowerAccelerationMultiplier(1.5);
+        grabSpecimenReady2.setZeroPowerAccelerationMultiplier(1.25);
 
         scoreSpecimen2 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 2, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 2)));
         scoreSpecimen2.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
@@ -86,7 +86,7 @@ public class SpecimenAutoPushing extends OpMode {
 
         grabSpecimenReady3 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 3, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 2), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
         grabSpecimenReady3.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
-        grabSpecimenReady3.setZeroPowerAccelerationMultiplier(1.5);
+        grabSpecimenReady3.setZeroPowerAccelerationMultiplier(1.25);
 
         scoreSpecimen3 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 3, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 3)));
         scoreSpecimen3.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
@@ -94,7 +94,7 @@ public class SpecimenAutoPushing extends OpMode {
 
         grabSpecimenReady4 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 3, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 3), new Point(AutoConstants.SPECIMEN_GRAB_READY.getX() - 3, AutoConstants.SPECIMEN_GRAB_READY.getY() - 3)));
         grabSpecimenReady4.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
-        grabSpecimenReady4.setZeroPowerAccelerationMultiplier(1.5);
+        grabSpecimenReady4.setZeroPowerAccelerationMultiplier(2);
     }
 
     public void autonomousPathUpdate() {

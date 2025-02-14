@@ -78,7 +78,7 @@ public class Hang {
                 break;
 
             case HangConstants.TOUCH_BAR:
-                hardware.hangRight.setPosition(HangConstants.RIGHT_UP);
+                hardware.hangRight.setPosition(HangConstants.RIGHT_TOUCH_BAR);
                 break;
         }
         onsSetState = false;

@@ -9,6 +9,8 @@ public class HangConstants {
     public static double HANGING_RIGHT = 0.642;//
     public static double HANGING_LEFT = 0.594;//
 
+    public static double RIGHT_TOUCH_BAR = 0.691;//
+
     //States
     public static final String START = "start";
     public static final String HANG_READY = "hang ready";
