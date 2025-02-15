@@ -98,8 +98,8 @@ public class SpecimenAutoPushing extends OpMode {
     }
 
     public void autonomousPathUpdate() {
-        boolean robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1) &&
-                MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1);
+        boolean robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1.5) &&
+                MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1.5);
 
         switch (pathState) {
             case 0:
@@ -137,7 +137,7 @@ public class SpecimenAutoPushing extends OpMode {
 
             case 9:
                 if(robotInPos) {
-                    if(actionState == -1 || actionTimer.getElapsedTimeSeconds() > 0.5) {
+                    if(actionState == -1 || actionTimer.getElapsedTimeSeconds() > 0.75) {
                         if(onsIntakeOut){
                             setActionState(0);
                             onsIntakeOut = false;
@@ -186,7 +186,7 @@ public class SpecimenAutoPushing extends OpMode {
 
             case 12:
                 if(robotInPos) {
-                    if(actionState == -1 || actionTimer.getElapsedTimeSeconds() > 0.5) {
+                    if(actionState == -1 || actionTimer.getElapsedTimeSeconds() > 0.75) {
                         if(onsIntakeOut){
                             setActionState(0);
                             onsIntakeOut = false;
@@ -235,7 +235,7 @@ public class SpecimenAutoPushing extends OpMode {
 
             case 15:
                 if(robotInPos) {
-                    if(actionState == -1 || actionTimer.getElapsedTimeSeconds() > 0.5) {
+                    if(actionState == -1 || actionTimer.getElapsedTimeSeconds() > 0.75) {
                         if(onsIntakeOut){
                             setActionState(0);
                             onsIntakeOut = false;
@@ -272,8 +272,10 @@ public class SpecimenAutoPushing extends OpMode {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
-                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
-                setActionState(14);
+                if(actionTimer.getElapsedTimeSeconds() > 0.5) {
+                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+                    setActionState(14);
+                }
                 break;
 
             case 1:
