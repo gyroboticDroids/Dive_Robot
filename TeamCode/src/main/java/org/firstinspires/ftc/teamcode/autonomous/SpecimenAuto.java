@@ -21,6 +21,7 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
+@Disabled
 @Autonomous(name = "5 specimen auto intake and outtake", group = "autonomous", preselectTeleOp = "Master Tele-op")
 public class SpecimenAuto extends OpMode {
 

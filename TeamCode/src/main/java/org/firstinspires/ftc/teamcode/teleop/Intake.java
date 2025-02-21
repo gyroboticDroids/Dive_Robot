@@ -105,7 +105,7 @@ public class Intake {
 
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
 
-                if(getSampleColor() > 0) {
+                /*if(getSampleColor() > 0) {
                     if(onsIntakeState){
                         timerOffset = actionTimer.getElapsedTimeSeconds();
                         onsIntakeState = false;
@@ -114,7 +114,7 @@ public class Intake {
                     if(actionTimer.getElapsedTimeSeconds() + timerOffset > 0.8) {
                         intakeSpeed(IntakeConstants.INTAKE_STOP);
                     }
-                }
+                }*/
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.4)
                 {
@@ -138,7 +138,7 @@ public class Intake {
                 intakeSpeed(IntakeConstants.INTAKE_REVERSE);
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_INTERMEDIATE);
 
-                if((actionTimer.getElapsedTimeSeconds() > 0.5))
+                if((actionTimer.getElapsedTimeSeconds() > 0.4))
                 {
                     isBusy = false;
                 }
@@ -148,7 +148,7 @@ public class Intake {
                 intakeSpeed(IntakeConstants.INTAKE_REVERSE);
                 hardware.intakePivot.setPosition(IntakeConstants.linearPivot(getHorizontalSlidePos()));
 
-                if((actionTimer.getElapsedTimeSeconds() > 0.5))
+                if((actionTimer.getElapsedTimeSeconds() > 0.4))
                 {
                     isBusy = false;
                 }

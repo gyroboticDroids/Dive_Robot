@@ -64,7 +64,7 @@ public class Drive {
 
         y = -gpad.left_stick_y * multiplier;
         x = gpad.left_stick_x * multiplier;
-        rx = (gpad.left_trigger - gpad.right_trigger) * 0.4 * multiplier;
+        rx = (gpad.left_trigger - gpad.right_trigger) * 0.4;
         manualTurning = Math.abs(gpad.left_trigger + gpad.right_trigger) > 0.05;
         resetHeading = gpad.back;
 

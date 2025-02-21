@@ -23,7 +23,7 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5 sample auto from sub", group = "autonomous", preselectTeleOp = "Master Tele-op")
+@Autonomous(name = "5 sample auto from sub", group = "autonomous samples", preselectTeleOp = "Master Tele-op")
 public class FiveSampleAutoFromSub extends OpMode {
     private int slideRangeSubtract = 0;
 
@@ -36,15 +36,16 @@ public class FiveSampleAutoFromSub extends OpMode {
     private int pathState = -1;
     private int actionState = -1;
     private boolean onsTimerState;
-    private boolean onsIntakeState;
     private boolean onsScoreState;
     private boolean onsMoveState;
     private boolean prevGp1Dpad = false;
     private boolean prevGp1Start = false;
+    private boolean prevGp1Bumper = false;
     private boolean allianceColorRed = true;
     private Path currentPath;
     private double currentHeading;
     private double xSubPos = 55;
+    private double horiSubPos = 0;
     private boolean builtPaths = false;
     private boolean robotInPos;
     private boolean intakeReady = true;
@@ -84,7 +85,7 @@ public class FiveSampleAutoFromSub extends OpMode {
 
         touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE_LEFT.getY()), new Point(AutoConstants.SAMPLE_PARK)));
         touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
-        touchBar.setZeroPowerAccelerationMultiplier(3);
+        touchBar.setZeroPowerAccelerationMultiplier(2);
 
         builtPaths = true;
     }
@@ -131,7 +132,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                 if (robotInPos) {
                     if (actionState == -1) {
                         if(onsScoreState) {
-                            slideRangeSubtract = 100;
+                            slideRangeSubtract = 0;
                             setActionState(5);
                             onsScoreState = false;
                         }
@@ -207,7 +208,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                             setActionState(15);
                             onsScoreState = false;
                         }
-                    }else if (actionState == 17) {
+                    }else if (actionState == 17 && !intake.isBusy()) {
                         if(onsMoveState) {
                             currentPath = scoreSampleSub;
                             currentHeading = currentPath.getHeadingGoal(1);
@@ -327,7 +328,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                     intake.setState(IntakeConstants.INTAKE);
                     intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract - 1300);
                 } else if (!intake.isBusy() && pathState == 4) {
-                    intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT + 100);
+                    intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT);
                 }
 
                 if (!outtake.isBusy()) {
@@ -342,25 +343,31 @@ public class FiveSampleAutoFromSub extends OpMode {
                 break;
 
             case 15:
-                intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT + 100);
+                intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT + (horiSubPos - 5.75) * IntakeConstants.SLIDES_TICKS_PER_INCH);
                 setActionState(16);
                 break;
 
             case 16:
-                if (!intake.isBusy()) {
-                    if(onsIntakeState) {
+                if (!intake.isBusy() && MathFunctions.roughlyEquals(intake.getHorizontalPosition(), intake.getHorizontalSlidePos(), 100)) {
+                    if(onsTimerState) {
                         intake.setState(IntakeConstants.INTAKE);
                         actionTimer.resetTimer();
-                        onsIntakeState = false;
+                        onsTimerState = false;
                     }
                     else {
-                        intake.horizontalSlidesManual(25);
+                        intake.horizontalSlidesManual(20);
                     }
 
-                    if(actionTimer.getElapsedTimeSeconds() > 2.5 || intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3))
+                    if(actionTimer.getElapsedTimeSeconds() > 3 || intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3))
                     {
-                        intake.setState(IntakeConstants.TRANSFER);
-                        setActionState(17);
+                        if(intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3)) {
+                            intake.setState(IntakeConstants.TRANSFER);
+                            setActionState(17);
+                        }
+                        else {
+                            intake.setState(IntakeConstants.REJECT);
+                            setActionState(-100);
+                        }
                     }
 
                 }
@@ -391,7 +398,6 @@ public class FiveSampleAutoFromSub extends OpMode {
     public void setActionState(int aState) {
         actionState = aState;
         onsTimerState = true;
-        onsIntakeState = true;
         actionTimer.resetTimer();
     }
 
@@ -443,6 +449,14 @@ public class FiveSampleAutoFromSub extends OpMode {
 
         xSubPos = MathFunctions.clamp(xSubPos, 55, 55 + 38);
 
+        if(!prevGp1Bumper && gamepad1.right_bumper){
+            horiSubPos += 1;
+        } else if (!prevGp1Bumper && gamepad1.left_bumper) {
+            horiSubPos -= 1;
+        }
+
+        horiSubPos = MathFunctions.clamp(horiSubPos, 5.75, 24);
+
         if(gamepad1.b) {
             allianceColorRed = true;
         } else if(gamepad1.x) {
@@ -454,9 +468,11 @@ public class FiveSampleAutoFromSub extends OpMode {
         }
 
         prevGp1Dpad = gamepad1.dpad_up || gamepad1.dpad_down;
+        prevGp1Bumper = gamepad1.left_bumper || gamepad1.right_bumper;
         prevGp1Start = gamepad1.start;
 
-        telemetry.addData("Sub offset (g1 dpad up and down)", xSubPos - 49);
+        telemetry.addData("Sub drive offset (g1 dpad up and down) [22 is middle]", xSubPos - 49);
+        telemetry.addData("Sub intake offset (g1 bumper right and left) [13.5 is middle]", horiSubPos);
         telemetry.addData("Is alliance color red (g1 x and b)", allianceColorRed);
 
         if(!builtPaths){

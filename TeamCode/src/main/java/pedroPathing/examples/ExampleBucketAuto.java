@@ -27,7 +27,7 @@ import pedroPathing.constants.LConstants;
  * @author Baron Henderson - 20077 The Indubitables
  * @version 2.0, 11/28/2024
  */
-//@Disabled
+@Disabled
 @Autonomous(name = "Example Auto Blue", group = "Examples")
 public class ExampleBucketAuto extends OpMode {
 

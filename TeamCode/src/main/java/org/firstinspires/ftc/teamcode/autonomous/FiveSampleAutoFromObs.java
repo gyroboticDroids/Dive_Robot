@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.pedropathing.follower.Follower;
-import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.MathFunctions;
@@ -10,6 +9,7 @@ import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.constants.AutoConstants;
@@ -24,7 +24,8 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5 sample auto from obs", group = "autonomous", preselectTeleOp = "Master Tele-op")
+@Disabled
+@Autonomous(name = "5 sample auto from obs", group = "autonomous samples", preselectTeleOp = "Master Tele-op")
 public class FiveSampleAutoFromObs extends OpMode {
     private int slideRangeSubtract = 0;
 
