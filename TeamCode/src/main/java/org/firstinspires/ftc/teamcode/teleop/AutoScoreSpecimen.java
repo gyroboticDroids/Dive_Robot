@@ -32,14 +32,6 @@ public class AutoScoreSpecimen {
 
     public void buildPaths()
     {
-        scoreSpecimen = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 2, AutoConstants.SPECIMEN_GRAB.getY() + AutoConstants.Y_INCREMENT * 2),
-                new Point(AutoConstants.SPECIMEN_GRAB.getX(), AutoConstants.SPECIMEN_SCORE.getY()), new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 2, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 2)));
-        scoreSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
-        scoreSpecimen.setZeroPowerAccelerationMultiplier(1.25);
-
-        grabSpecimenReady = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE.getX() + AutoConstants.X_INCREMENT * 3, AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 2), new Point(AutoConstants.SPECIMEN_GRAB_READY)));
-        grabSpecimenReady.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB_READY.getHeading());
-
         grabSpecimen = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB_READY), new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB_READY.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
     }
@@ -49,16 +41,6 @@ public class AutoScoreSpecimen {
                 MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1);
 
         switch (pathState) {
-
-            case 1:
-                if (robotInPos) {
-                    if (actionState == -1) {
-                        currentPath = grabSpecimenReady;
-                        follower.followPath(currentPath, true);
-                        setPathState(2);
-                    }
-                }
-                break;
 
             case 2:
                 if (robotInPos) {
@@ -120,40 +102,6 @@ public class AutoScoreSpecimen {
                     if(actionTimer.getElapsedTimeSeconds() > 0.35) {
                         outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
                         setActionState(14);
-                    }
-                    break;
-
-                case 2:
-                    if(!outtake.isBusy()) {
-                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-                        setActionState(14);
-                    }
-                    break;
-
-                case 10:
-                    intake.setState(IntakeConstants.INTAKE_SUB_READY);
-                    setActionState(11);
-                    break;
-
-                case 11:
-                    if(!intake.isBusy()) {
-                        intake.setState(IntakeConstants.INTAKE);
-                        intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract);
-                        setActionState(12);
-                    }
-                    break;
-
-                case 12:
-                    if(intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - slideRangeSubtract - 50) {
-                        if(onsGrabSample){
-                            actionTimer.resetTimer();
-                            onsGrabSample = false;
-                        }
-
-                        if(actionTimer.getElapsedTimeSeconds() > 0.25) {
-                            intake.setState(IntakeConstants.TRANSFER);
-                            setActionState(13);
-                        }
                     }
                     break;
 
