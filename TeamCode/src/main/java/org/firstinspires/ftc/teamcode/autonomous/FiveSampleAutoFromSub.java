@@ -248,7 +248,9 @@ public class FiveSampleAutoFromSub extends OpMode {
         switch (actionState) {
             case 0:
                 if(!outtake.isBusy()) {
-                    outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                    if(outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE)) {
+                        outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                    }
 
                     if (pathState < 5) {
                         intake.setState(IntakeConstants.INTAKE_SUB_READY);
@@ -284,15 +286,14 @@ public class FiveSampleAutoFromSub extends OpMode {
                 break;
 
             case 7:
-                if (intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - slideRangeSubtract - IntakeConstants.SLIDES_ACCURACY) {
-                    if (onsTimerState) {
-                        actionTimer.resetTimer();
-                        onsTimerState = false;
-                    }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.75 || intake.getSampleColor() > 0) {
-                        intake.setState(IntakeConstants.TRANSFER);
-                        setActionState(8);
-                    }
+                if (intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - slideRangeSubtract - IntakeConstants.SLIDES_ACCURACY && onsTimerState) {
+                    actionTimer.resetTimer();
+                    onsTimerState = false;
+                }
+
+                if ((intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - slideRangeSubtract - IntakeConstants.SLIDES_ACCURACY && actionTimer.getElapsedTimeSeconds() > 0.75) || intake.getSampleColor() > 0) {
+                    intake.setState(IntakeConstants.TRANSFER);
+                    setActionState(8);
                 }
                 break;
 
@@ -302,9 +303,14 @@ public class FiveSampleAutoFromSub extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
+
                     if (actionTimer.getElapsedTimeSeconds() > 0.1) {
-                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
-                        setActionState(14);
+                        if(intake.getSampleColor() > 0) {
+                            outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+                            setActionState(14);
+                        } else {
+                            setActionState(-1);
+                        }
                     }
                 }
                 break;
