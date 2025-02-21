@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 
 public class AutoScoreSpecimen {
 
+    private int slideRangeSubtract = 0;
     private Follower follower;
     private Timer pathTimer;
     private Timer actionTimer;
@@ -105,7 +106,7 @@ public class AutoScoreSpecimen {
                     }
                 }
                 break;
-
+            }
         }
 
         public void autonomousActionUpdate() {
@@ -169,7 +170,8 @@ public class AutoScoreSpecimen {
                         setActionState(-1);
                     }
                     break;
-            }    }
+            }
+        }
 
     public void setPathState(int pState) {
         pathState = pState;
@@ -183,3 +185,4 @@ public class AutoScoreSpecimen {
         actionTimer.resetTimer();
     }
 }
+
