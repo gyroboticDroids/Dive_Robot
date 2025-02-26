@@ -56,9 +56,11 @@ public class StraightBackAndForth extends OpMode {
         follower = new Follower(hardwareMap);
 
         forwards = new Path(new BezierLine(new Point(0,0, Point.CARTESIAN), new Point(DISTANCE,0, Point.CARTESIAN)));
-        forwards.setConstantHeadingInterpolation(0);
+        forwards.setLinearHeadingInterpolation(0,0);
+        forwards.setZeroPowerAccelerationMultiplier(2.5);
         backwards = new Path(new BezierLine(new Point(DISTANCE,0, Point.CARTESIAN), new Point(0,0, Point.CARTESIAN)));
-        backwards.setConstantHeadingInterpolation(0);
+        backwards.setLinearHeadingInterpolation(0,0);
+        backwards.setZeroPowerAccelerationMultiplier(2.5);
 
         follower.followPath(forwards);
 
@@ -81,10 +83,10 @@ public class StraightBackAndForth extends OpMode {
         if (!follower.isBusy()) {
             if (forward) {
                 forward = false;
-                follower.followPath(backwards);
+                follower.followPath(backwards, true);
             } else {
                 forward = true;
-                follower.followPath(forwards);
+                follower.followPath(forwards, true);
             }
         }
 

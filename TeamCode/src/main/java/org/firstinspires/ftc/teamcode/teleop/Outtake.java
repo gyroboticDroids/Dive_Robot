@@ -17,6 +17,7 @@ public class Outtake {
     private boolean isBusy = false;
     private boolean onsSetState = false;
     private boolean specimenOnsSetState = false;
+    private boolean vertOneShot = true;
 
     private boolean fromTransfer = true;
 
@@ -330,17 +331,22 @@ public class Outtake {
         motorPower = error * OuttakeConstants.SLIDES_P_GAIN;
 
         if(hardware.outtakeSlide1.getCurrentPosition() < OuttakeConstants.SLIDES_ACCURACY && vertPosition == 0) {
-            hardware.outtakeSlide1.setPower(0);
-            hardware.outtakeSlide2.setPower(0);
+            if(vertOneShot) {
+                hardware.outtakeSlide1.setPower(0);
+                hardware.outtakeSlide2.setPower(0);
 
-            hardware.outtakeSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            hardware.outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                hardware.outtakeSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                hardware.outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                vertOneShot = false;
+            }
         }
         else {
             motorPower = Math.min(Math.max(motorPower, -1), 1);
 
             hardware.outtakeSlide1.setPower(motorPower);
             hardware.outtakeSlide2.setPower(motorPower);
+
+            vertOneShot = true;
         }
     }
 

@@ -27,9 +27,11 @@ public class AutoConstants {
     public static Pose SPECIMEN_SCORE = new Pose(42.5, 65.5, Math.toRadians(0));
 
     public static Pose SPECIMEN_GRAB_READY = new Pose(15, 36, Math.toRadians(0));
-    public static Pose SPECIMEN_GRAB_2 = new Pose(7.125, 13, Math.toRadians(0));
+    public static Pose SPECIMEN_GRAB_AFTER_PUSHING = new Pose(7.125, 12, Math.toRadians(0));
     public static Pose SPECIMEN_GRAB = new Pose(7.125, 36, Math.toRadians(0));
     public static Pose SPECIMEN_GRAB_1 = new Pose(7.125, 23, Math.toRadians(0));
+
+    public static Pose SPECIMEN_PARK = new Pose(9, 36, Math.toRadians(0));
 
     public static Point SPECIMEN_CONTROL_POINT = new Point(12, 55);
 
@@ -40,13 +42,21 @@ public class AutoConstants {
     public static Pose SPECIMEN_PUSHING1 = new Pose(52, 34, Math.toRadians(0));
     public static Pose SPECIMEN_PUSHING2 = new Pose(51, 23, Math.toRadians(0));
     public static Pose SPECIMEN_PUSHING3 = new Pose(30, 23, Math.toRadians(0));
+    public static Pose SPECIMEN_PUSHING4 = new Pose(60, 13, Math.toRadians(0));
+    public static Pose SPECIMEN_PUSHING5 = new Pose(30, 13, Math.toRadians(0));
+    public static Pose SPECIMEN_PUSHING6 = new Pose(60, 7.5, Math.toRadians(0));
+    public static Pose SPECIMEN_PUSHING7 = new Pose(15, 12, Math.toRadians(0));
+
     public static Pose SPECIMEN_PUSHING4_READY = new Pose(51, 23, Math.toRadians(0));
-    public static Pose SPECIMEN_PUSHING4 = new Pose(51, 11, Math.toRadians(0));
-    public static Pose SPECIMEN_PUSHING5 = new Pose(20, 13, Math.toRadians(0));
 
     public static Point SPECIMEN_PUSHING_CONTROL_POINT1 = new Point(16, 48);
     public static Point SPECIMEN_PUSHING_CONTROL_POINT2 = new Point(62, 28);
-    public static Point SPECIMEN_PUSHING_CONTROL_POINT4 = new Point(66, 22);
+    public static Point SPECIMEN_PUSHING_CONTROL_POINT4 = new Point(68, 32);
+    public static Point SPECIMEN_PUSHING_CONTROL_POINT6 = new Point(68, 25.5);
+    public static Point SPECIMEN_PUSHING_CONTROL_POINT7 = new Point(15, 7.5);
+
+    public static Point SPECIMEN_SCORING_CONTROL_POINT1 = new Point(25, 65.5);
+    public static Point SPECIMEN_SCORING_CONTROL_POINT2 = new Point(25, 36);
 
     //Transferring constants
     public static Pose SPECIMEN_TRANSFER_LEFT = new Pose(22, 24, Math.toRadians(0));
