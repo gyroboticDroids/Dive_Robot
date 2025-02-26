@@ -51,8 +51,8 @@ public class AutoConstants {
 
     public static Point SPECIMEN_PUSHING_CONTROL_POINT1 = new Point(16, 48);
     public static Point SPECIMEN_PUSHING_CONTROL_POINT2 = new Point(62, 28);
-    public static Point SPECIMEN_PUSHING_CONTROL_POINT4 = new Point(68, 32);
-    public static Point SPECIMEN_PUSHING_CONTROL_POINT6 = new Point(68, 25.5);
+    public static Point SPECIMEN_PUSHING_CONTROL_POINT4 = new Point(60, 23);
+    public static Point SPECIMEN_PUSHING_CONTROL_POINT6 = new Point(60, 13);
     public static Point SPECIMEN_PUSHING_CONTROL_POINT7 = new Point(15, 7.5);
 
     public static Point SPECIMEN_SCORING_CONTROL_POINT1 = new Point(25, 65.5);
