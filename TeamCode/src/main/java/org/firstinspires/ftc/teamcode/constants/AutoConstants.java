@@ -8,14 +8,14 @@ public class AutoConstants {
     public static Pose FIVE_SAMPLE_START = new Pose(7.125, 113.6, Math.toRadians(0));
     public static Pose SIX_SAMPLE_START = new Pose(4.5, 111.6, Math.toRadians(-90));
     public static Pose SAMPLE_SCORE_OBS = new Pose(4.6, 126, Math.toRadians(-90));
-    public static Pose SAMPLE_SCORE_RIGHT = new Pose(15.5, 133, Math.toRadians(-23));
+    public static Pose SAMPLE_SCORE_RIGHT = new Pose(15.5, 133, Math.toRadians(-24));
     public static Pose SAMPLE_SCORE_CENTER = new Pose(18, 136, Math.toRadians(-13));
     public static Pose SAMPLE_SCORE_LEFT = new Pose(18, 136, Math.toRadians(-8));
     public static Pose SAMPLE_OBS = new Pose(5.5, 58, Math.toRadians(-90));
     public static Pose SAMPLE_ALLIANCE_PARTNER = new Pose(5.5, 107, Math.toRadians(-90));
-    public static Pose SAMPLE_RIGHT = new Pose(19, 131.5, Math.toRadians(-23));
+    public static Pose SAMPLE_RIGHT = new Pose(19, 131.5, Math.toRadians(-24));
     public static Pose SAMPLE_CENTER = new Pose(20.5, 135.5, Math.toRadians(-13));
-    public static Pose SAMPLE_LEFT = new Pose(19, 129, Math.toRadians(24));
+    public static Pose SAMPLE_LEFT = new Pose(19, 129, Math.toRadians(25));
     public static Pose SAMPLE_SUB = new Pose(60, 93, Math.toRadians(-90));
     public static Pose SAMPLE_PARK = new Pose(60, 92.5, Math.toRadians(0));
 

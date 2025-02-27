@@ -248,7 +248,7 @@ public class FiveSampleAutoFromSub extends OpMode {
         switch (actionState) {
             case 0:
                 if(!outtake.isBusy()) {
-                    if(outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE)) {
+                    if(outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE) || outtake.getState().equals(OuttakeConstants.START)) {
                         outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
                     }
 
@@ -275,8 +275,20 @@ public class FiveSampleAutoFromSub extends OpMode {
 
                 if (!intake.isBusy()) {
                     if(intakeReady) {
-                        intake.setState(IntakeConstants.INTAKE);
-                        intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract);
+                        if(onsTimerState) {
+                            actionTimer.resetTimer();
+                            onsTimerState = false;
+                        }
+
+                        if(pathState == 3) {
+                            if(actionTimer.getElapsedTimeSeconds() > 0.5) {
+                                intake.setState(IntakeConstants.INTAKE);
+                                intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract);
+                            }
+                        } else {
+                            intake.setState(IntakeConstants.INTAKE);
+                            intake.setHorizontalPosition(IntakeConstants.SLIDES_MAX - slideRangeSubtract);
+                        }
                     }
                 }
 
@@ -428,6 +440,7 @@ public class FiveSampleAutoFromSub extends OpMode {
         currentPath = scorePreload;
 
         intake.setState(IntakeConstants.START);
+        outtake.setState(OuttakeConstants.START);
     }
 
     @Override
@@ -435,6 +448,7 @@ public class FiveSampleAutoFromSub extends OpMode {
     {
         //Resets intake pos
         intake.update();
+        outtake.update();
 
         if(actionTimer.getElapsedTimeSeconds() > 4 && !(intake.getState().equals(IntakeConstants.RESET_POS) || intake.getState().equals(IntakeConstants.TRANSFER))){
             intake.setState(IntakeConstants.RESET_POS);
