@@ -11,6 +11,7 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.constants.AutoConstants;
+import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 
 import pedroPathing.constants.FConstants;
@@ -27,10 +28,8 @@ public class AutoScoreSample {
     private int actionState = -1;
     private boolean onsPath = false;
     private boolean onsAction = false;
-    private boolean robotInPos;
     private boolean followPath = false;
     private Path currentPath;
-    private double currentHeading;
 
     private Path scoreSample;
 
@@ -41,19 +40,22 @@ public class AutoScoreSample {
         outtake = new Outtake(hardwareMap);
         intake = new Intake(hardwareMap);
 
+        pathTimer = new Timer();
+        actionTimer = new Timer();
+
         stopAuto();
     }
 
     private void autonomousPathUpdate() {
+        if(scoreSample == null) {
+            return;
+        }
+
         boolean robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1) &&
                 MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1);
 
         switch (pathState) {
             case 0:
-                if(scoreSample == null) {
-                    return;
-                }
-
                 currentPath = scoreSample;
                 follower.followPath(currentPath, true);
                 setActionState(0);
@@ -73,26 +75,41 @@ public class AutoScoreSample {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
-                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
-                setActionState(14);
+                if(intake.getState().equals(IntakeConstants.TRANSFER) && outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
+                    setActionState(1);
+                }
+                else {
+                    if(!outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY) && !outtake.isBusy()) {
+                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+                    }
+
+                    if(!intake.getState().equals(IntakeConstants.TRANSFER) && !intake.isBusy()) {
+                        intake.setState(IntakeConstants.TRANSFER);
+                    }
+                }
                 break;
 
             case 1:
-                if (actionTimer.getElapsedTimeSeconds() > 0.35) {
-                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
-                    setActionState(14);
+                if (!outtake.isBusy() && !intake.isBusy()) {
+                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+                    setActionState(2);
                 }
                 break;
 
-            case 13:
-                if (actionTimer.getElapsedTimeSeconds() > 0.25) {
-                    outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
-                    setActionState(14);
+            case 2:
+                if (!outtake.isBusy()) {
+                    if(intake.getSampleColor() > 0) {
+                        stopAuto();
+                        return;
+                    }
+
+                    outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                    setActionState(10);
                 }
 
                 break;
 
-            case 14:
+            case 10:
                 if (!outtake.isBusy()) {
                     setActionState(-1);
                 }
@@ -113,15 +130,23 @@ public class AutoScoreSample {
         actionTimer.resetTimer();
     }
 
-    public void startAuto(Pose currentPos) {
-        setPathState(0);
+    public boolean startAuto(Pose currentPos) {
+        if(currentPos.getX() < 48) {
+            scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(AutoConstants.SAMPLE_SCORE.getX(), currentPos.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
+            scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
+            scoreSample.setZeroPowerAccelerationMultiplier(1.5);
+        } else if (currentPos.getY() > 86) {
+            scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(currentPos.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
+            scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
+            scoreSample.setZeroPowerAccelerationMultiplier(1.5);
+        } else {
+            return false;
+        }
+
         follower.setStartingPose(currentPos);
-
-        scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(currentPos.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
-        scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
-        scoreSample.setZeroPowerAccelerationMultiplier(1.5);
-
         followPath = true;
+        setPathState(0);
+        return true;
     }
 
     public void stopAuto() {

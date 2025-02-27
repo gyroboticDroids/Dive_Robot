@@ -21,6 +21,8 @@ public class Outtake {
 
     private boolean fromTransfer = true;
 
+    private boolean hanging = false;
+
     private double vertPosition = 0;
 
     private String state;
@@ -328,7 +330,7 @@ public class Outtake {
 
         double error = vertPosition - hardware.outtakeSlide1.getCurrentPosition();
 
-        motorPower = error * OuttakeConstants.SLIDES_P_GAIN;
+        motorPower = error * ((!hanging)? OuttakeConstants.SLIDES_P_GAIN:OuttakeConstants.SLIDES_HANGING_P_GAIN);
 
         if(hardware.outtakeSlide1.getCurrentPosition() < OuttakeConstants.SLIDES_ACCURACY && vertPosition == 0) {
             if(vertOneShot) {
@@ -353,6 +355,10 @@ public class Outtake {
     public boolean isDriveBack()
     {
         return driveBack;
+    }
+
+    public void isHanging(boolean hanging) {
+        this.hanging = hanging;
     }
 
     public boolean isBusy()

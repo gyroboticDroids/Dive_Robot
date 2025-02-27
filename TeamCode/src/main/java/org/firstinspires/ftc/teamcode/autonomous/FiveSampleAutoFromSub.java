@@ -421,6 +421,8 @@ public class FiveSampleAutoFromSub extends OpMode {
 
     @Override
     public void init() {
+        TransferConstants.resetConstants();
+
         intake = new Intake(hardwareMap);
         intake.setIntakeWheelsKeepSpinning(true);
 

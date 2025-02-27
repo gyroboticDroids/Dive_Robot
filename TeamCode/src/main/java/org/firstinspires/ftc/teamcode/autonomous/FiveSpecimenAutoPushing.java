@@ -374,6 +374,8 @@ public class FiveSpecimenAutoPushing extends OpMode {
     @Override
     public void init()
     {
+        TransferConstants.resetConstants();
+
         intake = new Intake(hardwareMap);
         outtake = new Outtake(hardwareMap);
 

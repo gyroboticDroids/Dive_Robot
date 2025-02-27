@@ -34,6 +34,8 @@ public class Hang {
                 hardware.hangRight.setPosition(HangConstants.RIGHT_DOWN);
                 hardware.hangLeft.setPosition(HangConstants.LEFT_DOWN);
 
+                outtake.isHanging(false);
+
                 if(hangTimer.getElapsedTimeSeconds() > 2)
                 {
                     isBusy = false;
@@ -41,6 +43,8 @@ public class Hang {
                 break;
 
             case HangConstants.HANG_READY:
+                outtake.isHanging(true);
+
                 if(onsSetState)
                 {
                     outtake.setVertPosition(OuttakeConstants.SLIDES_HANG);
