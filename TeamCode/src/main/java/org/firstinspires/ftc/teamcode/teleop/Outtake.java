@@ -217,12 +217,12 @@ public class Outtake {
                 hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
 
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.25)
+                if(actionTimer.getElapsedTimeSeconds() > 0.2)
                 {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.45)
+                if(actionTimer.getElapsedTimeSeconds() > 0.25)
                 {
                     isBusy = false;
                 }
@@ -335,8 +335,8 @@ public class Outtake {
                 hardware.outtakeSlide1.setPower(0);
                 hardware.outtakeSlide2.setPower(0);
 
-                hardware.outtakeSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                hardware.outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                //hardware.outtakeSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                //hardware.outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 vertOneShot = false;
             }
         }
