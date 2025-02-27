@@ -158,6 +158,10 @@ public class AutoScoreSample {
         followPath = false;
     }
 
+    public void resetPos() {
+        follower.poseUpdater.setCurrentPoseWithOffset(AutoConstants.SAMPLE_SCORE);
+    }
+
     public void update()
     {
         if(!followPath) {

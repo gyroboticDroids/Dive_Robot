@@ -94,9 +94,9 @@ public class Hardware {
         rearRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
-        pinpointDriver.setOffsets(31.75, -142.875); //these are tuned for 3110-0002-0001 Product Insight #1
-        pinpointDriver.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        pinpointDriver.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.REVERSED);
+        //pinpointDriver.setOffsets(31.75, -142.875); //these are tuned for 3110-0002-0001 Product Insight #1
+        //pinpointDriver.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        //pinpointDriver.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.REVERSED, GoBildaPinpointDriver.EncoderDirection.REVERSED);
 
         pinpointDriver.resetPosAndIMU();
     }
