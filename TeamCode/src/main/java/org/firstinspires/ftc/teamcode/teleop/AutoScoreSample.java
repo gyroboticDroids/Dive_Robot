@@ -2,11 +2,14 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
+import com.pedropathing.localization.PoseUpdater;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
+import com.pedropathing.util.DashboardPoseTracker;
+import com.pedropathing.util.Drawing;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -25,6 +28,8 @@ public class AutoScoreSample {
     private Timer actionTimer;
     private Intake intake;
     private Outtake outtake;
+    private Drive drive;
+    private DashboardPoseTracker dashboardPoseTracker;
     private int pathState = -1;
     private int actionState = -1;
     private boolean onsPath = false;
@@ -34,14 +39,16 @@ public class AutoScoreSample {
 
     private Path scoreSample;
 
-    public AutoScoreSample(HardwareMap hardwareMap, Outtake out, Intake in) {
+    public AutoScoreSample(HardwareMap hardwareMap, Outtake out, Intake in, Drive dr) {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
 
-        follower.poseUpdater.setCurrentPoseWithOffset(TransferConstants.endPose);
+        follower.setCurrentPoseWithOffset(TransferConstants.endPose);
+        dashboardPoseTracker = new DashboardPoseTracker(follower.poseUpdater);
 
         outtake = out;
         intake = in;
+        drive = dr;
 
         pathTimer = new Timer();
         actionTimer = new Timer();
@@ -66,7 +73,7 @@ public class AutoScoreSample {
 
                 if(intake.getState().equals(IntakeConstants.TRANSFER) && intake.getHorizontalPosition() == IntakeConstants.SLIDES_TRANSFER) {
                     currentPath = scoreSample;
-                    follower.followPath(currentPath, true);
+                    follower.followPath(currentPath, false);
                     setPathState(1);
                 }
                 break;
@@ -74,7 +81,14 @@ public class AutoScoreSample {
             case 1:
                 if (robotInPos) {
                     if (actionState == -1) {
-                        stopAuto();
+                        if(onsPath) {
+                            pathTimer.resetTimer();
+                            onsPath = false;
+                        }
+
+                        if(pathTimer.getElapsedTimeSeconds() > 0.5) {
+                            stopAuto();
+                        }
                     }
                 }
                 break;
@@ -154,7 +168,7 @@ public class AutoScoreSample {
             return false;
         }
 
-        follower.setStartingPose(currentPos);
+        //follower.setStartingPose(currentPos);
         currentPath = scoreSample;
         followPath = true;
         setPathState(0);
@@ -164,14 +178,22 @@ public class AutoScoreSample {
     public void stopAuto() {
         setPathState(-1);
         setActionState(-1);
-        follower.breakFollowing();
-        scoreSample = null;
 
+        if(follower.isBusy()) {
+            follower.breakFollowing();
+        }
+
+        scoreSample = null;
+        drive.updateTurn();
         followPath = false;
     }
 
     public void resetPos(Pose pose) {
-        follower.poseUpdater.setCurrentPoseWithOffset(pose);
+        follower.setCurrentPoseWithOffset(pose);
+    }
+
+    public Pose currentPose() {
+        return follower.getPose();
     }
 
     public boolean isPathing() {
@@ -180,11 +202,18 @@ public class AutoScoreSample {
 
     public void update()
     {
+        dashboardPoseTracker.update();
+
+        Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
+        Drawing.drawRobot(follower.getPose().getAsFTCStandardCoordinates(), "#4CAF50");
+        Drawing.sendPacket();
+
+        follower.update();
+
         if(!followPath) {
             return;
         }
 
-        follower.update();
         outtake.update();
         intake.update();
         autonomousPathUpdate();

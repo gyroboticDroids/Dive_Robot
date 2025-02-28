@@ -36,7 +36,7 @@ public class MasterTeleop extends OpMode {
         intake = new Intake(hardwareMap);
         intake.setIntakeWheelsKeepSpinning(false);
         hang = new Hang(hardwareMap);
-        autoScoreSample = new AutoScoreSample(hardwareMap, outtake, intake);
+        autoScoreSample = new AutoScoreSample(hardwareMap, outtake, intake, drive);
 
         //Sets up timer
         teleopTimer = new Timer();
@@ -63,6 +63,15 @@ public class MasterTeleop extends OpMode {
     @Override
     public void loop()
     {
+        autoUpdate();
+
+        //Updates telemetry
+        updateTelemetry();
+
+        if(autoScoreSample.isPathing()) {
+            return;
+        }
+
         //Updates all classes
         if(!(hang.getState().equals(HangConstants.LVL_2) || hang.getState().equals(HangConstants.LVL_3))){
             drive.update();
@@ -71,16 +80,9 @@ public class MasterTeleop extends OpMode {
             drive.resetPowers();
         }
 
-        autoUpdate();
-
-        if(!autoScoreSample.isPathing()) {
-            outtakeUpdate();
-            intakeUpdate();
-            hangUpdate();
-        }
-
-        //Updates telemetry
-        updateTelemetry();
+        outtakeUpdate();
+        intakeUpdate();
+        hangUpdate();
     }
 
     private void updateTelemetry() {
@@ -119,6 +121,7 @@ public class MasterTeleop extends OpMode {
         telemetry.addLine("-------------------Auto----------------------");
         telemetry.addData("is pathing", autoScoreSample.isPathing());
         telemetry.addData("started auto", startedAuto);
+        telemetry.addData("current pose", autoScoreSample.currentPose());
 
         //Updates telemetry
         telemetry.update();
@@ -289,10 +292,11 @@ public class MasterTeleop extends OpMode {
 
         if(gamepad1.start) {
             autoScoreSample.resetPos(AutoConstants.SAMPLE_SCORE);
-        } else if(gamepad1.dpad_left) {
+        } else if(gamepad1.dpad_left && !autoScoreSample.isPathing()) {
             startedAuto = autoScoreSample.startAuto();
-        } else if(drive.isDriverInput()) {
+        } else if((drive.isDriverInput() || gamepad2.a) && autoScoreSample.isPathing()) {
             autoScoreSample.stopAuto();
+            startedAuto = false;
         }
 
         autoScoreSample.update();

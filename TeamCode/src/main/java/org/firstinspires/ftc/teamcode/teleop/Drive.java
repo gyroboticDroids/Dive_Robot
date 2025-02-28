@@ -160,6 +160,10 @@ public class Drive {
         this.driveBack = driveBack;
     }
 
+    public void updateTurn() {
+        targetHeading = Math.toDegrees(hardware.pinpointDriver.getHeading());
+    }
+
     public void resetPowers() {
         hardware.frontLeft.setPower(0);
         hardware.rearLeft.setPower(0);
