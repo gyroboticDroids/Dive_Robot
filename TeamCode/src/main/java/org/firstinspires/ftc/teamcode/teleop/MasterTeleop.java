@@ -5,6 +5,7 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.constants.AutoConstants;
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
@@ -35,7 +36,7 @@ public class MasterTeleop extends OpMode {
         intake = new Intake(hardwareMap);
         intake.setIntakeWheelsKeepSpinning(false);
         hang = new Hang(hardwareMap);
-        autoScoreSample = new AutoScoreSample(hardwareMap);
+        autoScoreSample = new AutoScoreSample(hardwareMap, outtake, intake);
 
         //Sets up timer
         teleopTimer = new Timer();
@@ -114,6 +115,10 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("hang state", hang.getState());
         telemetry.addData("hang busy", hang.isBusy());
         telemetry.addData("hanging", isHanging);
+
+        telemetry.addLine("-------------------Auto----------------------");
+        telemetry.addData("is pathing", autoScoreSample.isPathing());
+        telemetry.addData("started auto", startedAuto);
 
         //Updates telemetry
         telemetry.update();
@@ -274,6 +279,8 @@ public class MasterTeleop extends OpMode {
         prevGp1Start = gamepad1.start;
     }
 
+    boolean startedAuto;
+
     void autoUpdate()
     {
         if(isHanging) {
@@ -281,7 +288,9 @@ public class MasterTeleop extends OpMode {
         }
 
         if(gamepad1.start) {
-            autoScoreSample.startAuto();
+            autoScoreSample.resetPos(AutoConstants.SAMPLE_SCORE);
+        } else if(gamepad1.dpad_left) {
+            startedAuto = autoScoreSample.startAuto();
         } else if(drive.isDriverInput()) {
             autoScoreSample.stopAuto();
         }

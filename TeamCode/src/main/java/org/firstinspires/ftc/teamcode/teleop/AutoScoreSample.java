@@ -34,14 +34,14 @@ public class AutoScoreSample {
 
     private Path scoreSample;
 
-    public AutoScoreSample(HardwareMap hardwareMap) {
+    public AutoScoreSample(HardwareMap hardwareMap, Outtake out, Intake in) {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
 
         follower.poseUpdater.setCurrentPoseWithOffset(TransferConstants.endPose);
 
-        outtake = new Outtake(hardwareMap);
-        intake = new Intake(hardwareMap);
+        outtake = out;
+        intake = in;
 
         pathTimer = new Timer();
         actionTimer = new Timer();
@@ -155,6 +155,7 @@ public class AutoScoreSample {
         }
 
         follower.setStartingPose(currentPos);
+        currentPath = scoreSample;
         followPath = true;
         setPathState(0);
         return true;
@@ -179,12 +180,11 @@ public class AutoScoreSample {
 
     public void update()
     {
-        follower.update();
-
         if(!followPath) {
             return;
         }
 
+        follower.update();
         outtake.update();
         intake.update();
         autonomousPathUpdate();
