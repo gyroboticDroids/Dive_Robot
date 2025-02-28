@@ -6,15 +6,19 @@ import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
+import com.pedropathing.util.Constants;
 import com.pedropathing.util.Timer;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.constants.AutoConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
+
 public class AutoScoreSpecimen {
 
-    private int slideRangeSubtract = 0;
     private Follower follower;
     private Timer pathTimer;
     private Timer actionTimer;
@@ -22,68 +26,78 @@ public class AutoScoreSpecimen {
     private Outtake outtake;
     private int pathState = -1;
     private int actionState = -1;
-    private boolean onsIntakeOut = false;
-    private boolean onsGrabSample = false;
+    private boolean ons = false;
+    private boolean followPath = false;
     private boolean robotInPos;
     private Path currentPath;
     private double currentHeading;
 
-    private Path scoreSpecimen, grabSpecimenReady, grabSpecimen;
+
+    private Path scoreSpecimen, grabSpecimenReady;
 
     public void buildPaths()
     {
-        grabSpecimen = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB_READY), new Point(AutoConstants.SPECIMEN_GRAB)));
-        grabSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB_READY.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
+        scoreSpecimen = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(42.875, 70)));
+        scoreSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
+
+        grabSpecimenReady = new Path(new BezierCurve(new Point(42.875, 70), new Point(AutoConstants.SPECIMEN_SCORE)));
+        grabSpecimenReady.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
     }
 
-    void autoscoreSpecimen(){
+    public AutoScoreSpecimen(HardwareMap hardwareMap) {
+        Constants.setConstants(FConstants.class, LConstants.class);
+        follower = new Follower(hardwareMap);
+
+        outtake = new Outtake(hardwareMap);
+        intake = new Intake(hardwareMap);
+
+        pathTimer = new Timer();
+        actionTimer = new Timer();
+    }
+
+    public void autonomousPathUpdate(){
         boolean robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1) &&
                 MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1);
 
         switch (pathState) {
 
-            case 2:
-                if (robotInPos) {
-                    if (onsIntakeOut) {
-                        pathTimer.resetTimer();
-                        onsIntakeOut = false;
-                    }
-
-                    if (pathTimer.getElapsedTimeSeconds() > 0.5) {
-                        currentPath = grabSpecimen;
-                        follower.followPath(currentPath, true);
-                        setPathState(3);
-                    }
-                }
-                break;
-
-            case 3:
-                if (robotInPos) {
-                    if (actionState == -1 || actionTimer.getElapsedTimeSeconds() > 0.5) {
-                        if (onsIntakeOut) {
+            case 0:
+                if(robotInPos) {
+                    if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.35) {
+                        if(ons){
                             setActionState(0);
-                            onsIntakeOut = false;
-                            actionTimer.resetTimer();
-                        } else {
-                            currentPath = scoreSpecimen;
+                            ons = false;
+                            pathTimer.resetTimer();
+                        }
+                        else {
+                            scoreSpecimen = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(42.875, 70)));
+                            scoreSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
+                            scoreSpecimen.setZeroPowerAccelerationMultiplier(1.1);
                             follower.followPath(currentPath, true);
-                            setPathState(4);
+                            currentPath = grabSpecimenReady;
+                            followPath = true;
+                            setPathState(1);
                         }
                     }
                 }
                 break;
 
-            case 4:
-                if (robotInPos) {
-                    if (actionState == -1) {
-                        if (onsIntakeOut) {
+            case 1:
+                if(robotInPos) {
+                    if(actionState == -1) {
+                        if (ons) {
                             setActionState(1);
-                            onsIntakeOut = false;
-                        } else {
-                            currentPath = grabSpecimenReady;
+                            ons = false;
+                        }
+                        else {
+                            grabSpecimenReady = new Path(new BezierCurve(new Point(42.875, 70), new Point(AutoConstants.SPECIMEN_SCORE)));
+                            grabSpecimenReady.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
+                            grabSpecimenReady.setZeroPowerAccelerationMultiplier(1.2);
                             follower.followPath(currentPath, true);
-                            setActionState(13);
-                            setPathState(5);
+                            currentPath = grabSpecimenReady;
+                            followPath = true;
+                            setActionState(2);
+                            setPathState(0);
                         }
                     }
                 }
@@ -94,19 +108,21 @@ public class AutoScoreSpecimen {
         public void autonomousActionUpdate() {
             switch (actionState) {
                 case 0:
-                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
-                    setActionState(14);
+                    if(actionTimer.getElapsedTimeSeconds() > 0.15) {
+                        outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+                        setActionState(14);
+                    }
                     break;
 
                 case 1:
-                    if(actionTimer.getElapsedTimeSeconds() > 0.35) {
+                    if(actionTimer.getElapsedTimeSeconds() > 0.15) {
                         outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
                         setActionState(14);
                     }
                     break;
 
-                case 13:
-                    if(actionTimer.getElapsedTimeSeconds() > 0.25) {
+                case 2:
+                    if(actionTimer.getElapsedTimeSeconds() > 0) {
                         outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
                         setActionState(14);
                     }
@@ -123,14 +139,32 @@ public class AutoScoreSpecimen {
 
     public void setPathState(int pState) {
         pathState = pState;
-        onsIntakeOut = true;
+        ons = true;
         pathTimer.resetTimer();
     }
 
     public void setActionState(int aState) {
         actionState = aState;
-        onsGrabSample = true;
+        ons = true;
         actionTimer.resetTimer();
+    }
+
+    public void stopAuto() {
+        setPathState(-1);
+        setActionState(-1);
+        follower.breakFollowing();
+        scoreSpecimen = null;
+
+        followPath = false;
+    }
+
+    public void update()
+    {
+        follower.update();
+        outtake.update();
+        intake.update();
+        autonomousPathUpdate();
+        autonomousActionUpdate();
     }
 }
 
