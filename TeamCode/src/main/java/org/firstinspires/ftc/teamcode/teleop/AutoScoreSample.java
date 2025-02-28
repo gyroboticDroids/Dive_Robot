@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.constants.AutoConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
+import org.firstinspires.ftc.teamcode.constants.TransferConstants;
 
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
@@ -37,6 +38,8 @@ public class AutoScoreSample {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
 
+        follower.poseUpdater.setCurrentPoseWithOffset(TransferConstants.endPose);
+
         outtake = new Outtake(hardwareMap);
         intake = new Intake(hardwareMap);
 
@@ -56,10 +59,16 @@ public class AutoScoreSample {
 
         switch (pathState) {
             case 0:
-                currentPath = scoreSample;
-                follower.followPath(currentPath, true);
-                setActionState(0);
-                setPathState(3);
+                if(onsPath) {
+                    setActionState(0);
+                    onsPath = false;
+                }
+
+                if(intake.getState().equals(IntakeConstants.TRANSFER) && intake.getHorizontalPosition() == IntakeConstants.SLIDES_TRANSFER) {
+                    currentPath = scoreSample;
+                    follower.followPath(currentPath, true);
+                    setPathState(1);
+                }
                 break;
 
             case 1:
@@ -75,11 +84,11 @@ public class AutoScoreSample {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
-                if(intake.getState().equals(IntakeConstants.TRANSFER) && outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
+                if(intake.getState().equals(IntakeConstants.TRANSFER) && (outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY) || outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE))) {
                     setActionState(1);
                 }
                 else {
-                    if(!outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY) && !outtake.isBusy()) {
+                    if(!(outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY) || outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE)) && !outtake.isBusy()) {
                         outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
                     }
 
@@ -90,7 +99,7 @@ public class AutoScoreSample {
                 break;
 
             case 1:
-                if (!outtake.isBusy() && !intake.isBusy()) {
+                if (!outtake.isBusy() && !intake.isBusy() && !outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE)) {
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
                     setActionState(2);
                 }
@@ -130,7 +139,9 @@ public class AutoScoreSample {
         actionTimer.resetTimer();
     }
 
-    public boolean startAuto(Pose currentPos) {
+    public boolean startAuto() {
+        Pose currentPos = follower.getPose();
+
         if(currentPos.getX() < 48) {
             scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(AutoConstants.SAMPLE_SCORE.getX(), currentPos.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
             scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
@@ -158,17 +169,22 @@ public class AutoScoreSample {
         followPath = false;
     }
 
-    public void resetPos() {
-        follower.poseUpdater.setCurrentPoseWithOffset(AutoConstants.SAMPLE_SCORE);
+    public void resetPos(Pose pose) {
+        follower.poseUpdater.setCurrentPoseWithOffset(pose);
+    }
+
+    public boolean isPathing() {
+        return followPath;
     }
 
     public void update()
     {
+        follower.update();
+
         if(!followPath) {
             return;
         }
 
-        follower.update();
         outtake.update();
         intake.update();
         autonomousPathUpdate();

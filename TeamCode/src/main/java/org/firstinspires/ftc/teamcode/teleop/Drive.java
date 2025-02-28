@@ -152,6 +152,10 @@ public class Drive {
         return manualTurning;
     }
 
+    public boolean isDriverInput() {
+        return Math.abs(gamepad.left_stick_x) > 0 || Math.abs(gamepad.left_stick_y) > 0;
+    }
+
     public void setDriveBack(boolean driveBack) {
         this.driveBack = driveBack;
     }

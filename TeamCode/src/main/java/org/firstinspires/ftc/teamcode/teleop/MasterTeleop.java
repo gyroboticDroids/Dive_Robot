@@ -18,6 +18,7 @@ public class MasterTeleop extends OpMode {
     Outtake outtake;
     Intake intake;
     Hang hang;
+    AutoScoreSample autoScoreSample;
 
     //Timer for automatic movements
     Timer teleopTimer;
@@ -34,6 +35,7 @@ public class MasterTeleop extends OpMode {
         intake = new Intake(hardwareMap);
         intake.setIntakeWheelsKeepSpinning(false);
         hang = new Hang(hardwareMap);
+        autoScoreSample = new AutoScoreSample(hardwareMap);
 
         //Sets up timer
         teleopTimer = new Timer();
@@ -42,9 +44,7 @@ public class MasterTeleop extends OpMode {
     @Override
     public void stop()
     {
-        TransferConstants.horiSlidePos = 0;
-        TransferConstants.heading = 0;
-        TransferConstants.isAllianceRed = true;
+        TransferConstants.resetConstants();
     }
 
     @Override
@@ -70,9 +70,13 @@ public class MasterTeleop extends OpMode {
             drive.resetPowers();
         }
 
-        outtakeUpdate();
-        intakeUpdate();
-        hangUpdate();
+        autoUpdate();
+
+        if(!autoScoreSample.isPathing()) {
+            outtakeUpdate();
+            intakeUpdate();
+            hangUpdate();
+        }
 
         //Updates telemetry
         updateTelemetry();
@@ -268,5 +272,20 @@ public class MasterTeleop extends OpMode {
         //Updates the hang
         hang.update();
         prevGp1Start = gamepad1.start;
+    }
+
+    void autoUpdate()
+    {
+        if(isHanging) {
+            return;
+        }
+
+        if(gamepad1.start) {
+            autoScoreSample.startAuto();
+        } else if(drive.isDriverInput()) {
+            autoScoreSample.stopAuto();
+        }
+
+        autoScoreSample.update();
     }
 }

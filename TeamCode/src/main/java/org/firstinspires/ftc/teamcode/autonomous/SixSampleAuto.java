@@ -608,6 +608,7 @@ public class SixSampleAuto extends OpMode {
     public void stop() {
         TransferConstants.horiSlidePos = intake.getHorizontalSlidePos();
         TransferConstants.heading = Math.toDegrees(follower.getPose().getHeading());
+        TransferConstants.endPose = follower.getPose();
     }
 
     @Override
