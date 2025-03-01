@@ -365,6 +365,10 @@ public class Outtake {
         this.hanging = hanging;
     }
 
+    public boolean isHanging() {
+        return hanging;
+    }
+
     public boolean isBusy()
     {
         return isBusy;

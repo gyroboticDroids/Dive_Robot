@@ -62,7 +62,7 @@ public class MasterTeleop extends OpMode {
     @Override
     public void loop()
     {
-        if(120 - teleopTimer.getElapsedTimeSeconds() < 30 && !hooksUp) {
+        if(120 - teleopTimer.getElapsedTimeSeconds() < 30 && !hooksUp && !isHanging) {
             hang.setState(HangConstants.HANG_HOOKS_UP);
             hooksUp = true;
         }
@@ -107,6 +107,7 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("vert spt pos", outtake.getVertPosition());
         telemetry.addData("vert fdbk pos", outtake.getVertSlidePos());
         telemetry.addData("drive back", outtake.isDriveBack());
+        telemetry.addData("is hanging", outtake.isHanging());
 
         telemetry.addLine("-------------------Intake--------------------");
         telemetry.addData("intake state", intake.getState());

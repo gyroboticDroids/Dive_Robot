@@ -36,7 +36,7 @@ public class FiveSpecimenAutoPushing extends OpMode {
     private boolean ons = false;
     private Path currentPath;
 
-    private Path scorePreload, grabSpecimen1, scoreSpecimen1,
+    private Path scorePreload, grabSpecimen1, unjamSample, scoreSpecimen1,
             grabSpecimenReady2, scoreSpecimen2, grabSpecimenReady3, scoreSpecimen3, grabSpecimenReady4, scoreSpecimen4, park, pushing, pushing0, pushing1, pushing2, pushing3, pushing4;
 
     public void buildPaths() {
@@ -71,6 +71,10 @@ public class FiveSpecimenAutoPushing extends OpMode {
         grabSpecimen1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_PUSHING7), new Point(AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING)));
         grabSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_PUSHING7.getHeading(), AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING.getHeading());
         grabSpecimen1.setZeroPowerAccelerationMultiplier(1.5);
+
+        unjamSample = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING), AutoConstants.SPECIMEN_UNJAM_POINT, new Point(AutoConstants.SPECIMEN_GRAB)));
+        unjamSample.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
+        unjamSample.setZeroPowerAccelerationMultiplier(1);
 
         scoreSpecimen1 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING), AutoConstants.SPECIMEN_CONTROL_POINT, new Point(AutoConstants.SPECIMEN_SCORE.getX(), AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * 1)));
         scoreSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
@@ -184,8 +188,8 @@ public class FiveSpecimenAutoPushing extends OpMode {
                 break;
 
             case 7:
-                if(robotInPos || follower.isRobotStuck()) {
-                    if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.35) {
+                if(robotInPos) {
+                    if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.3) {
                         if(ons){
                             setActionState(0);
                             ons = false;
@@ -197,7 +201,16 @@ public class FiveSpecimenAutoPushing extends OpMode {
                             setPathState(8);
                         }
                     }
+                } else if(pathTimer.getElapsedTimeSeconds() > 2.5) {
+                    setPathState(20);
                 }
+                break;
+
+            case 20:
+                //if jammed run this code
+                currentPath = unjamSample;
+                follower.followPath(currentPath, true);
+                setPathState(9);
                 break;
 
             case 8:
@@ -218,8 +231,8 @@ public class FiveSpecimenAutoPushing extends OpMode {
                 break;
 
             case 9:
-                if(robotInPos || follower.isRobotStuck()) {
-                    if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.35) {
+                if(robotInPos) {
+                    if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.3) {
                         if(ons){
                             setActionState(0);
                             ons = false;
@@ -252,8 +265,8 @@ public class FiveSpecimenAutoPushing extends OpMode {
                 break;
 
             case 11:
-                if(robotInPos || follower.isRobotStuck()) {
-                    if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.35) {
+                if(robotInPos) {
+                    if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.3) {
                         if(ons){
                             setActionState(0);
                             ons = false;
@@ -286,7 +299,7 @@ public class FiveSpecimenAutoPushing extends OpMode {
                 break;
 
             case 13:
-                if(robotInPos || follower.isRobotStuck()) {
+                if(robotInPos) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.35) {
                         if(ons){
                             setActionState(0);
@@ -319,6 +332,7 @@ public class FiveSpecimenAutoPushing extends OpMode {
                 }
                 break;
         }
+        telemetry.addData("robot in pos", robotInPos);
     }
 //TODO: Teleport to autoActionUpdate
     public void autonomousActionUpdate() {
