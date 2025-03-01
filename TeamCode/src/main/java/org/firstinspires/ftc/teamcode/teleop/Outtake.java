@@ -41,7 +41,11 @@ public class Outtake {
             case OuttakeConstants.START:
                 if(onsSetState)
                 {
-                    vertPosition = OuttakeConstants.SLIDES_START;
+                    if(!hanging) {
+                        vertPosition = OuttakeConstants.SLIDES_START;
+                    } else {
+                        vertPosition = OuttakeConstants.SLIDES_HANG;
+                    }
                 }
 
                 hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
@@ -357,7 +361,7 @@ public class Outtake {
         return driveBack;
     }
 
-    public void isHanging(boolean hanging) {
+    public void setHanging(boolean hanging) {
         this.hanging = hanging;
     }
 

@@ -184,7 +184,7 @@ public class FiveSpecimenAutoPushing extends OpMode {
                 break;
 
             case 7:
-                if(robotInPos) {
+                if(robotInPos || follower.isRobotStuck()) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.35) {
                         if(ons){
                             setActionState(0);
@@ -218,7 +218,7 @@ public class FiveSpecimenAutoPushing extends OpMode {
                 break;
 
             case 9:
-                if(robotInPos) {
+                if(robotInPos || follower.isRobotStuck()) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.35) {
                         if(ons){
                             setActionState(0);
@@ -252,7 +252,7 @@ public class FiveSpecimenAutoPushing extends OpMode {
                 break;
 
             case 11:
-                if(robotInPos) {
+                if(robotInPos || follower.isRobotStuck()) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.35) {
                         if(ons){
                             setActionState(0);
@@ -286,7 +286,7 @@ public class FiveSpecimenAutoPushing extends OpMode {
                 break;
 
             case 13:
-                if(robotInPos) {
+                if(robotInPos || follower.isRobotStuck()) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.35) {
                         if(ons){
                             setActionState(0);

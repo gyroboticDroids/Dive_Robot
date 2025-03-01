@@ -509,7 +509,7 @@ public class SixSampleAuto extends OpMode {
         intake.setIntakeWheelsKeepSpinning(true);
 
         outtake = new Outtake(hardwareMap);
-        hang = new Hang(hardwareMap);
+        hang = new Hang(hardwareMap, outtake);
         hang.setState(HangConstants.START);
 
         pathTimer = new Timer();

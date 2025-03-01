@@ -13,6 +13,7 @@ public class HangConstants {
 
     //States
     public static final String START = "start";
+    public static final String HANG_HOOKS_UP = "hang hooks up";
     public static final String HANG_READY = "hang ready";
     public static final String LVL_2 = "lvl 2";
     public static final String LVL_3 = "lvl 3";

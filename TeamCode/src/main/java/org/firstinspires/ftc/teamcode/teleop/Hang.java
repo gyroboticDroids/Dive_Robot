@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -18,10 +19,10 @@ public class Hang {
 
     private final Timer hangTimer;
 
-    public Hang(HardwareMap hardwareMap)
+    public Hang(HardwareMap hardwareMap, Outtake out)
     {
         hardware = new Hardware(hardwareMap);
-        outtake = new Outtake(hardwareMap);
+        outtake = out;
 
         hangTimer = new Timer();
     }
@@ -34,7 +35,17 @@ public class Hang {
                 hardware.hangRight.setPosition(HangConstants.RIGHT_DOWN);
                 hardware.hangLeft.setPosition(HangConstants.LEFT_DOWN);
 
-                outtake.isHanging(false);
+                outtake.setHanging(false);
+
+                if(hangTimer.getElapsedTimeSeconds() > 2)
+                {
+                    isBusy = false;
+                }
+                break;
+
+            case HangConstants.HANG_HOOKS_UP:
+                hardware.hangRight.setPosition(HangConstants.RIGHT_UP);
+                hardware.hangLeft.setPosition(HangConstants.LEFT_UP);
 
                 if(hangTimer.getElapsedTimeSeconds() > 2)
                 {
@@ -43,19 +54,17 @@ public class Hang {
                 break;
 
             case HangConstants.HANG_READY:
-                outtake.isHanging(true);
+                outtake.setHanging(true);
 
                 if(onsSetState)
                 {
-                    outtake.setVertPosition(OuttakeConstants.SLIDES_HANG);
+                    outtake.setState(OuttakeConstants.START);
                 }
-                outtake.vertSlidesUpdate();
 
                 hardware.hangRight.setPosition(HangConstants.RIGHT_UP);
                 hardware.hangLeft.setPosition(HangConstants.LEFT_UP);
 
-                if(hangTimer.getElapsedTimeSeconds() > 2)
-                {
+                if(MathFunctions.roughlyEquals(outtake.getVertSlidePos(), outtake.getVertPosition(), OuttakeConstants.SLIDES_ACCURACY)) {
                     isBusy = false;
                 }
                 break;
@@ -78,7 +87,6 @@ public class Hang {
                 {
                     outtake.setVertPosition(OuttakeConstants.SLIDES_START + 1);
                 }
-                outtake.vertSlidesUpdate();
                 break;
 
             case HangConstants.TOUCH_BAR:

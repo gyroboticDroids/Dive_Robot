@@ -5,7 +5,6 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.constants.AutoConstants;
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
@@ -19,13 +18,14 @@ public class MasterTeleop extends OpMode {
     Outtake outtake;
     Intake intake;
     Hang hang;
-    AutoScoreSample autoScoreSample;
 
     //Timer for automatic movements
     Timer teleopTimer;
 
     //Keeps track of if the robot is about to hang
     private boolean isHanging = false;
+
+    private boolean hooksUp = false;
 
     @Override
     public void init()
@@ -35,8 +35,7 @@ public class MasterTeleop extends OpMode {
         outtake = new Outtake(hardwareMap);
         intake = new Intake(hardwareMap);
         intake.setIntakeWheelsKeepSpinning(false);
-        hang = new Hang(hardwareMap);
-        autoScoreSample = new AutoScoreSample(hardwareMap, outtake, intake, drive);
+        hang = new Hang(hardwareMap, outtake);
 
         //Sets up timer
         teleopTimer = new Timer();
@@ -63,13 +62,9 @@ public class MasterTeleop extends OpMode {
     @Override
     public void loop()
     {
-        autoUpdate();
-
-        //Updates telemetry
-        updateTelemetry();
-
-        if(autoScoreSample.isPathing()) {
-            return;
+        if(120 - teleopTimer.getElapsedTimeSeconds() < 30 && !hooksUp) {
+            hang.setState(HangConstants.HANG_HOOKS_UP);
+            hooksUp = true;
         }
 
         //Updates all classes
@@ -83,6 +78,15 @@ public class MasterTeleop extends OpMode {
         outtakeUpdate();
         intakeUpdate();
         hangUpdate();
+        autoUpdate();
+
+        //Updates classes
+        outtake.update();
+        intake.update();
+        hang.update();
+
+        //Updates telemetry
+        updateTelemetry();
     }
 
     private void updateTelemetry() {
@@ -119,9 +123,6 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("hanging", isHanging);
 
         telemetry.addLine("-------------------Auto----------------------");
-        telemetry.addData("is pathing", autoScoreSample.isPathing());
-        telemetry.addData("started auto", startedAuto);
-        telemetry.addData("current pose", autoScoreSample.currentPose());
 
         //Updates telemetry
         telemetry.update();
@@ -186,9 +187,6 @@ public class MasterTeleop extends OpMode {
             outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
         }
 
-        //Updates outtake
-        outtake.update();
-
         //Makes robot drive back if collecting specimens off wall or scoring samples
         drive.setDriveBack(outtake.isDriveBack());
 
@@ -248,9 +246,6 @@ public class MasterTeleop extends OpMode {
             intake.setState(IntakeConstants.HALFWAY);
         }
 
-        //Updates intake
-        intake.update();
-
         //Previous intake state
         prevIntakeState = intake.getState();
     }
@@ -260,7 +255,7 @@ public class MasterTeleop extends OpMode {
     void hangUpdate()
     {
         //Sets if the robot is hanging
-        isHanging = !hang.getState().equals(HangConstants.START);
+        isHanging = !(hang.getState().equals(HangConstants.START) || hang.getState().equals(HangConstants.HANG_HOOKS_UP));
 
         //Doesn't change states if the hang is busy
         if(!hang.isBusy())
@@ -268,8 +263,9 @@ public class MasterTeleop extends OpMode {
             //All buttons and statements that change hang states
             if (gamepad1.dpad_down) {
                 hang.setState(HangConstants.START);
-            } else if (gamepad1.dpad_up && prevOuttakeState.equals(OuttakeConstants.START) && prevIntakeState.equals(IntakeConstants.START) || hang.getState().equals(HangConstants.LVL_3)) {
+            } else if (gamepad1.dpad_up) {
                 hang.setState(HangConstants.HANG_READY);
+                intake.setState(IntakeConstants.START);
             } else if (gamepad1.start && hang.getState().equals(HangConstants.HANG_READY)) {
                 hang.setState(HangConstants.LVL_2);
             } else if (gamepad1.start && !prevGp1Start && hang.getState().equals(HangConstants.LVL_2)) {
@@ -277,12 +273,8 @@ public class MasterTeleop extends OpMode {
             }
         }
 
-        //Updates the hang
-        hang.update();
         prevGp1Start = gamepad1.start;
     }
-
-    boolean startedAuto;
 
     void autoUpdate()
     {
@@ -290,15 +282,5 @@ public class MasterTeleop extends OpMode {
             return;
         }
 
-        if(gamepad1.start) {
-            autoScoreSample.resetPos(AutoConstants.SAMPLE_SCORE);
-        } else if(gamepad1.dpad_left && !autoScoreSample.isPathing()) {
-            startedAuto = autoScoreSample.startAuto();
-        } else if((drive.isDriverInput() || gamepad2.a) && autoScoreSample.isPathing()) {
-            autoScoreSample.stopAuto();
-            startedAuto = false;
-        }
-
-        autoScoreSample.update();
     }
 }

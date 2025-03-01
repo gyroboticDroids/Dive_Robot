@@ -315,7 +315,7 @@ public class SampleAutoOld extends OpMode {
         intake.setState(IntakeConstants.START);
 
         outtake = new Outtake(hardwareMap);
-        hang = new Hang(hardwareMap);
+        hang = new Hang(hardwareMap, outtake);
         hang.setState(HangConstants.START);
 
         pathTimer = new Timer();

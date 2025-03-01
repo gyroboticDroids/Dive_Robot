@@ -34,7 +34,7 @@ public class MasterTeleopOld extends OpMode {
         outtake = new Outtake(hardwareMap);
         intake = new Intake(hardwareMap);
         intake.setIntakeWheelsKeepSpinning(false);
-        hang = new Hang(hardwareMap);
+        hang = new Hang(hardwareMap, outtake);
 
         //Sets up timer
         teleopTimer = new Timer();
