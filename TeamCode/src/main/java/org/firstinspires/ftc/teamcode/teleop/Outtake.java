@@ -311,7 +311,6 @@ public class Outtake {
         specimenOnsSetState = true;
         actionTimer.resetTimer();
         state = s;
-        //Update();
     }
 
     public double getVertPosition() {
@@ -340,9 +339,6 @@ public class Outtake {
             if(vertOneShot) {
                 hardware.outtakeSlide1.setPower(0);
                 hardware.outtakeSlide2.setPower(0);
-
-                //hardware.outtakeSlide1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                //hardware.outtakeSlide1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 vertOneShot = false;
             }
         }
