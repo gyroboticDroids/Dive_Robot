@@ -85,7 +85,7 @@ public class Hang {
 
                 if(onsSetState)
                 {
-                    outtake.setVertPosition(OuttakeConstants.SLIDES_START + 1);
+                    outtake.setVertPosition(OuttakeConstants.SLIDES_START);
                 }
                 break;
 
