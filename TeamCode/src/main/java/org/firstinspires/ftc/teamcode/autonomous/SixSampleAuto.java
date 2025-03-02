@@ -112,8 +112,8 @@ public class SixSampleAuto extends OpMode {
     }
 
     public void autonomousPathUpdate() {
-        robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1.5) &&
-                MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1.5) &&
+        robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1) &&
+                MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1) &&
                 MathFunctions.roughlyEquals(currentHeading, follower.getPose().getHeading(), Math.toRadians(5));
 
         switch (pathState) {
@@ -121,12 +121,12 @@ public class SixSampleAuto extends OpMode {
                 setActionState(0);
                 currentHeading = currentPath.getHeadingGoal(1);
                 follower.followPath(currentPath, true);
-                setPathState(1);
+                setPathState(-1);
                 break;
 
             case 1:
                 if (robotInPos) {
-                    if (actionState == -1 || intake.getState().equals(IntakeConstants.TRANSFER)) {
+                    if (actionState == -1 || actionState == 23) {
                         if(onsScoreState) {
                             intakeReady = false;
                             setActionState(20);
@@ -296,7 +296,9 @@ public class SixSampleAuto extends OpMode {
         switch (actionState) {
             case 0:
                 if(!outtake.isBusy()) {
-                    outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                    if(outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE) || outtake.getState().equals(OuttakeConstants.START)) {
+                        outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                    }
 
                     if (pathState < 6) {
                         intake.setState(IntakeConstants.INTAKE_SUB_READY);
@@ -337,7 +339,7 @@ public class SixSampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.25 || intake.getSampleColor() > 0) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.5 || intake.getSampleColor() > 0) {
                         intake.setState(IntakeConstants.TRANSFER);
                         setActionState(8);
                     }
@@ -350,9 +352,14 @@ public class SixSampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
+
                     if (actionTimer.getElapsedTimeSeconds() > 0) {
-                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
-                        setActionState(14);
+                        if(intake.getSampleColor() > 0) {
+                            outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+                            setActionState(14);
+                        } else {
+                            setActionState(-1);
+                        }
                     }
                 }
                 break;
@@ -462,7 +469,7 @@ public class SixSampleAuto extends OpMode {
                         actionTimer.resetTimer();
                         onsTimerState = false;
                     }
-                    if ((alliancePartnerAuto)? actionTimer.getElapsedTimeSeconds() > 0.25 || intake.getSampleColor() > 0 : actionTimer.getElapsedTimeSeconds() > 0.75 || intake.getSampleColor() > 0) {
+                    if (actionTimer.getElapsedTimeSeconds() > 0.75 || intake.getSampleColor() > 0) {
                         if(intakeReady) {
                             intake.setState(IntakeConstants.TRANSFER);
                             setActionState(23);
@@ -479,8 +486,12 @@ public class SixSampleAuto extends OpMode {
                     }
                     //this text stops warning
                     if (actionTimer.getElapsedTimeSeconds() > 0) {
-                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
-                        setActionState(0);
+                        if(intake.getSampleColor() > 0) {
+                            outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+                            setActionState(14);
+                        } else {
+                            setActionState(-1);
+                        }
                     }
                 }
                 break;
@@ -514,6 +525,7 @@ public class SixSampleAuto extends OpMode {
 
         pathTimer = new Timer();
         actionTimer = new Timer();
+        actionTimer.resetTimer();
 
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
@@ -523,6 +535,7 @@ public class SixSampleAuto extends OpMode {
         currentPath = scorePreload;
 
         intake.setState(IntakeConstants.START);
+        outtake.setState(OuttakeConstants.START);
     }
 
     @Override
@@ -530,6 +543,7 @@ public class SixSampleAuto extends OpMode {
     {
         //Resets intake pos
         intake.update();
+        outtake.update();
 
         if(actionTimer.getElapsedTimeSeconds() > 4 && !(intake.getState().equals(IntakeConstants.RESET_POS) || intake.getState().equals(IntakeConstants.TRANSFER))){
             intake.setState(IntakeConstants.RESET_POS);
@@ -600,7 +614,6 @@ public class SixSampleAuto extends OpMode {
     public void start() {
         pathTimer.resetTimer();
         actionTimer.resetTimer();
-        TransferConstants.isAllianceRed = allianceColorRed;
         setPathState(0);
     }
 
@@ -609,6 +622,7 @@ public class SixSampleAuto extends OpMode {
         TransferConstants.horiSlidePos = intake.getHorizontalSlidePos();
         TransferConstants.heading = Math.toDegrees(follower.getPose().getHeading());
         TransferConstants.endPose = follower.getPose();
+        TransferConstants.isAllianceRed = allianceColorRed;
     }
 
     @Override
@@ -625,6 +639,7 @@ public class SixSampleAuto extends OpMode {
         telemetry.addData("path state", pathState);
         telemetry.addData("action state", actionState);
         telemetry.addData("intake state", intake.getState());
+        telemetry.addData("outtake state", outtake.getState());
         telemetry.addData("hori slide pos", intake.getHorizontalSlidePos());
         telemetry.addData("hori slide setpoint", intake.getHorizontalPosition());
         telemetry.addData("intake is busy", intake.isBusy());

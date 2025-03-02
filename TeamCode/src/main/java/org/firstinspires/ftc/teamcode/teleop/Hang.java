@@ -37,10 +37,6 @@ public class Hang {
 
                 outtake.setHanging(false);
 
-                if(onsSetState) {
-                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-                }
-
                 if(hangTimer.getElapsedTimeSeconds() > 2)
                 {
                     isBusy = false;

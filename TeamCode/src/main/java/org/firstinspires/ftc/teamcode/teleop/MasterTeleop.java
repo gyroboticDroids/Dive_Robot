@@ -145,7 +145,7 @@ public class MasterTeleop extends OpMode {
         if(!outtake.isBusy())
         {
             //All buttons and statements that change outtake states
-            if (gamepad2.start && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
+            if (gamepad2.start && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.START))) {
                 outtake.setState(OuttakeConstants.START);
             } else if (gamepad2.back && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.START))) {
                 outtake.setState(OuttakeConstants.RESET_POS);
@@ -171,10 +171,10 @@ public class MasterTeleop extends OpMode {
             } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)
                     || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)
                     || prevOuttakeState.equals(OuttakeConstants.START)) {
-                outtake.vertSlidesManual(-gamepad2.left_stick_y); //Manual control for vert slides
+                outtake.vertSlidesManual(-gamepad2.left_stick_y * 2); //Manual control for vert slides
             }
         } else if (prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) || prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
-            outtake.vertSlidesManual(-gamepad2.left_stick_y); //Manual control for vert slides
+            outtake.vertSlidesManual(-gamepad2.left_stick_y * 2); //Manual control for vert slides
         }
 
         //Control for states that can run while the outtake is busy

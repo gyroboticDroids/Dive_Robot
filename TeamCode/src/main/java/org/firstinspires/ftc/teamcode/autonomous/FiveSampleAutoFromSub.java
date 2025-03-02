@@ -519,6 +519,7 @@ public class FiveSampleAutoFromSub extends OpMode {
         TransferConstants.horiSlidePos = intake.getHorizontalSlidePos();
         TransferConstants.heading = Math.toDegrees(follower.getPose().getHeading());
         TransferConstants.endPose = follower.getPose();
+        TransferConstants.isAllianceRed = allianceColorRed;
     }
 
     @Override

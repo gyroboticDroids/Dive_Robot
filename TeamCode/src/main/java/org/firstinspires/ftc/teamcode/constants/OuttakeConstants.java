@@ -23,7 +23,7 @@ public class OuttakeConstants {
     public static double EXTENSION_SAMPLE_SCORE = 0.68;
 
     public static double PIVOT_TRANSFER_READY = 0.754;//
-    public static double PIVOT_TRANSFER = 0.836;//
+    public static double PIVOT_TRANSFER = 0.823;//0.836
     public static double PIVOT_SPECIMEN = 0.728;//
     public static double PIVOT_OFF_WALL = 0.124;//
     public static double PIVOT_SAMPLE = 0.35;//
@@ -31,7 +31,7 @@ public class OuttakeConstants {
     public static double PIVOT_RAISE = 0.471;//
 
     public static double WRIST_TRANSFER_READY = 0.097;//
-    public static double WRIST_TRANSFER = 0.029;//
+    public static double WRIST_TRANSFER = 0.022;//0.029
     public static double WRIST_SPECIMEN = 0.301;//
     public static double WRIST_OFF_WALL = 0.936;//
     public static double WRIST_SAMPLE = 0.844;//
