@@ -24,7 +24,8 @@ public class AutoConstants {
 
     //Poses in SpecimenAuto
     public static Pose SPECIMEN_START = new Pose(7.125, 65.5, Math.toRadians(0));
-    public static Pose SPECIMEN_SCORE = new Pose(42.5, 73, Math.toRadians(0));
+    public static Pose SPECIMEN_START_NO_PRELOAD = new Pose(7.125, 52, Math.toRadians(0));
+    public static Pose SPECIMEN_SCORE = new Pose(41, 70, Math.toRadians(0));
 
     public static Pose SPECIMEN_GRAB_READY = new Pose(15, 36, Math.toRadians(0));
     public static Pose SPECIMEN_GRAB_AFTER_PUSHING = new Pose(7.125, 13, Math.toRadians(0));
@@ -36,7 +37,7 @@ public class AutoConstants {
     public static Point SPECIMEN_CONTROL_POINT = new Point(12, 55);
     public static Point SPECIMEN_UNJAM_POINT = new Point(30, 30);
 
-    public static double Y_INCREMENT = -1.25;
+    public static double Y_INCREMENT = 0;
     public static double X_INCREMENT = 0.05;
 
     //Pushing constants
@@ -51,7 +52,7 @@ public class AutoConstants {
     public static Pose SPECIMEN_PUSHING4_READY = new Pose(51, 23, Math.toRadians(0));
 
     public static Point SPECIMEN_PUSHING_CONTROL_POINT1 = new Point(18, 16);
-    public static Point SPECIMEN_PUSHING_CONTROL_POINT2 = new Point(54, 48);
+    public static Point SPECIMEN_PUSHING_CONTROL_POINT2 = new Point(54, 48 - 10);
     public static Point SPECIMEN_PUSHING_CONTROL_POINT4 = new Point(55, 26);
     public static Point SPECIMEN_PUSHING_CONTROL_POINT6 = new Point(55, 16);
     public static Point SPECIMEN_PUSHING_CONTROL_POINT7 = new Point(14, 7.5);
