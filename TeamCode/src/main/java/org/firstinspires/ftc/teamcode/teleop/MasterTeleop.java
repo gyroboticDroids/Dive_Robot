@@ -5,6 +5,7 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.constants.DriveConstants;
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
@@ -166,7 +167,7 @@ public class MasterTeleop extends OpMode {
             } else if (gamepad2.y && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY)) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevOuttakeState.equals(OuttakeConstants.RESET_POS) ||
                     ((gamepad2.x || gamepad2.b) && (prevOuttakeState.equals(OuttakeConstants.START) || prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) && !prevIntakeState.equals(IntakeConstants.TRANSFER)))) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
-            } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
+            } else if (gamepad2.b && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
             } else if (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)
                     || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)
@@ -178,18 +179,26 @@ public class MasterTeleop extends OpMode {
         }
 
         //Control for states that can run while the outtake is busy
-        if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)) {
-            outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_LOW);
-        } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)) {
-            outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
-        } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+        //if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)) {
+        //    outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_LOW);
+        //} else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_LOW)) {
+        //    outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+        /*} else */if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
             outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_LOW);
         } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)) {
             outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
         }
 
         //Makes robot drive back if collecting specimens off wall or scoring samples
-        drive.setDriveBack(outtake.isDriveBack());
+        if(outtake.isDriveBack()) {
+            if (outtake.getState().equals(OuttakeConstants.SCORE_SPECIMEN)) {
+                drive.driveBack(DriveConstants.DRIVE_FORWARD_POWER);
+            } else {
+                drive.driveBack(DriveConstants.DRIVE_BACK_POWER);
+            }
+        } else {
+            drive.driveBack(0);
+        }
 
         //Previous states and button presses
         prevOuttakeState = outtake.getState();

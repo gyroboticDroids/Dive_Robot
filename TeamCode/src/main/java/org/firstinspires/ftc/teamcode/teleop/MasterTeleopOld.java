@@ -165,7 +165,7 @@ public class MasterTeleopOld extends OpMode {
         outtake.update();
 
         //Makes robot drive back if collecting specimens off wall or scoring samples
-        drive.setDriveBack(outtake.isDriveBack());
+        //drive.setDriveBack(outtake.isDriveBack());
 
         //Previous states and button presses
         prevOuttakeState = outtake.getState();

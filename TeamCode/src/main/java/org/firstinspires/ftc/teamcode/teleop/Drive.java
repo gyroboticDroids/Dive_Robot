@@ -26,7 +26,7 @@ public class Drive {
 
     double turnOffset;
 
-    private boolean driveBack = false;
+    private double drivePower = 0;
 
     public Drive(HardwareMap hardwareMap, Gamepad gamepad1)
     {
@@ -42,12 +42,12 @@ public class Drive {
     {
         hardware.pinpointDriver.update();
 
-        if(driveBack)
+        if(!(drivePower == 0))
         {
-            hardware.frontLeft.setPower(DriveConstants.DRIVE_BACK_POWER);
-            hardware.rearLeft.setPower(DriveConstants.DRIVE_BACK_POWER);
-            hardware.frontRight.setPower(DriveConstants.DRIVE_BACK_POWER);
-            hardware.rearRight.setPower(DriveConstants.DRIVE_BACK_POWER);
+            hardware.frontLeft.setPower(drivePower);
+            hardware.rearLeft.setPower(drivePower);
+            hardware.frontRight.setPower(drivePower);
+            hardware.rearRight.setPower(drivePower);
 
             return;
         }
@@ -144,10 +144,6 @@ public class Drive {
         return turnPower;
     }
 
-    public boolean isDriveBack() {
-        return driveBack;
-    }
-
     public boolean isManualTurning() {
         return manualTurning;
     }
@@ -156,8 +152,8 @@ public class Drive {
         return Math.abs(gamepad.left_stick_x) > 0 || Math.abs(gamepad.left_stick_y) > 0;
     }
 
-    public void setDriveBack(boolean driveBack) {
-        this.driveBack = driveBack;
+    public void driveBack(double power) {
+        drivePower = power;
     }
 
     public void updateTurn() {
