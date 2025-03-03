@@ -12,7 +12,7 @@ public class OuttakeConstants {
     public static int SLIDES_HANG = 3700;//
     public static int SLIDES_MAX_LIMIT = 3700;//
     public static double SLIDES_P_GAIN = 0.0073;
-    public static double SLIDES_HANGING_P_GAIN = 0.008;
+    public static double SLIDES_HANGING_P_GAIN = 0.0077;
     public static double SLIDES_ACCURACY = 70;//
     public static double SLIDES_PIVOT_CLEAR = 400;//
 
@@ -38,8 +38,8 @@ public class OuttakeConstants {
     public static double WRIST_START = 0.308;//
     public static double WRIST_RAISE = 0.603;//
 
-    public static double CLAW_OPEN = 0.429;//
-    public static double CLAW_CLOSED = 0.876;//
+    public static double CLAW_OPEN = 0.191;//
+    public static double CLAW_CLOSED = 0.690;//
 
     //States
     public static final String START = "start";

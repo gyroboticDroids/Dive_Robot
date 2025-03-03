@@ -335,7 +335,7 @@ public class Outtake {
 
         motorPower = error * ((!hanging)? OuttakeConstants.SLIDES_P_GAIN:OuttakeConstants.SLIDES_HANGING_P_GAIN);
 
-        if(hardware.outtakeSlide1.getCurrentPosition() < OuttakeConstants.SLIDES_ACCURACY && vertPosition == 0) {
+        if(hardware.outtakeSlide1.getCurrentPosition() < OuttakeConstants.SLIDES_ACCURACY && vertPosition == 0 && !hanging) {
             if(vertOneShot) {
                 hardware.outtakeSlide1.setPower(0);
                 hardware.outtakeSlide2.setPower(0);
