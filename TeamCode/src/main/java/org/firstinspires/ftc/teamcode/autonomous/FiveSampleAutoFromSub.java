@@ -269,7 +269,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                 break;
 
             case 5:
-                if (actionTimer.getElapsedTimeSeconds() > 0.15) {
+                if (actionTimer.getElapsedTimeSeconds() > 0) {
                     outtake.setState(OuttakeConstants.SCORE_SAMPLE);
                     setActionState(6);
                 }
@@ -335,7 +335,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                 break;
 
             case 10:
-                if (actionTimer.getElapsedTimeSeconds() > 0.15) {
+                if (actionTimer.getElapsedTimeSeconds() > 0) {
                     outtake.setState(OuttakeConstants.SCORE_SAMPLE);
                     setActionState(11);
                 }

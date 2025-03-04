@@ -133,7 +133,7 @@ public class Outtake {
                         hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
                     }
 
-                    if(actionTimer.getElapsedTimeSeconds() > 0.3) {
+                    if(actionTimer.getElapsedTimeSeconds() > 0.15) {
                         hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
                         hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
                     }
@@ -151,7 +151,7 @@ public class Outtake {
                 else if(actionTimer.getElapsedTimeSeconds() > 0.2){
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
                 }
-                else {
+                else if(!fromTransfer) {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
                 }
 
@@ -270,7 +270,7 @@ public class Outtake {
 
                 driveBack = true;
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.25)
+                if(actionTimer.getElapsedTimeSeconds() > 0.2)
                 {
                     driveBack = false;
                     isBusy = false;

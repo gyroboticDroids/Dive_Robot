@@ -10,6 +10,7 @@ import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Constants;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.constants.AutoConstants;
@@ -22,7 +23,8 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5 specimen auto pushing", group = "autonomous specimens", preselectTeleOp = "Master Tele-op")
+@Disabled
+@Autonomous(name = "5 specimen auto pushing old", group = "autonomous specimens", preselectTeleOp = "Master Tele-op")
 public class FiveSpecimenAutoPushing extends OpMode {
     private static final double SLOW_ZERO_POWER_ACCEL = 1.1;
 

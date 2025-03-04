@@ -310,7 +310,7 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 5:
-                if (actionTimer.getElapsedTimeSeconds() > 0.15) {
+                if (actionTimer.getElapsedTimeSeconds() > 0) {
                     outtake.setState(OuttakeConstants.SCORE_SAMPLE);
                     setActionState(6);
                 }
@@ -365,7 +365,7 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 10:
-                if (actionTimer.getElapsedTimeSeconds() > 0.15) {
+                if (actionTimer.getElapsedTimeSeconds() > 0) {
                     outtake.setState(OuttakeConstants.SCORE_SAMPLE);
                     setActionState(11);
                 }
@@ -442,7 +442,7 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 20:
-                if (actionTimer.getElapsedTimeSeconds() > 0.15) {
+                if (actionTimer.getElapsedTimeSeconds() > 0) {
                     outtake.setState(OuttakeConstants.SCORE_SAMPLE);
                     setActionState(21);
                 }
