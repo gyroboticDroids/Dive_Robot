@@ -120,7 +120,7 @@ public class Outtake {
 
             case OuttakeConstants.GRAB_SPECIMEN_READY:
                 if(onsSetState){
-                    fromTransfer = vertPosition == OuttakeConstants.SLIDES_TRANSFER_UP;
+                    fromTransfer = !(vertPosition == OuttakeConstants.SLIDES_SPECIMEN_HIGH_SCORING);
                 }
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.2 && specimenOnsSetState) {
@@ -128,21 +128,21 @@ public class Outtake {
                     specimenOnsSetState = false;
                 }
 
-                //if(!fromTransfer) {
-                //    if(actionTimer.getElapsedTimeSeconds() > 0.1) {
-                //        hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
-                //    }
+                if(fromTransfer) {
+                    if(actionTimer.getElapsedTimeSeconds() > 0) {
+                        hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
+                    }
 
-                //    if(actionTimer.getElapsedTimeSeconds() > 0.1) {
-                //        hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
-                //        hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
-                //    }
-                //}
-                //else {
+                    if(actionTimer.getElapsedTimeSeconds() > 0.3) {
+                        hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
+                        hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
+                    }
+                }
+                else {
                     hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_OFF_WALL);
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
-                //}
+                }
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.75)
                 {

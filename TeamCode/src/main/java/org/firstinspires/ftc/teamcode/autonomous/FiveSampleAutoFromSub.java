@@ -82,7 +82,7 @@ public class FiveSampleAutoFromSub extends OpMode {
 
         scoreSampleSub = new Path(new BezierCurve(new Point(xSubPos, AutoConstants.SAMPLE_SUB.getY()), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE_LEFT)));
         scoreSampleSub.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SUB.getHeading(), AutoConstants.SAMPLE_SCORE_LEFT.getHeading());
-        scoreSampleSub.setZeroPowerAccelerationMultiplier(1.75);
+        scoreSampleSub.setZeroPowerAccelerationMultiplier(2);
 
         touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_LEFT), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE_LEFT.getY()), new Point(AutoConstants.SAMPLE_PARK)));
         touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
@@ -98,6 +98,7 @@ public class FiveSampleAutoFromSub extends OpMode {
 
         switch (pathState) {
             case 0:
+                autoTimer.resetTimer();
                 setActionState(0);
                 currentHeading = currentPath.getHeadingGoal(1);
                 follower.followPath(currentPath, true);
@@ -133,7 +134,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                 if (robotInPos) {
                     if (actionState == -1) {
                         if(onsScoreState) {
-                            slideRangeSubtract = 0;
+                            slideRangeSubtract = 200;
                             setActionState(5);
                             onsScoreState = false;
                         }
@@ -215,7 +216,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                             currentHeading = currentPath.getHeadingGoal(1);
                             follower.followPath(currentPath, true);
 
-                            if(autoTimer.getElapsedTimeSeconds() > 22) {
+                            if(autoTimer.getElapsedTimeSeconds() > 20) {
                                 setPathState(6);
                             } else {
                                 setPathState(4);
@@ -516,7 +517,6 @@ public class FiveSampleAutoFromSub extends OpMode {
 
     @Override
     public void start() {
-        autoTimer.resetTimer();
         pathTimer.resetTimer();
         actionTimer.resetTimer();
         setPathState(0);
