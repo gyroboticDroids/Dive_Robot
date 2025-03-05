@@ -17,7 +17,7 @@ public class OuttakeConstants {
     public static double SLIDES_PIVOT_CLEAR = 400;//
 
     public static double EXTENSION_START = 0.68;//
-    public static double EXTENSION_TRANSFER = 0.605;
+    public static double EXTENSION_TRANSFER = 0.6;
     public static double EXTENSION_SPECIMEN_OFF_WALL = 0.523;//
     public static double EXTENSION_SPECIMEN_SCORE = 0.383;//
     public static double EXTENSION_SAMPLE_SCORE = 0.68;

@@ -105,17 +105,6 @@ public class Intake {
 
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
 
-                /*if(getSampleColor() > 0) {
-                    if(onsIntakeState){
-                        timerOffset = actionTimer.getElapsedTimeSeconds();
-                        onsIntakeState = false;
-                    }
-
-                    if(actionTimer.getElapsedTimeSeconds() + timerOffset > 0.8) {
-                        intakeSpeed(IntakeConstants.INTAKE_STOP);
-                    }
-                }*/
-
                 if(actionTimer.getElapsedTimeSeconds() > 0.4)
                 {
                     if(!intakeWheelsKeepSpinning) {

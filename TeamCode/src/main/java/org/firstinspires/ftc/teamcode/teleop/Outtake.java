@@ -144,7 +144,7 @@ public class Outtake {
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.75)
+                if(actionTimer.getElapsedTimeSeconds() > 0.65)
                 {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
                 }
