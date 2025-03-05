@@ -300,6 +300,10 @@ public class Outtake {
         return vertPosition;
     }
 
+    public double getSlidePower() {
+        return hardware.outtakeSlide1.getPower();
+    }
+
     public void setVertPosition(double vertPosition) {
         this.vertPosition = vertPosition;
     }

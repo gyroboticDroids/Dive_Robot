@@ -109,6 +109,7 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("vert fdbk pos", outtake.getVertSlidePos());
         telemetry.addData("drive back", outtake.isDriveBack());
         telemetry.addData("is hanging", outtake.isHanging());
+        telemetry.addData("slide power", outtake.getSlidePower());
 
         telemetry.addLine("-------------------Intake--------------------");
         telemetry.addData("intake state", intake.getState());
