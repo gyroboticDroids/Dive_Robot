@@ -38,6 +38,10 @@ public class Drive {
         targetHeading = TransferConstants.heading;
     }
 
+    public void resetHardware() {
+        hardware.setUpDrive();
+    }
+
     public void update()
     {
         hardware.pinpointDriver.update();

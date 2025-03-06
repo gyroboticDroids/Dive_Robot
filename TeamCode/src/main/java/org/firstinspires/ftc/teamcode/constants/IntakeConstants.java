@@ -34,6 +34,6 @@ public class IntakeConstants {
     //Methods
     public static double linearPivot(int currentSlidePos)
     {
-        return 0.0000395415 * currentSlidePos + 0.190103;
+        return 0.0000395415 * currentSlidePos + 0.18;//0.190103
     }
 }

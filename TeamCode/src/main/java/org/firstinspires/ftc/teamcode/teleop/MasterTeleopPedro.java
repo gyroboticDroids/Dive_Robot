@@ -4,6 +4,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.util.Constants;
 import com.pedropathing.util.Timer;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -16,6 +17,7 @@ import org.firstinspires.ftc.teamcode.constants.TransferConstants;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
+@Disabled
 @TeleOp(name = "Master Tele-op Pedro", group = "Tele-op")
 public class MasterTeleopPedro extends OpMode {
 
@@ -45,6 +47,7 @@ public class MasterTeleopPedro extends OpMode {
         hang = new Hang(hardwareMap, outtake);
         auto = new AutoScoreSpecimen(hardwareMap, outtake);
 
+        auto.stopAuto();
         //Sets up timer
         teleopTimer = new Timer();
     }
@@ -93,10 +96,9 @@ public class MasterTeleopPedro extends OpMode {
             outtake.update();
             intake.update();
             hang.update();
+        } else {
+            auto.update();
         }
-
-        auto.update();
-
         //Updates telemetry
         updateTelemetry();
     }
@@ -137,6 +139,8 @@ public class MasterTeleopPedro extends OpMode {
 
         telemetry.addLine("-------------------Auto----------------------");
         telemetry.addData("auto pathing", auto.isPathing());
+        telemetry.addData("path state", auto.pathState());
+        telemetry.addData("action state", auto.actionState());
 
         //Updates telemetry
         telemetry.update();
@@ -293,10 +297,11 @@ public class MasterTeleopPedro extends OpMode {
             return;
         }
 
-        if(gamepad1.start) {
+        if(gamepad1.start && !auto.isPathing()) {
             auto.startAuto();
-        } else if(gamepad1.dpad_left) {
+        } else if(drive.isDriverInput() && auto.isPathing()) {
             auto.stopAuto();
+            drive.resetHardware();
         }
     }
 }
