@@ -30,6 +30,7 @@ public class AutoScoreSpecimen {
     private boolean followPath = false;
     private Path currentPath;
     private int yIncrement = -3;
+    private boolean onsSetState = false;
 
 
     private Path scoreSpecimen, grabSpecimenReady;
@@ -49,7 +50,7 @@ public class AutoScoreSpecimen {
 
         switch (pathState) {
             case 0:
-                if(robotInPos) {
+                if(robotInPos || onsSetState) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.35) {
                         if(ons){
                             setActionState(0);
@@ -57,12 +58,14 @@ public class AutoScoreSpecimen {
                             pathTimer.resetTimer();
                         }
                         else {
-                            scoreSpecimen = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SPECIMEN_SCORE.getX(),
-                                    AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * yIncrement)));
-                            scoreSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
-                            scoreSpecimen.setZeroPowerAccelerationMultiplier(1.1);
+                            if(!onsSetState) {
+                                scoreSpecimen = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB),
+                                        AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3, new Point(AutoConstants.SPECIMEN_SCORE)));
+                                scoreSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
+                                scoreSpecimen.setZeroPowerAccelerationMultiplier(1.5);
 
-                            currentPath = scoreSpecimen;
+                                currentPath = scoreSpecimen;
+                            }
 
                             follower.followPath(currentPath, true);
                             followPath = true;
@@ -74,14 +77,14 @@ public class AutoScoreSpecimen {
 
             case 1:
                 if(robotInPos) {
+                    onsSetState = false;
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(1);
                             ons = false;
                         }
                         else {
-                            grabSpecimenReady = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE.getX(), AutoConstants.SPECIMEN_SCORE.getY() + AutoConstants.Y_INCREMENT * yIncrement),
-                                    AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
+                            grabSpecimenReady = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
                             grabSpecimenReady.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
                             grabSpecimenReady.setZeroPowerAccelerationMultiplier(1.2);
 
@@ -89,7 +92,7 @@ public class AutoScoreSpecimen {
 
                             follower.followPath(currentPath, true);
                             followPath = true;
-                            setActionState(2);
+                            setActionState(13);
                             yIncrement++;
                             setPathState(0);
                         }
@@ -109,14 +112,21 @@ public class AutoScoreSpecimen {
                     break;
 
                 case 1:
-                    if(actionTimer.getElapsedTimeSeconds() > 0.15) {
+                    if(actionTimer.getElapsedTimeSeconds() > 0) {
                         outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
                         setActionState(14);
                     }
                     break;
 
                 case 2:
-                    if(actionTimer.getElapsedTimeSeconds() > 0) {
+                    if(actionTimer.getElapsedTimeSeconds() > 0.5) {
+                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+                        setActionState(14);
+                    }
+                    break;
+
+                case 13:
+                    if(follower.getPose().getX() < 37) {
                         outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
                         setActionState(14);
                     }
@@ -144,6 +154,10 @@ public class AutoScoreSpecimen {
     }
 
     public void startAuto() {
+        if(pathState > -1) {
+            return;
+        }
+
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hMap);
 
@@ -152,13 +166,21 @@ public class AutoScoreSpecimen {
         follower.setStartingPose(AutoConstants.SPECIMEN_GRAB);
         yIncrement = -3;
 
+        scoreSpecimen = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB),
+                AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3, new Point(AutoConstants.SPECIMEN_SCORE)));
+        scoreSpecimen.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
+        scoreSpecimen.setZeroPowerAccelerationMultiplier(1.5);
+
+        currentPath = scoreSpecimen;
+
+        onsSetState = true;
+
         followPath = true;
     }
 
     public void stopAuto() {
         setPathState(-1);
         setActionState(-1);
-        follower.breakFollowing();
         follower = null;
         grabSpecimenReady = null;
         scoreSpecimen = null;
@@ -176,10 +198,10 @@ public class AutoScoreSpecimen {
             return;
         }
 
-        follower.update();
-        outtake.update();
         autonomousPathUpdate();
         autonomousActionUpdate();
+        follower.update();
+        outtake.update();
     }
 }
 

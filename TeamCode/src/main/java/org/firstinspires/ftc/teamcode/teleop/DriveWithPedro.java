@@ -1,10 +1,15 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.constants.DriveConstants;
 import org.firstinspires.ftc.teamcode.constants.TransferConstants;
+
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
 
 public class DriveWithPedro {
     private final Gamepad gamepad;
@@ -23,14 +28,13 @@ public class DriveWithPedro {
 
     private double drivePower = 0;
 
-    public DriveWithPedro(Gamepad gamepad1, Follower follow)
+    public DriveWithPedro(HardwareMap hardwareMap, Gamepad gamepad1)
     {
         gamepad = gamepad1;
-        follower = follow;
 
+        Constants.setConstants(FConstants.class, LConstants.class);
+        follower = new Follower(hardwareMap);
         follower.setStartingPose(TransferConstants.endPose);
-
-        follower.startTeleopDrive();
     }
 
     public void update()
@@ -79,7 +83,7 @@ public class DriveWithPedro {
 
         targetHeading = (gamepad.y) ? 0 : (gamepad.x) ? 90 : (gamepad.a) ? -45 : (gamepad.b) ? -90 : targetHeading;
 
-        follower.turnTo(Math.toRadians(targetHeading));
+        //follower.turnTo(Math.toRadians(targetHeading));
     }
 
     public double getBotHeading() {
