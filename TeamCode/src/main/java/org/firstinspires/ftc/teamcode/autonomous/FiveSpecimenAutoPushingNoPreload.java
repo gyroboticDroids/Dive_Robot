@@ -121,6 +121,9 @@ public class FiveSpecimenAutoPushingNoPreload extends OpMode {
         boolean robotInPos = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1) &&
                 MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1);
 
+        boolean robotInPosScoring = MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1.5) &&
+                MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1.5);
+
         switch (pathState) {
             case 0:
                 currentPath = pushing;
@@ -206,7 +209,7 @@ public class FiveSpecimenAutoPushingNoPreload extends OpMode {
                 break;
 
             case 8:
-                if(robotInPos) {
+                if(robotInPosScoring || pathTimer.getElapsedTimeSeconds() > 3.5) {
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(1);
@@ -240,7 +243,7 @@ public class FiveSpecimenAutoPushingNoPreload extends OpMode {
                 break;
 
             case 10:
-                if(robotInPos) {
+                if(robotInPosScoring || pathTimer.getElapsedTimeSeconds() > 3.5) {
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(1);
@@ -274,7 +277,7 @@ public class FiveSpecimenAutoPushingNoPreload extends OpMode {
                 break;
 
             case 12:
-                if(robotInPos) {
+                if(robotInPosScoring || pathTimer.getElapsedTimeSeconds() > 3.5) {
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(1);
@@ -308,7 +311,7 @@ public class FiveSpecimenAutoPushingNoPreload extends OpMode {
                 break;
 
             case 14:
-                if(robotInPos) {
+                if(robotInPosScoring || pathTimer.getElapsedTimeSeconds() > 3.5) {
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(1);
@@ -342,7 +345,7 @@ public class FiveSpecimenAutoPushingNoPreload extends OpMode {
                 break;
 
             case 16:
-                if(robotInPos) {
+                if(robotInPosScoring || pathTimer.getElapsedTimeSeconds() > 3.5) {
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(1);
@@ -385,7 +388,7 @@ public class FiveSpecimenAutoPushingNoPreload extends OpMode {
                 break;
 
             case 13:
-                if(follower.getPose().getX() < 37) {
+                if(follower.getPose().getX() < 35) {
                     outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
                     setActionState(14);
                 }
@@ -430,6 +433,7 @@ public class FiveSpecimenAutoPushingNoPreload extends OpMode {
         currentPath = pushing;
 
         intake.setState(IntakeConstants.START);
+        outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
     }
 
     @Override
