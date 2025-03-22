@@ -69,7 +69,13 @@ public class Drive {
         y = -gpad.left_stick_y * multiplier;
         x = gpad.left_stick_x * multiplier;
         rx = (gpad.left_trigger - gpad.right_trigger) * 0.4;
-        manualTurning = Math.abs(gpad.left_trigger + gpad.right_trigger) > 0.05;
+
+        if(Math.abs(gpad.left_trigger + gpad.right_trigger) > 0.05) {
+            manualTurning = true;
+        } else if (gpad.y || gpad.x || gpad.a || gpad.b) {
+            manualTurning = false;
+        }
+
         resetHeading = gpad.back;
 
         if(manualTurning) {

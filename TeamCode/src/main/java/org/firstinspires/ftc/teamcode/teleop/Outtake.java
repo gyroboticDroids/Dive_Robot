@@ -112,7 +112,7 @@ public class Outtake {
                     vertPosition = OuttakeConstants.SLIDES_TRANSFER_UP;
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.35 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 0.35 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_TRANSFER_CLEAR))
                 {
                     isBusy = false;
                 }

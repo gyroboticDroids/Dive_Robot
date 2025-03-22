@@ -192,7 +192,7 @@ public class Intake {
             color = 2;//red
         } else if(hardware.colorSensor.red() > 2000 && hardware.colorSensor.green() > 3000) {
             color = 1;//yellow
-        } else if(hardware.colorSensor.blue() > 1500) {
+        } else if(hardware.colorSensor.blue() > 1300) {
             color = 3;//blue
         } else {
             color = 0;

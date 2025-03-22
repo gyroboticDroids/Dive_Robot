@@ -110,6 +110,7 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("drive back", outtake.isDriveBack());
         telemetry.addData("is hanging", outtake.isHanging());
         telemetry.addData("slide power", outtake.getSlidePower());
+        telemetry.addData("disable reject", disableReject);
 
         telemetry.addLine("-------------------Intake--------------------");
         telemetry.addData("intake state", intake.getState());
@@ -135,6 +136,8 @@ public class MasterTeleop extends OpMode {
     private String prevOuttakeState = OuttakeConstants.START;
     private boolean prevGp2Y = false;
     private boolean prevGp2B = false;
+    private boolean disableReject = false;
+    private boolean prevGp1Start = false;
 
     void outtakeUpdate()
     {
@@ -154,7 +157,7 @@ public class MasterTeleop extends OpMode {
                 outtake.setState(OuttakeConstants.RESET_POS);
             } else if ((gamepad2.x || gamepad2.b) && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && intake.getState().equals(IntakeConstants.TRANSFER) && !intake.isBusy()) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
-            } else if (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) && intake.getSampleColor() > 0) {
+            } else if (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) && intake.getSampleColor() > 0 && !disableReject) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY); ///If transfer did not work run this code
             } else if (gamepad2.b && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevOuttakeState.equals(OuttakeConstants.START))) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
@@ -196,10 +199,17 @@ public class MasterTeleop extends OpMode {
             drive.driveBack(0);
         }
 
+        if(gamepad1.start && !prevGp1Start && !disableReject) {
+            disableReject = true;
+        } else if (gamepad1.start && !prevGp1Start && disableReject) {
+            disableReject = false;
+        }
+
         //Previous states and button presses
         prevOuttakeState = outtake.getState();
         prevGp2Y = gamepad2.y;
         prevGp2B = gamepad2.b;
+        prevGp1Start = gamepad1.start;
     }
 
     //Variables used for intakeUpdate
