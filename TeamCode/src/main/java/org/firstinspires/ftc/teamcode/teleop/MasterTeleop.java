@@ -31,6 +31,8 @@ public class MasterTeleop extends OpMode {
 
     private boolean rumble = false;
 
+    Gamepad.RumbleEffect effect;
+
     @Override
     public void init()
     {
@@ -44,7 +46,13 @@ public class MasterTeleop extends OpMode {
         //Sets up timer
         teleopTimer = new Timer();
 
-        gamepad1.setLedColor(60.0 / 255.0, 76.0 / 255.0, 36.0 / 255.0, Gamepad.LED_DURATION_CONTINUOUS);
+        effect = new Gamepad.RumbleEffect.Builder()
+                .addStep(0.5, 0.5, 500)
+                .addStep(0.0, 0.0, 500)
+                .addStep(0.5, 0.5, 500)
+                .build();
+
+        gamepad1.setLedColor(60.0 / 255, 76.0 / 255, 36.0 / 255, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override
@@ -80,8 +88,8 @@ public class MasterTeleop extends OpMode {
         if(120 - teleopTimer.getElapsedTimeSeconds() < 15 && !rumble) {
             hang.setState(HangConstants.HANG_HOOKS_UP);
 
-            gamepad1.rumble(0.5, 0.5, 500);
-            gamepad2.rumble(0.5, 0.5, 500);
+            gamepad1.runRumbleEffect(effect);
+            gamepad2.runRumbleEffect(effect);
 
             rumble = true;
         }
@@ -175,7 +183,7 @@ public class MasterTeleop extends OpMode {
                 outtake.setState(OuttakeConstants.RESET_POS);
             } else if ((gamepad2.x || gamepad2.b) && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && intake.getState().equals(IntakeConstants.TRANSFER) && !intake.isBusy()) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
-            } else if (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) && intake.getSampleColor() > 0 && !disableReject) {
+            } else if (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) && intake.getSampleColor() > 0 && !disableReject && outtake.isSlidesAtSetpoint()) {
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY); ///If transfer did not work run this code
             } else if (gamepad2.b && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevOuttakeState.equals(OuttakeConstants.START))) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);

@@ -82,7 +82,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         grabSpecimenReady2 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimenReady2.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
-        grabSpecimenReady2.setZeroPowerAccelerationMultiplier(1.2);
+        grabSpecimenReady2.setZeroPowerAccelerationMultiplier(1.5);
 
         scoreSpecimen2 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB),
                 AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3, new Point(AutoConstants.SPECIMEN_SCORE)));
@@ -91,7 +91,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         grabSpecimenReady3 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimenReady3.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
-        grabSpecimenReady3.setZeroPowerAccelerationMultiplier(1.2);
+        grabSpecimenReady3.setZeroPowerAccelerationMultiplier(1.5);
 
         scoreSpecimen3 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB),
                 AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3, new Point(AutoConstants.SPECIMEN_SCORE)));
@@ -100,7 +100,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         grabSpecimenReady4 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimenReady4.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
-        grabSpecimenReady4.setZeroPowerAccelerationMultiplier(1.2);
+        grabSpecimenReady4.setZeroPowerAccelerationMultiplier(1.5);
 
         scoreSpecimen4 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB),
                 AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3, new Point(AutoConstants.SPECIMEN_SCORE)));
@@ -109,14 +109,14 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         grabSampleReady = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSampleReady.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
-        grabSampleReady.setZeroPowerAccelerationMultiplier(1.2);
+        grabSampleReady.setZeroPowerAccelerationMultiplier(1.5);
 
         scoreSample = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SAMPLE_SCORE)));
         scoreSample.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
         scoreSample.setZeroPowerAccelerationMultiplier(3);
 
         park = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SPECIMEN_PARK)));
-        park.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_SCORE_OBS.getHeading());
+        park.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_SCORE_OBS.getHeading(), 0.5);
         park.setZeroPowerAccelerationMultiplier(4);
     }
 
@@ -407,7 +407,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 7:
-                if(follower.getPose().getY() > 60) {
+                if(follower.getPose().getY() > 50) {
                     outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
                     setActionState(14);
                 }
