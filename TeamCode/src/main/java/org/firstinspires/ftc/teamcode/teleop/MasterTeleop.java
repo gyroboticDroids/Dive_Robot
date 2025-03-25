@@ -4,6 +4,7 @@ import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.constants.DriveConstants;
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
@@ -258,6 +259,16 @@ public class MasterTeleop extends OpMode {
                 || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB)) {
             intake.horizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
                     MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 50); //Manual control for horizontal slides
+        }
+
+        if (intake.getSampleColor() == 1) {
+            gamepad2.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        } else if (intake.getSampleColor() == 2) {
+            gamepad2.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        } else if (intake.getSampleColor() == 3) {
+            gamepad2.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
+        } else {
+            gamepad2.setLedColor(1, 1, 1, Gamepad.LED_DURATION_CONTINUOUS);
         }
 
         //Previous intake state
