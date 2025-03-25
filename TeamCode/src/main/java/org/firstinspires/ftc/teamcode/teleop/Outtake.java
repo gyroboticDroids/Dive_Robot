@@ -356,6 +356,10 @@ public class Outtake {
         return driveBack;
     }
 
+    public boolean isSlidesAtSetpoint() {
+        return MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_TRANSFER_CLEAR);
+    }
+
     public void setHanging(boolean hanging) {
         this.hanging = hanging;
     }
