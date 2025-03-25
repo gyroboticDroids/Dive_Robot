@@ -39,7 +39,7 @@ public class Drive {
     }
 
     public void resetHardware() {
-        hardware.setUpDrive();
+        hardware.setToBrake();
     }
 
     public void update()
