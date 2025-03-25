@@ -44,7 +44,7 @@ public class MasterTeleop extends OpMode {
         //Sets up timer
         teleopTimer = new Timer();
 
-        gamepad1.setLedColor(60, 76, 36, Gamepad.LED_DURATION_CONTINUOUS);
+        gamepad1.setLedColor(60.0 / 255.0, 76.0 / 255.0, 36.0 / 255.0, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override

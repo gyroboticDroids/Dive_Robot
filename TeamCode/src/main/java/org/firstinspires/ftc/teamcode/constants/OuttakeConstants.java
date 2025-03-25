@@ -54,7 +54,7 @@ public class OuttakeConstants {
     public static final String SCORE_SAMPLE = "score sample";
     public static final String GRAB_SPECIMEN_READY = "grab specimen ready";
     public static final String SCORE_SPECIMEN_READY_HIGH = "score specimen ready high";
-    public static final String SCORE_SPECIMEN_READY_LOW = "score specimen ready low";
+    public static final String GRAB_SAMPLE_OFF_WALL = "grab sample off wall";
     public static final String SCORE_SPECIMEN = "score specimen";
 
     public static final String SCORE_SPECIMEN_PRELOAD = "score specimen preload";

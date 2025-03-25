@@ -161,25 +161,14 @@ public class Outtake {
                 }
                 break;
 
-            case OuttakeConstants.SCORE_SPECIMEN_READY_LOW:
-                if(specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.25)
-                {
-                    vertPosition = OuttakeConstants.SLIDES_SPECIMEN_LOW_SCORING;
-                    specimenOnsSetState = false;
-                }
-
+            case OuttakeConstants.GRAB_SAMPLE_OFF_WALL:
                 hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
 
                 if(actionTimer.getElapsedTimeSeconds() > 0.3)
                 {
-                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SPECIMEN_READY);
-                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SPECIMEN_READY);
+                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_RAISE);
+                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
 
-                    hardware.outtakeExtension.setPosition(OuttakeConstants.EXTENSION_SPECIMEN_SCORE);
-                }
-
-                if(actionTimer.getElapsedTimeSeconds() > 0.8 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
-                {
                     isBusy = false;
                 }
                 break;
@@ -278,7 +267,7 @@ public class Outtake {
                 break;
 
             case OuttakeConstants.SCORE_SPECIMEN_PRELOAD:
-                if(specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.25)
+                if(specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0)
                 {
                     vertPosition = 1479;
                     specimenOnsSetState = false;
@@ -294,7 +283,7 @@ public class Outtake {
                     hardware.outtakeExtension.setPosition(0.544);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.8 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                if(actionTimer.getElapsedTimeSeconds() > 0.6 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
                 }

@@ -62,7 +62,7 @@ public class AutoConstants {
 
     public static Point SPECIMEN_SCORING_CONTROL_POINT1 = new Point(30, 65.5);
     public static Point SPECIMEN_SCORING_CONTROL_POINT2 = new Point(30, 37);
-    public static Point SPECIMEN_SCORING_CONTROL_POINT3 = new Point(12, 75);
+    public static Point SPECIMEN_SCORING_CONTROL_POINT3 = new Point(15, 70);
 
     //Transferring constants
     public static Pose SPECIMEN_TRANSFER_LEFT = new Pose(22, 24, Math.toRadians(0));
