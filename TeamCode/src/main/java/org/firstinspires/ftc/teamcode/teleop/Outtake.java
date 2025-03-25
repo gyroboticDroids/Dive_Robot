@@ -276,6 +276,31 @@ public class Outtake {
                     isBusy = false;
                 }
                 break;
+
+            case OuttakeConstants.SCORE_SPECIMEN_PRELOAD:
+                if(specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.25)
+                {
+                    vertPosition = 1479;
+                    specimenOnsSetState = false;
+                }
+
+                hardware.outtakeClaw.setPosition(0.768);
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.3)
+                {
+                    hardware.outtakePivot.setPosition(0.801);
+                    hardware.outtakeWrist.setPosition(0.343);
+
+                    hardware.outtakeExtension.setPosition(0.544);
+                }
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.8 && MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY))
+                {
+                    isBusy = false;
+                }
+                break;
+
+
         }
         if(!state.equals(OuttakeConstants.RESET_POS)) {
             vertSlidesUpdate();
