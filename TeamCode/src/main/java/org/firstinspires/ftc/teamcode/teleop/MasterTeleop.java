@@ -48,11 +48,12 @@ public class MasterTeleop extends OpMode {
 
         effect = new Gamepad.RumbleEffect.Builder()
                 .addStep(0.5, 0.5, 500)
-                .addStep(0.0, 0.0, 500)
+                .addStep(0.0, 0.0, 250)
                 .addStep(0.5, 0.5, 500)
                 .build();
 
-        gamepad1.setLedColor(60.0 / 255, 76.0 / 255, 36.0 / 255, Gamepad.LED_DURATION_CONTINUOUS);
+        //gamepad1.setLedColor(0.24, 0.30, 0.14, Gamepad.LED_DURATION_CONTINUOUS);
+        gamepad1.setLedColor(0, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override
@@ -71,6 +72,8 @@ public class MasterTeleop extends OpMode {
         outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
         intake.setState(IntakeConstants.INTAKE_SUB_READY);
         hang.setState(HangConstants.START);
+
+        gamepad1.setLedColor(0.24, 0.30, 0.14, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override
