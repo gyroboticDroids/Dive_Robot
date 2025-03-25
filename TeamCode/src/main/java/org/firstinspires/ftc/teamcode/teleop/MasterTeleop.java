@@ -29,6 +29,8 @@ public class MasterTeleop extends OpMode {
 
     private boolean hooksUp = false;
 
+    private boolean rumble = false;
+
     @Override
     public void init()
     {
@@ -41,6 +43,8 @@ public class MasterTeleop extends OpMode {
 
         //Sets up timer
         teleopTimer = new Timer();
+
+        gamepad1.setLedColor(60, 76, 36, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override
@@ -66,7 +70,20 @@ public class MasterTeleop extends OpMode {
     {
         if(120 - teleopTimer.getElapsedTimeSeconds() < 30 && !hooksUp && !isHanging) {
             hang.setState(HangConstants.HANG_HOOKS_UP);
+
+            gamepad1.rumble(0.5, 0.5, 500);
+            gamepad2.rumble(0.5, 0.5, 500);
+
             hooksUp = true;
+        }
+
+        if(120 - teleopTimer.getElapsedTimeSeconds() < 15 && !rumble) {
+            hang.setState(HangConstants.HANG_HOOKS_UP);
+
+            gamepad1.rumble(0.5, 0.5, 500);
+            gamepad2.rumble(0.5, 0.5, 500);
+
+            rumble = true;
         }
 
         //Updates all classes
@@ -255,8 +272,10 @@ public class MasterTeleop extends OpMode {
             intake.setState(IntakeConstants.HALFWAY);
         }
 
-        if (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
-                || prevIntakeState.equals(IntakeConstants.REJECT) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB)) {
+        if (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT)) {
+            intake.horizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
+                    MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 100); //Manual control for horizontal slides
+        } else if (prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB)) {
             intake.horizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
                     MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 50); //Manual control for horizontal slides
         }

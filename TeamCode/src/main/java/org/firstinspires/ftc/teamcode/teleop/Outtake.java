@@ -299,8 +299,6 @@ public class Outtake {
                     isBusy = false;
                 }
                 break;
-
-
         }
         if(!state.equals(OuttakeConstants.RESET_POS)) {
             vertSlidesUpdate();
