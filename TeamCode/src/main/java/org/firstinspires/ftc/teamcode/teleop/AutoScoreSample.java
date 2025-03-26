@@ -28,7 +28,6 @@ public class AutoScoreSample {
     private Timer actionTimer;
     private Intake intake;
     private Outtake outtake;
-    private Drive drive;
     private DashboardPoseTracker dashboardPoseTracker;
     private int pathState = -1;
     private int actionState = -1;
@@ -39,21 +38,20 @@ public class AutoScoreSample {
 
     private Path scoreSample;
 
-    public AutoScoreSample(HardwareMap hardwareMap, Outtake out, Intake in, Drive dr) {
+    public AutoScoreSample(HardwareMap hardwareMap, Outtake out, Intake in) {
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
 
-        follower.setCurrentPoseWithOffset(TransferConstants.endPose);
+        follower.setStartingPose(TransferConstants.endPose);
         dashboardPoseTracker = new DashboardPoseTracker(follower.poseUpdater);
 
         outtake = out;
         intake = in;
-        drive = dr;
 
         pathTimer = new Timer();
         actionTimer = new Timer();
 
-        stopAuto();
+        runAuto(false);
     }
 
     private void autonomousPathUpdate() {
@@ -87,7 +85,7 @@ public class AutoScoreSample {
                         }
 
                         if(pathTimer.getElapsedTimeSeconds() > 0.5) {
-                            stopAuto();
+                            runAuto(false);
                         }
                     }
                 }
@@ -121,8 +119,8 @@ public class AutoScoreSample {
 
             case 2:
                 if (!outtake.isBusy()) {
-                    if(intake.getSampleColor() > 0) {
-                        stopAuto();
+                    if(intake.getSampleColor() > 0 && outtake.isSlidesAtSetpoint()) {
+                        runAuto(false);
                         return;
                     }
 
@@ -138,6 +136,9 @@ public class AutoScoreSample {
                 }
                 break;
         }
+
+        outtake.update();
+        intake.update();
     }
 
 
@@ -153,39 +154,8 @@ public class AutoScoreSample {
         actionTimer.resetTimer();
     }
 
-    public boolean startAuto() {
-        Pose currentPos = follower.getPose();
-
-        if(currentPos.getX() < 48) {
-            scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(AutoConstants.SAMPLE_SCORE.getX(), currentPos.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
-            scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
-            scoreSample.setZeroPowerAccelerationMultiplier(1.5);
-        } else if (currentPos.getY() > 86) {
-            scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(currentPos.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
-            scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
-            scoreSample.setZeroPowerAccelerationMultiplier(1.5);
-        } else {
-            return false;
-        }
-
-        //follower.setStartingPose(currentPos);
-        currentPath = scoreSample;
-        followPath = true;
-        setPathState(0);
-        return true;
-    }
-
-    public void stopAuto() {
-        setPathState(-1);
-        setActionState(-1);
-
-        if(follower.isBusy()) {
-            follower.breakFollowing();
-        }
-
-        scoreSample = null;
-        drive.updateTurn();
-        followPath = false;
+    public void runAuto(boolean run) {
+        followPath = run;
     }
 
     public void resetPos(Pose pose) {
@@ -197,8 +167,10 @@ public class AutoScoreSample {
     }
 
     public boolean isPathing() {
-        return followPath;
+        return followPath && prevFollow;
     }
+
+    boolean prevFollow = false;
 
     public void update()
     {
@@ -210,14 +182,43 @@ public class AutoScoreSample {
 
         follower.update();
 
-        if(!followPath) {
-            return;
+        if(followPath && !prevFollow) {
+            Pose currentPos = follower.getPose();
+
+            if(currentPos.getX() < 48) {
+                scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(AutoConstants.SAMPLE_SCORE.getX(), currentPos.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
+                scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
+                scoreSample.setZeroPowerAccelerationMultiplier(1.5);
+            } else if (currentPos.getY() > 86) {
+                scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(currentPos.getX(), AutoConstants.SAMPLE_SCORE.getY() - 20), new Point(AutoConstants.SAMPLE_SCORE)));
+                scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
+                scoreSample.setZeroPowerAccelerationMultiplier(1.5);
+            } else {
+                runAuto(false);
+            }
+
+            currentPath = scoreSample;
+
+            setPathState(0);
+            setActionState(-1);
+        }
+        else if(!followPath && prevFollow) {
+            if(follower.isBusy()) {
+                follower.breakFollowing();
+            }
+
+            scoreSample = null;
+
+            setPathState(-1);
+            setActionState(-1);
         }
 
-        outtake.update();
-        intake.update();
-        autonomousPathUpdate();
-        autonomousActionUpdate();
+        if(followPath) {
+            autonomousPathUpdate();
+            autonomousActionUpdate();
+        }
+
+        prevFollow = followPath;
     }
 }
 

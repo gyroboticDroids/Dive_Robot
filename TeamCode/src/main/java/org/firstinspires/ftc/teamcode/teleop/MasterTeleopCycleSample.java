@@ -6,20 +6,22 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.teamcode.constants.AutoConstants;
 import org.firstinspires.ftc.teamcode.constants.DriveConstants;
 import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.constants.TransferConstants;
 
-@TeleOp(name = "Master Tele-op", group = "Tele-op")
-public class MasterTeleop extends OpMode {
+@TeleOp(name = "Master Tele-op Sample Cycle", group = "Tele-op")
+public class MasterTeleopCycleSample extends OpMode {
 
     //Defines classes
     Drive drive;
     Outtake outtake;
     Intake intake;
     Hang hang;
+    AutoScoreSample auto;
 
     //Timer for automatic movements
     Timer teleopTimer;
@@ -31,17 +33,20 @@ public class MasterTeleop extends OpMode {
 
     private boolean rumble = false;
 
+    private boolean prevAutoPathing = false;
+
     Gamepad.RumbleEffect effect;
 
     @Override
     public void init()
     {
         //Sets up classes
-        drive = new Drive(hardwareMap, gamepad1);
         outtake = new Outtake(hardwareMap);
         intake = new Intake(hardwareMap);
         intake.setIntakeWheelsKeepSpinning(true);
         hang = new Hang(hardwareMap, outtake);
+        auto = new AutoScoreSample(hardwareMap, outtake, intake);
+        drive = new Drive(hardwareMap, gamepad1);
 
         //Sets up timer
         teleopTimer = new Timer();
@@ -51,9 +56,6 @@ public class MasterTeleop extends OpMode {
                 .addStep(0.0, 0.0, 250)
                 .addStep(0.5, 0.5, 500)
                 .build();
-
-        //gamepad1.setLedColor(0.24, 0.30, 0.14, Gamepad.LED_DURATION_CONTINUOUS);
-        gamepad1.setLedColor(0, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override
@@ -72,15 +74,16 @@ public class MasterTeleop extends OpMode {
         outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
         intake.setState(IntakeConstants.INTAKE_SUB_READY);
         hang.setState(HangConstants.START);
-
-        gamepad1.setLedColor(0.24, 0.30, 0.14, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override
     public void loop()
     {
+        gamepad1.setLedColor(0.24, 0.30, 0.14, Gamepad.LED_DURATION_CONTINUOUS);
+
         if(120 - teleopTimer.getElapsedTimeSeconds() < 30 && !hooksUp && !isHanging) {
             hang.setState(HangConstants.HANG_HOOKS_UP);
+            hang.update();
 
             gamepad1.rumble(0.5, 0.5, 500);
             gamepad2.rumble(0.5, 0.5, 500);
@@ -95,26 +98,34 @@ public class MasterTeleop extends OpMode {
             rumble = true;
         }
 
-        //Updates all classes
-        if(!(hang.getState().equals(HangConstants.LVL_2) || hang.getState().equals(HangConstants.LVL_3))){
-            drive.update();
-        }
-        else {
-            drive.resetPowers();
-        }
-
-        outtakeUpdate();
-        intakeUpdate();
-        hangUpdate();
         autoUpdate();
+        auto.update();
 
-        //Updates classes
-        outtake.update();
-        intake.update();
-        hang.update();
+        if(!auto.isPathing() && prevAutoPathing) {
+            drive.updateTurn();
+        }
 
+        if(!auto.isPathing()) {
+            //Updates all classes
+            if (!(hang.getState().equals(HangConstants.LVL_2) || hang.getState().equals(HangConstants.LVL_3))) {
+                drive.update();
+            } else {
+                drive.resetPowers();
+            }
+
+            outtakeUpdate();
+            intakeUpdate();
+            hangUpdate();
+
+            //Updates classes
+            outtake.update();
+            intake.update();
+            hang.update();
+        }
         //Updates telemetry
         updateTelemetry();
+
+        prevAutoPathing = auto.isPathing();
     }
 
     private void updateTelemetry() {
@@ -331,5 +342,14 @@ public class MasterTeleop extends OpMode {
             return;
         }
 
+        if(gamepad2.a && !outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) && !outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW) && !outtake.isBusy()) {
+            auto.runAuto(true);
+        } else if (Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) > 0.05) {
+            auto.runAuto(false);
+        }
+
+        if(gamepad1.start) {
+            auto.resetPos(AutoConstants.SAMPLE_SCORE);
+        }
     }
 }
