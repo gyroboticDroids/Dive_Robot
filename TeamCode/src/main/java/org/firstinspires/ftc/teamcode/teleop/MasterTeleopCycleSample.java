@@ -74,13 +74,13 @@ public class MasterTeleopCycleSample extends OpMode {
         outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
         intake.setState(IntakeConstants.INTAKE_SUB_READY);
         hang.setState(HangConstants.START);
+
+        gamepad1.setLedColor(0, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override
     public void loop()
     {
-        gamepad1.setLedColor(0.24, 0.30, 0.14, Gamepad.LED_DURATION_CONTINUOUS);
-
         if(120 - teleopTimer.getElapsedTimeSeconds() < 30 && !hooksUp && !isHanging) {
             hang.setState(HangConstants.HANG_HOOKS_UP);
             hang.update();
@@ -175,7 +175,7 @@ public class MasterTeleopCycleSample extends OpMode {
     private boolean prevGp2Y = false;
     private boolean prevGp2B = false;
     private boolean disableReject = false;
-    private boolean prevGp1Start = false;
+    private boolean prevGp1Touchpad = false;
 
     void outtakeUpdate()
     {
@@ -237,17 +237,19 @@ public class MasterTeleopCycleSample extends OpMode {
             drive.driveBack(0);
         }
 
-        if(gamepad1.start && !prevGp1Start && !disableReject) {
+        if(gamepad1.touchpad && !prevGp1Touchpad && !disableReject) {
             disableReject = true;
-        } else if (gamepad1.start && !prevGp1Start && disableReject) {
+            gamepad1.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        } else if (gamepad1.touchpad && !prevGp1Touchpad && disableReject) {
             disableReject = false;
+            gamepad1.setLedColor(0, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
         }
 
         //Previous states and button presses
         prevOuttakeState = outtake.getState();
         prevGp2Y = gamepad2.y;
         prevGp2B = gamepad2.b;
-        prevGp1Start = gamepad1.start;
+        prevGp1Touchpad = gamepad1.touchpad;
     }
 
     //Variables used for intakeUpdate
@@ -342,7 +344,8 @@ public class MasterTeleopCycleSample extends OpMode {
             return;
         }
 
-        if(gamepad2.a && !outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) && !outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW) && !outtake.isBusy()) {
+        if(gamepad1.right_stick_button && !outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) && !outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW) && !outtake.isBusy()
+                && !intake.getState().equals(IntakeConstants.TRANSFER) && intake.getSampleColor() > 0 && !disableReject) {
             auto.runAuto(true);
         } else if (Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) > 0.05) {
             auto.runAuto(false);

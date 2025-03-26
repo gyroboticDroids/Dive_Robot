@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
-import com.pedropathing.localization.PoseUpdater;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.pathgen.Path;
@@ -80,11 +79,9 @@ public class AutoScoreSample {
                 if (robotInPos) {
                     if (actionState == -1) {
                         if(onsPath) {
-                            pathTimer.resetTimer();
+                            setActionState(5);
                             onsPath = false;
-                        }
-
-                        if(pathTimer.getElapsedTimeSeconds() > 0.5) {
+                        } else {
                             runAuto(false);
                         }
                     }
@@ -120,12 +117,21 @@ public class AutoScoreSample {
             case 2:
                 if (!outtake.isBusy()) {
                     if(intake.getSampleColor() > 0 && outtake.isSlidesAtSetpoint()) {
-                        runAuto(false);
+                        setActionState(15);
                         return;
                     }
 
                     outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+                    intake.setState(IntakeConstants.INTAKE_SUB_READY);
                     setActionState(10);
+                }
+
+                break;
+
+            case 5:
+                if (!outtake.isBusy()) {
+                    outtake.setState(OuttakeConstants.SCORE_SAMPLE);
+                    setActionState(-1);
                 }
 
                 break;
@@ -133,6 +139,21 @@ public class AutoScoreSample {
             case 10:
                 if (!outtake.isBusy()) {
                     setActionState(-1);
+                }
+                break;
+
+            case 15:
+                if(intake.getState().equals(IntakeConstants.INTAKE_SUB_READY) && outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
+                    setActionState(0);
+                }
+                else {
+                    if(!outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY) && !outtake.isBusy()) {
+                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+                    }
+
+                    if(!intake.getState().equals(IntakeConstants.INTAKE_SUB_READY) && !intake.isBusy()) {
+                        intake.setState(IntakeConstants.INTAKE_SUB_READY);
+                    }
                 }
                 break;
         }
@@ -188,11 +209,11 @@ public class AutoScoreSample {
             if(currentPos.getX() < 48) {
                 scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(AutoConstants.SAMPLE_SCORE.getX(), currentPos.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
                 scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
-                scoreSample.setZeroPowerAccelerationMultiplier(1.5);
+                scoreSample.setZeroPowerAccelerationMultiplier(2);
             } else if (currentPos.getY() > 86) {
                 scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(currentPos.getX(), AutoConstants.SAMPLE_SCORE.getY() - 20), new Point(AutoConstants.SAMPLE_SCORE)));
                 scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
-                scoreSample.setZeroPowerAccelerationMultiplier(1.5);
+                scoreSample.setZeroPowerAccelerationMultiplier(2);
             } else {
                 runAuto(false);
             }
@@ -203,9 +224,7 @@ public class AutoScoreSample {
             setActionState(-1);
         }
         else if(!followPath && prevFollow) {
-            if(follower.isBusy()) {
-                follower.breakFollowing();
-            }
+            follower.breakFollowing();
 
             scoreSample = null;
 
