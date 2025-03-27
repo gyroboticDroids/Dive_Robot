@@ -108,8 +108,10 @@ public class AutoScoreSample {
                 break;
 
             case 1:
-                if (!outtake.isBusy() && !intake.isBusy() && !outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE)) {
-                    outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+                if (!outtake.isBusy() && !intake.isBusy()) {
+                    if(!outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE)) {
+                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+                    }
                     setActionState(2);
                 }
                 break;
@@ -188,7 +190,7 @@ public class AutoScoreSample {
     }
 
     public boolean isPathing() {
-        return followPath && prevFollow;
+        return !(!followPath && !prevFollow);
     }
 
     boolean prevFollow = false;
@@ -208,11 +210,11 @@ public class AutoScoreSample {
 
             if(currentPos.getX() < 48) {
                 scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(AutoConstants.SAMPLE_SCORE.getX(), currentPos.getY()), new Point(AutoConstants.SAMPLE_SCORE)));
-                scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
+                scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading(), 0.7);
                 scoreSample.setZeroPowerAccelerationMultiplier(2);
             } else if (currentPos.getY() > 86) {
-                scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(currentPos.getX(), AutoConstants.SAMPLE_SCORE.getY() - 20), new Point(AutoConstants.SAMPLE_SCORE)));
-                scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
+                scoreSample = new Path(new BezierCurve(new Point(currentPos), new Point(currentPos.getX() + 2, AutoConstants.SAMPLE_SCORE.getY() - 25), new Point(AutoConstants.SAMPLE_SCORE)));
+                scoreSample.setLinearHeadingInterpolation(currentPos.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading(), 0.7);
                 scoreSample.setZeroPowerAccelerationMultiplier(2);
             } else {
                 runAuto(false);

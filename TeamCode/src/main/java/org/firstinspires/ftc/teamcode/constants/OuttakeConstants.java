@@ -16,7 +16,7 @@ public class OuttakeConstants {
     public static double SLIDES_HANGING_P_GAIN = 0.0077;
     public static double SLIDES_ACCURACY = 70;//
     public static double SLIDES_PIVOT_CLEAR = 400;//
-    public static double SLIDES_TRANSFER_CLEAR = 170;//
+    public static double SLIDES_TRANSFER_CLEAR = 100;//
 
     public static double EXTENSION_START = 0.68;//
     public static double EXTENSION_TRANSFER = 0.6;

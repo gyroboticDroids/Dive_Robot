@@ -165,6 +165,7 @@ public class MasterTeleopCycleSample extends OpMode {
         telemetry.addData("hanging", isHanging);
 
         telemetry.addLine("-------------------Auto----------------------");
+        telemetry.addData("is pathing", auto.isPathing());
 
         //Updates telemetry
         telemetry.update();
@@ -316,6 +317,8 @@ public class MasterTeleopCycleSample extends OpMode {
         prevIntakeState = intake.getState();
     }
 
+    private boolean prevGp1Start = false;
+
     void hangUpdate()
     {
         //Sets if the robot is hanging
@@ -325,18 +328,22 @@ public class MasterTeleopCycleSample extends OpMode {
         if(!hang.isBusy())
         {
             //All buttons and statements that change hang states
-            if (gamepad1.dpad_down) {
+            if (gamepad1.dpad_right) {
                 hang.setState(HangConstants.START);
-            } else if (gamepad1.dpad_up) {
+            } else if (gamepad1.start && !prevGp1Start && (hang.getState().equals(HangConstants.HANG_HOOKS_UP) || hang.getState().equals(HangConstants.START))) {
                 hang.setState(HangConstants.HANG_READY);
                 intake.setState(IntakeConstants.START);
-            } else if (gamepad1.start && hang.getState().equals(HangConstants.HANG_READY)) {
+            } else if (gamepad1.start && !prevGp1Start && hang.getState().equals(HangConstants.HANG_READY)) {
                 hang.setState(HangConstants.LVL_2);
             } else if (gamepad1.start && hang.getState().equals(HangConstants.LVL_2)) {
                 hang.setState(HangConstants.LVL_3);
             }
         }
+
+        prevGp1Start = gamepad1.start;
     }
+
+    private boolean prevGp1RButton = false;
 
     void autoUpdate()
     {
@@ -344,15 +351,17 @@ public class MasterTeleopCycleSample extends OpMode {
             return;
         }
 
-        if(gamepad1.right_stick_button && !outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) && !outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW) && !outtake.isBusy()
-                && !intake.getState().equals(IntakeConstants.TRANSFER) && intake.getSampleColor() > 0 && !disableReject) {
+        if(gamepad1.dpad_left && !outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) && !outtake.getState().equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW) && !outtake.isBusy() && !disableReject) {
             auto.runAuto(true);
         } else if (Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) > 0.05) {
             auto.runAuto(false);
         }
 
-        if(gamepad1.start) {
+        if(gamepad1.right_stick_button && !prevGp1RButton) {
             auto.resetPos(AutoConstants.SAMPLE_SCORE);
+            gamepad1.rumble(0.5, 0.5, 300);
         }
+
+        prevGp1RButton = gamepad1.right_stick_button;
     }
 }
