@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.util.Timer;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.constants.TransferConstants;
 
+@Disabled
 @TeleOp(name = "Master Tele-op Sample Cycle", group = "Tele-op")
 public class MasterTeleopCycleSample extends OpMode {
 
@@ -166,6 +168,8 @@ public class MasterTeleopCycleSample extends OpMode {
 
         telemetry.addLine("-------------------Auto----------------------");
         telemetry.addData("is pathing", auto.isPathing());
+        telemetry.addData("is busy", auto.isBusy());
+        telemetry.addData("has path", auto.hasPath());
 
         //Updates telemetry
         telemetry.update();

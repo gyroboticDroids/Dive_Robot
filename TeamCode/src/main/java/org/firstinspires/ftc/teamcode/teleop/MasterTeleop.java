@@ -51,9 +51,6 @@ public class MasterTeleop extends OpMode {
                 .addStep(0.0, 0.0, 250)
                 .addStep(0.5, 0.5, 500)
                 .build();
-
-        //gamepad1.setLedColor(0.24, 0.30, 0.14, Gamepad.LED_DURATION_CONTINUOUS);
-        gamepad1.setLedColor(0, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override
@@ -73,7 +70,7 @@ public class MasterTeleop extends OpMode {
         intake.setState(IntakeConstants.INTAKE_SUB_READY);
         hang.setState(HangConstants.START);
 
-        gamepad1.setLedColor(0.24, 0.30, 0.14, Gamepad.LED_DURATION_CONTINUOUS);
+        gamepad1.setLedColor(0, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override
@@ -164,7 +161,7 @@ public class MasterTeleop extends OpMode {
     private boolean prevGp2Y = false;
     private boolean prevGp2B = false;
     private boolean disableReject = false;
-    private boolean prevGp1Start = false;
+    private boolean prevGp1Touchpad = false;
 
     void outtakeUpdate()
     {
@@ -226,17 +223,19 @@ public class MasterTeleop extends OpMode {
             drive.driveBack(0);
         }
 
-        if(gamepad1.start && !prevGp1Start && !disableReject) {
+        if(gamepad1.touchpad && !prevGp1Touchpad && !disableReject) {
             disableReject = true;
-        } else if (gamepad1.start && !prevGp1Start && disableReject) {
+            gamepad1.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        } else if (gamepad1.touchpad && !prevGp1Touchpad && disableReject) {
             disableReject = false;
+            gamepad1.setLedColor(0, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
         }
 
         //Previous states and button presses
         prevOuttakeState = outtake.getState();
         prevGp2Y = gamepad2.y;
         prevGp2B = gamepad2.b;
-        prevGp1Start = gamepad1.start;
+        prevGp1Touchpad = gamepad1.touchpad;
     }
 
     //Variables used for intakeUpdate

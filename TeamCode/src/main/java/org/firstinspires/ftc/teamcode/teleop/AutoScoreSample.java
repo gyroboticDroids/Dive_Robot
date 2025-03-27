@@ -189,8 +189,20 @@ public class AutoScoreSample {
         return follower.getPose();
     }
 
+    public boolean isBusy() {
+        return follower.isBusy();
+    }
+
     public boolean isPathing() {
         return !(!followPath && !prevFollow);
+    }
+
+    public boolean hasPath() {
+        return follower.getCurrentPath() != null;
+    }
+
+    public void breakFollowing() {
+        follower.breakFollowing();
     }
 
     boolean prevFollow = false;
@@ -202,6 +214,10 @@ public class AutoScoreSample {
         Drawing.drawPoseHistory(dashboardPoseTracker, "#4CAF50");
         Drawing.drawRobot(follower.getPose().getAsFTCStandardCoordinates(), "#4CAF50");
         Drawing.sendPacket();
+
+        if(!followPath) {
+            follower.breakFollowing();
+        }
 
         follower.update();
 
@@ -226,15 +242,14 @@ public class AutoScoreSample {
             setActionState(-1);
         }
         else if(!followPath && prevFollow) {
-            follower.breakFollowing();
-
             scoreSample = null;
+            currentPath = null;
 
             setPathState(-1);
             setActionState(-1);
         }
 
-        if(followPath) {
+        if(isPathing()) {
             autonomousPathUpdate();
             autonomousActionUpdate();
         }
