@@ -34,6 +34,7 @@ public class AutoConstants {
     public static Pose SPECIMEN_GRAB_1 = new Pose(7.125, 23, Math.toRadians(0));
 
     public static Pose SPECIMEN_PARK = new Pose(12, 20, Math.toRadians(0));
+    public static Pose SPECIMEN_PARK2 = new Pose(19, 124, Math.toRadians(-45));
 
     public static Point SPECIMEN_CONTROL_POINT = new Point(12, 55);
     public static Point SPECIMEN_UNJAM_POINT = new Point(30, 35);

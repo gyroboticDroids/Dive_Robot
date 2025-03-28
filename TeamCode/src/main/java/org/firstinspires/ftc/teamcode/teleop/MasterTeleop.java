@@ -135,6 +135,7 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("is hanging", outtake.isHanging());
         telemetry.addData("slide power", outtake.getSlidePower());
         telemetry.addData("disable reject", disableReject);
+        telemetry.addData("slide rate", outtake.getSlideRate());
 
         telemetry.addLine("-------------------Intake--------------------");
         telemetry.addData("intake state", intake.getState());
