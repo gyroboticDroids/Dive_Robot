@@ -38,8 +38,7 @@ public class AutoScoreSample {
     private Path scoreSample;
 
     public AutoScoreSample(HardwareMap hardwareMap, Outtake out, Intake in) {
-        Constants.setConstants(FConstants.class, LConstants.class);
-        follower = new Follower(hardwareMap);
+        follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
 
         follower.setStartingPose(TransferConstants.endPose);
         dashboardPoseTracker = new DashboardPoseTracker(follower.poseUpdater);

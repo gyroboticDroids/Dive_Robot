@@ -442,8 +442,7 @@ public class FiveSampleAutoFromSub extends OpMode {
         actionTimer = new Timer();
         actionTimer.resetTimer();
 
-        Constants.setConstants(FConstants.class, LConstants.class);
-        follower = new Follower(hardwareMap);
+        follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(AutoConstants.FIVE_SAMPLE_START);
         buildPaths();
 
