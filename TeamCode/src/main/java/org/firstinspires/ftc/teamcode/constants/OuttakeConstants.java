@@ -46,14 +46,13 @@ public class OuttakeConstants {
     public static final String RESET_POS = "reset pos";
     public static final String TRANSFER_INTAKE_READY = "transfer intake ready";
     public static final String TRANSFER_INTAKE = "transfer intake";
+    public static final String GRAB_SAMPLE_OFF_WALL = "grab sample off wall";
     public static final String SCORE_SAMPLE_READY_HIGH = "score sample ready high";
     public static final String SCORE_SAMPLE_READY_LOW = "score sample ready low";
     public static final String SCORE_SAMPLE = "score sample";
     public static final String GRAB_SPECIMEN_READY = "grab specimen ready";
     public static final String SCORE_SPECIMEN_READY_HIGH = "score specimen ready high";
-    public static final String GRAB_SAMPLE_OFF_WALL = "grab sample off wall";
     public static final String SCORE_SPECIMEN = "score specimen";
-
     public static final String SCORE_SPECIMEN_PRELOAD_READY = "score specimen preload ready";
     public static final String SCORE_SPECIMEN_PRELOAD = "score specimen preload";
 }
