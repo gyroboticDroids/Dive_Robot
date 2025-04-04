@@ -184,8 +184,7 @@ public class AutoScoreSpecimen {
         setPathState(-1);
         setActionState(-1);
 
-        Constants.setConstants(FConstants.class, LConstants.class);
-        follower = new Follower(hMap);
+        follower = new Follower(hMap, FConstants.class, LConstants.class);
         follower.setStartingPose(AutoConstants.SPECIMEN_GRAB);
 
         grabSpecimenReady = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
