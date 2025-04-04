@@ -4,9 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.util.Constants;
-import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -31,7 +29,6 @@ import pedroPathing.constants.LConstants;
  * @author Harrison Womack - 10158 Scott's Bots
  * @version 1.0, 3/12/2024
  */
-
 @Config
 @Autonomous (name = "Straight Back And Forth", group = "PIDF Tuning")
 public class StraightBackAndForth extends OpMode {
@@ -42,7 +39,6 @@ public class StraightBackAndForth extends OpMode {
     private boolean forward = true;
 
     private Follower follower;
-    private Timer timer;
 
     private Path forwards;
     private Path backwards;
@@ -53,15 +49,12 @@ public class StraightBackAndForth extends OpMode {
      */
     @Override
     public void init() {
-        Constants.setConstants(FConstants.class, LConstants.class);
-        follower = new Follower(hardwareMap);
+        follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
 
         forwards = new Path(new BezierLine(new Point(0,0, Point.CARTESIAN), new Point(DISTANCE,0, Point.CARTESIAN)));
-        forwards.setLinearHeadingInterpolation(0,0);
-        forwards.setZeroPowerAccelerationMultiplier(2.5);
+        forwards.setConstantHeadingInterpolation(0);
         backwards = new Path(new BezierLine(new Point(DISTANCE,0, Point.CARTESIAN), new Point(0,0, Point.CARTESIAN)));
-        backwards.setLinearHeadingInterpolation(0,0);
-        backwards.setZeroPowerAccelerationMultiplier(2.5);
+        backwards.setConstantHeadingInterpolation(0);
 
         follower.followPath(forwards);
 
@@ -70,8 +63,6 @@ public class StraightBackAndForth extends OpMode {
                             + " inches forward. The robot will go forward and backward continuously"
                             + " along the path. Make sure you have enough room.");
         telemetryA.update();
-
-        timer = new Timer();
     }
 
     /**
@@ -84,10 +75,10 @@ public class StraightBackAndForth extends OpMode {
         if (!follower.isBusy()) {
             if (forward) {
                 forward = false;
-                follower.followPath(backwards, true);
+                follower.followPath(backwards);
             } else {
                 forward = true;
-                follower.followPath(forwards, true);
+                follower.followPath(forwards);
             }
         }
 
