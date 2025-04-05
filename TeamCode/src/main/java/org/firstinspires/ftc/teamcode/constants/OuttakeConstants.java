@@ -7,7 +7,6 @@ public class OuttakeConstants {
     public static int SLIDES_SPECIMEN_COLLECT = 0;
     public static int SLIDES_SPECIMEN_HIGH_SCORING = 1038;
     public static int SLIDES_SPECIMEN_SCORE_PRELOAD = 1480;
-    public static int SLIDES_TRANSFER_UP = 520;
     public static int SLIDES_START = 0;
     public static int SLIDES_HANG = 3700;
     public static int SLIDES_MAX_LIMIT = 3700;
@@ -15,7 +14,7 @@ public class OuttakeConstants {
     public static double SLIDES_HANGING_P_GAIN = 0.0077;
     public static double SLIDES_ACCURACY = 70;
     public static double SLIDES_PIVOT_CLEAR = 400;
-    public static double SLIDES_TRANSFER_CLEAR = 100;
+    public static double SLIDES_CLEAR_WALL = 200;
 
     public static double PIVOT_TRANSFER_READY = 0.754;
     public static double PIVOT_TRANSFER = 0.823;

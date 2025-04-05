@@ -311,7 +311,7 @@ public class FiveSampleAutoFromSub extends OpMode {
                 }
 
                 if ((intake.getHorizontalSlidePos() > IntakeConstants.SLIDES_MAX - slideRangeSubtract - IntakeConstants.SLIDES_ACCURACY && actionTimer.getElapsedTimeSeconds() > 0.75) || intake.getSampleColor() > 0) {
-                    intake.setState(IntakeConstants.TRANSFER);
+                    intake.setState(IntakeConstants.TRANSFER_FAST);
                     setActionState(8);
                 }
                 break;

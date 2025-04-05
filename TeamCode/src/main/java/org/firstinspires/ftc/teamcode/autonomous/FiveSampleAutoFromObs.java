@@ -114,7 +114,7 @@ public class FiveSampleAutoFromObs extends OpMode {
 
             case 1:
                 if (robotInPos) {
-                    if (actionState == -1 || intake.getState().equals(IntakeConstants.TRANSFER)) {
+                    if (actionState == -1 || intake.getState().equals(IntakeConstants.TRANSFER_FAST)) {
                         if(onsScoreState) {
                             intakeReady = false;
                             setActionState(20);
@@ -291,7 +291,7 @@ public class FiveSampleAutoFromObs extends OpMode {
                         onsTimerState = false;
                     }
                     if (actionTimer.getElapsedTimeSeconds() > 0.2) {
-                        intake.setState(IntakeConstants.TRANSFER);
+                        intake.setState(IntakeConstants.TRANSFER_FAST);
                         setActionState(8);
                     }
                 }
@@ -411,7 +411,7 @@ public class FiveSampleAutoFromObs extends OpMode {
                     }
                     if (actionTimer.getElapsedTimeSeconds() > 0.4) {
                         if(intakeReady) {
-                            intake.setState(IntakeConstants.TRANSFER);
+                            intake.setState(IntakeConstants.TRANSFER_FAST);
                             setActionState(23);
                         }
                     }

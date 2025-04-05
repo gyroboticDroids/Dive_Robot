@@ -342,7 +342,7 @@ public class SixSampleAuto extends OpMode {
                         onsTimerState = false;
                     }
                     if (actionTimer.getElapsedTimeSeconds() > 0.5 || intake.getSampleColor() > 0) {
-                        intake.setState(IntakeConstants.TRANSFER);
+                        intake.setState(IntakeConstants.TRANSFER_FAST);
                         setActionState(8);
                     }
                 }
@@ -473,7 +473,7 @@ public class SixSampleAuto extends OpMode {
                     }
                     if (actionTimer.getElapsedTimeSeconds() > 0.75 || intake.getSampleColor() > 0) {
                         if(intakeReady) {
-                            intake.setState(IntakeConstants.TRANSFER);
+                            intake.setState(IntakeConstants.TRANSFER_FAST);
                             setActionState(23);
                         }
                     }

@@ -123,6 +123,29 @@ public class Intake {
                 }
                 break;
 
+            case IntakeConstants.TRANSFER_FAST:
+                if(onsSetState && hardware.intakeSlide.getCurrentPosition() > IntakeConstants.SLIDES_OUT) {
+                    intakeSpeed(IntakeConstants.INTAKE_SLOW_FORWARD);
+                }
+
+                hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
+
+                if (!intakeWheelsKeepSpinning || (hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset) < IntakeConstants.SLIDES_OUT){
+                    intakeSpeed(IntakeConstants.INTAKE_STOP);
+                }
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.4) {
+                    horizontalPosition = IntakeConstants.SLIDES_TRANSFER;
+                } else {
+                    horizontalPosition = IntakeConstants.SLIDES_OUT;
+                }
+
+                if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset, horizontalPosition, IntakeConstants.SLIDES_ACCURACY))
+                {
+                    isBusy = false;
+                }
+                break;
+
             case IntakeConstants.REJECT:
                 intakeSpeed(IntakeConstants.INTAKE_REVERSE);
                 hardware.intakePivot.setPosition(IntakeConstants.PIVOT_INTERMEDIATE);

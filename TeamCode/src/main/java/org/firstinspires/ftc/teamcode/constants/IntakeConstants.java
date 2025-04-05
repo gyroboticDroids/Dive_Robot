@@ -24,6 +24,7 @@ public class IntakeConstants {
     //States
     public static final String START = "start";
     public static final String TRANSFER = "transfer";
+    public static final String TRANSFER_FAST = "transfer fast";
     public static final String INTAKE_SUB_READY = "intake sub ready";
     public static final String INTAKE = "intake";
     public static final String REJECT = "reject";
