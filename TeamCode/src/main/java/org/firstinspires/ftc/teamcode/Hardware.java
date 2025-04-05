@@ -20,7 +20,6 @@ public class Hardware {
     public DcMotor outtakeSlide1;
     public DcMotor outtakeSlide2;
 
-    public Servo outtakeExtension;
     public Servo outtakePivot;
     public Servo outtakeWrist;
     public Servo outtakeClaw;
@@ -52,7 +51,6 @@ public class Hardware {
         //Outtake
         outtakeSlide1 = hardwareMap.get(DcMotor.class, "vertSlide1");
         outtakeSlide2 = hardwareMap.get(DcMotor.class, "vertSlide2");
-        outtakeExtension = hardwareMap.get(Servo.class, "extension");
         outtakePivot = hardwareMap.get(Servo.class, "pivot");
         outtakeWrist = hardwareMap.get(Servo.class, "wrist");
         outtakeClaw = hardwareMap.get(Servo.class, "claw");
