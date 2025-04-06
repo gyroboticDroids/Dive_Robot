@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5 + 1 auto pushing", group = "autonomous specimens", preselectTeleOp = "Master Tele-op")
+@Autonomous(name = "5 + 1", group = "autonomous specimens", preselectTeleOp = "Master Tele-op")
 public class FiveSpecimenOneSampleAutoPushing extends OpMode {
     private static final double SLOW_ZERO_POWER_ACCEL = 1.5;
 
@@ -71,7 +71,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         grabSpecimen1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_PUSHING7), new Point(AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING)));
         grabSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_PUSHING7.getHeading(), AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING.getHeading());
-        grabSpecimen1.setZeroPowerAccelerationMultiplier(1.5);
+        grabSpecimen1.setZeroPowerAccelerationMultiplier(1.3);
 
         unjamSample = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING), AutoConstants.SPECIMEN_UNJAM_POINT, new Point(AutoConstants.SPECIMEN_GRAB)));
         unjamSample.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
@@ -83,7 +83,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         grabSpecimenReady2 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimenReady2.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
-        grabSpecimenReady2.setZeroPowerAccelerationMultiplier(1.5);
+        grabSpecimenReady2.setZeroPowerAccelerationMultiplier(1.3);
 
         scoreSpecimen2 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB),
                 AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3, new Point(AutoConstants.SPECIMEN_SCORE)));
@@ -92,7 +92,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         grabSpecimenReady3 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimenReady3.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
-        grabSpecimenReady3.setZeroPowerAccelerationMultiplier(1.5);
+        grabSpecimenReady3.setZeroPowerAccelerationMultiplier(1.3);
 
         scoreSpecimen3 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB),
                 AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3, new Point(AutoConstants.SPECIMEN_SCORE)));
@@ -101,7 +101,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         grabSpecimenReady4 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimenReady4.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
-        grabSpecimenReady4.setZeroPowerAccelerationMultiplier(1.5);
+        grabSpecimenReady4.setZeroPowerAccelerationMultiplier(1.3);
 
         scoreSpecimen4 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB),
                 AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3, new Point(AutoConstants.SPECIMEN_SCORE)));
@@ -110,15 +110,15 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         grabSampleReady = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSampleReady.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
-        grabSampleReady.setZeroPowerAccelerationMultiplier(1.5);
+        grabSampleReady.setZeroPowerAccelerationMultiplier(1.3);
 
-        scoreSample = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SAMPLE_SCORE)));
-        scoreSample.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
-        scoreSample.setZeroPowerAccelerationMultiplier(3);
+        scoreSample = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SPECIMEN_GRAB.getX() + 5, AutoConstants.SPECIMEN_GRAB.getY() + 7), new Point(AutoConstants.SAMPLE_SCORE_OBS)));
+        scoreSample.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SAMPLE_SCORE_OBS.getHeading(), 0.5);
+        scoreSample.setZeroPowerAccelerationMultiplier(5);
 
-        park = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SPECIMEN_PARK2)));
-        park.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SPECIMEN_PARK2.getHeading(), 0.5);
-        park.setZeroPowerAccelerationMultiplier(4);
+        park = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_OBS), new Point(AutoConstants.SPECIMEN_PARK2)));
+        park.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_OBS.getHeading(), AutoConstants.SPECIMEN_PARK2.getHeading(), 0.5);
+        park.setZeroPowerAccelerationMultiplier(5);
     }
 
     public void autonomousPathUpdate() {
@@ -358,7 +358,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 17:
-                if(follower.getPose().getY() > 126) {
+                if(follower.getPose().getY() > AutoConstants.SAMPLE_SCORE_OBS.getY() - 3) {
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(8);
@@ -465,10 +465,8 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
     }
 
     public boolean isInPositionOnWall() {
-        if(MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1) &&
-                MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1)) {
-            return inPosTimer.getElapsedTimeSeconds() > 0.5 || MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 0.25) &&
-                    MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 0.25);
+        if(MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1)) {
+            return inPosTimer.getElapsedTimeSeconds() > 0.5 || MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 0.5);
         }
         else {
             inPosTimer.resetTimer();

@@ -11,10 +11,10 @@ public class OuttakeConstants {
     public static int SLIDES_START = 0;
     public static int SLIDES_HANG = 3750;
     public static int SLIDES_MAX_LIMIT = 3750;
-    public static double SLIDES_P_GAIN = 0.006;
+    public static double SLIDES_P_GAIN = 0.005;
     public static double SLIDES_HANGING_P_GAIN = 0.0077;
     public static double SLIDES_ACCURACY = 70;
-    public static double SLIDES_ACCURACY_DOWN = 25;
+    public static double SLIDES_ACCURACY_DOWN = 10;
     public static double SLIDES_PIVOT_CLEAR = 400;
     public static double SLIDES_CLEAR_WALL = 200;
     public static double SLIDES_CLEAR_INTAKE = 390;
@@ -24,7 +24,7 @@ public class OuttakeConstants {
     public static double PIVOT_SPECIMEN_READY = 0.952;//
     public static double PIVOT_SPECIMEN_SCORE = 0.898;//
     public static double PIVOT_SPECIMEN_SCORE_PRELOAD = 0.903;//
-    public static double PIVOT_OFF_WALL = 0.089;//
+    public static double PIVOT_OFF_WALL = 0.1;//
     public static double PIVOT_SAMPLE = 0.35;//
     public static double PIVOT_START = 0.861;//
     public static double PIVOT_RAISE = 0.52;//
@@ -34,12 +34,12 @@ public class OuttakeConstants {
     public static double WRIST_SPECIMEN_READY = 0.396;//
     public static double WRIST_SPECIMEN_SCORE = 0.492;//
     public static double WRIST_SPECIMEN_SCORE_PRELOAD = 0.349;//
-    public static double WRIST_OFF_WALL = 0.955;//
+    public static double WRIST_OFF_WALL = 0.952;//
     public static double WRIST_SAMPLE = 0.858;//
     public static double WRIST_START = 0.268;//
     public static double WRIST_RAISE = 0.599;//
 
-    public static double CLAW_OPEN = 0.191;
+    public static double CLAW_OPEN = 0.083;
     public static double CLAW_CLOSED = 0.690;
     public static double CLAW_CLOSED_PRELOAD = 0.768;
 
