@@ -27,7 +27,6 @@ public class TestMotors extends OpMode {
     public void start()
     {
         //outtake
-        hardware.outtakeExtension.setPosition(0.5);
         hardware.outtakePivot.setPosition(0.5);
         hardware.outtakeWrist.setPosition(0.5);
         hardware.outtakeClaw.setPosition(0.5);
@@ -116,7 +115,6 @@ public class TestMotors extends OpMode {
 
                 hardware.outtakePivot.setPosition(MathFunctions.clamp(hardware.outtakePivot.getPosition() + gamepad2.left_stick_y * SENSITIVITY, 0, 1));
                 hardware.outtakeWrist.setPosition(MathFunctions.clamp(hardware.outtakeWrist.getPosition() + gamepad2.right_stick_y * SENSITIVITY, 0, 1));
-                hardware.outtakeExtension.setPosition(MathFunctions.clamp(hardware.outtakeExtension.getPosition() + (gamepad2.right_trigger - gamepad2.left_trigger) * SENSITIVITY, 0, 1));
                 hardware.outtakeClaw.setPosition(MathFunctions.clamp(hardware.outtakeClaw.getPosition() + (gamepad1.right_trigger - gamepad1.left_trigger) * SENSITIVITY, 0, 1));
 
                 telemetry.addData("slide 1 power (g1 left stick y)", hardware.outtakeSlide1.getPower());
@@ -125,7 +123,6 @@ public class TestMotors extends OpMode {
 
                 telemetry.addData("pivot position (g2 left stick y)", hardware.outtakePivot.getPosition());
                 telemetry.addData("wrist position (g2 right stick y)", hardware.outtakeWrist.getPosition());
-                telemetry.addData("extension position (g2 triggers)", hardware.outtakeExtension.getPosition());
                 telemetry.addData("claw position (g1 triggers)", hardware.outtakeClaw.getPosition());
                 break;
 

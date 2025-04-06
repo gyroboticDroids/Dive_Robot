@@ -107,16 +107,15 @@ public class Outtake {
                 hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_TRANSFER);
                 hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_TRANSFER);
 
-                if (actionTimer.getElapsedTimeSeconds() > 0.05) {
+                if (actionTimer.getElapsedTimeSeconds() > 0.1) {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
                 }
 
-                if (actionTimer.getElapsedTimeSeconds() > 0.25) {
-                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_TRANSFER_READY);
-                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_TRANSFER_READY);
+                if (actionTimer.getElapsedTimeSeconds() > 0.3) {
+                    vertPosition = OuttakeConstants.SLIDES_TRANSFER_UP;
                 }
 
-                if (actionTimer.getElapsedTimeSeconds() > 0.35) {
+                if (isSlidesAtSetpoint() && actionTimer.getElapsedTimeSeconds() > 0.35) {
                     isBusy = false;
                 }
                 break;
@@ -128,9 +127,12 @@ public class Outtake {
 
                 hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
                 hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
-                hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
 
-                if (actionTimer.getElapsedTimeSeconds() > 0.25 && isSlidesAtSetpoint()) {
+                if(actionTimer.getElapsedTimeSeconds() > 0.4) {
+                    hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
+                }
+
+                if (actionTimer.getElapsedTimeSeconds() > 0.5 && isSlidesAtSetpoint()) {
                     isBusy = false;
                 }
                 break;

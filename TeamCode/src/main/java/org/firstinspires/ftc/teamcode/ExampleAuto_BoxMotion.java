@@ -12,6 +12,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import  com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import pedroPathing.constants.FConstants;
+import pedroPathing.constants.LConstants;
+
 /**
  * This is an example auto that showcases movement and control of three servos autonomously.
  * It is able to detect the team element using a huskylens and then use that information to go to the correct spike mark and backdrop position.
@@ -245,7 +248,7 @@ public class ExampleAuto_BoxMotion extends OpMode {
 
         opmodeTimer.resetTimer();
 
-        follower = new Follower(hardwareMap);
+        follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(startPose);
     }
 

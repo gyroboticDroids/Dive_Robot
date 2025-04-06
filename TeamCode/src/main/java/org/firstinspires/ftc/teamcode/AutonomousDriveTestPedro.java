@@ -143,8 +143,7 @@ public class AutonomousDriveTestPedro extends OpMode {
     public void init() {
         pathTimer = new Timer();
 
-        Constants.setConstants(FConstants.class, LConstants.class);
-        follower = new Follower(hardwareMap);
+        follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(startPose);
     }
 
