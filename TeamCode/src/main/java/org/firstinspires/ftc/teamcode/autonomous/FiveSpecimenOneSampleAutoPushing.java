@@ -28,6 +28,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
     private Follower follower;
     private Timer pathTimer;
     private Timer actionTimer;
+    private Timer inPosTimer;
     private Intake intake;
     private Outtake outtake;
     private int pathState = -1;
@@ -195,7 +196,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 8:
-                if(robotInPos || !ons) {
+                if(isInPositionOnWall() || !ons) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.3) {
                         if(ons){
                             setActionState(0);
@@ -238,7 +239,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 10:
-                if(robotInPos) {
+                if(isInPositionOnWall()) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.3) {
                         if(ons){
                             setActionState(0);
@@ -272,7 +273,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 12:
-                if(robotInPos) {
+                if(isInPositionOnWall()) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.3) {
                         if(ons){
                             setActionState(0);
@@ -306,7 +307,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 14:
-                if(robotInPos) {
+                if(isInPositionOnWall()) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.3) {
                         if(ons){
                             setActionState(0);
@@ -340,7 +341,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 16:
-                if(robotInPos) {
+                if(isInPositionOnWall()) {
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(5);
@@ -463,6 +464,18 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
         actionTimer.resetTimer();
     }
 
+    public boolean isInPositionOnWall() {
+        if(MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 1) &&
+                MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 1)) {
+            return inPosTimer.getElapsedTimeSeconds() > 0.5 || MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getX(), follower.getPose().getX(), 0.25) &&
+                    MathFunctions.roughlyEquals(currentPath.getLastControlPoint().getY(), follower.getPose().getY(), 0.25);
+        }
+        else {
+            inPosTimer.resetTimer();
+            return false;
+        }
+    }
+
     @Override
     public void init()
     {
@@ -473,6 +486,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         pathTimer = new Timer();
         actionTimer = new Timer();
+        inPosTimer = new Timer();
 
         follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(AutoConstants.SPECIMEN_START);
@@ -507,6 +521,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
     public void start() {
         pathTimer.resetTimer();
         actionTimer.resetTimer();
+        inPosTimer.resetTimer();
         intake.setState(IntakeConstants.START);
         setPathState(0);
     }
@@ -534,6 +549,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
         telemetry.addData("outtake state", outtake.getState());
         telemetry.addData("hori slide pos", intake.getHorizontalSlidePos());
         telemetry.addData("hori slide setpoint", intake.getHorizontalPosition());
+        telemetry.addData("is in pos off wall", isInPositionOnWall());
         telemetry.addData("intake is busy", intake.isBusy());
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());

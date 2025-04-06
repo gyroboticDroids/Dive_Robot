@@ -115,7 +115,7 @@ public class Outtake {
                     vertPosition = OuttakeConstants.SLIDES_TRANSFER_UP;
                 }
 
-                if (isSlidesAtSetpoint() && actionTimer.getElapsedTimeSeconds() > 0.35) {
+                if (isSlidesAboveTransfer() && actionTimer.getElapsedTimeSeconds() > 0.35) {
                     isBusy = false;
                 }
                 break;
@@ -128,11 +128,11 @@ public class Outtake {
                 hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
                 hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.4) {
+                if(actionTimer.getElapsedTimeSeconds() > 0.5) {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
                 }
 
-                if (actionTimer.getElapsedTimeSeconds() > 0.5 && isSlidesAtSetpoint()) {
+                if (actionTimer.getElapsedTimeSeconds() > 0.6 && isSlidesAtSetpoint()) {
                     isBusy = false;
                 }
                 break;
@@ -294,7 +294,7 @@ public class Outtake {
 
         motorPower = error * ((!hanging) ? OuttakeConstants.SLIDES_P_GAIN : OuttakeConstants.SLIDES_HANGING_P_GAIN);
 
-        if (hardware.outtakeSlide1.getCurrentPosition() < OuttakeConstants.SLIDES_ACCURACY && vertPosition == 0 && !hanging) {
+        if (hardware.outtakeSlide1.getCurrentPosition() < OuttakeConstants.SLIDES_ACCURACY_DOWN && vertPosition == 0 && !hanging) {
             if (vertOneShot) {
                 hardware.outtakeSlide1.setPower(0);
                 hardware.outtakeSlide2.setPower(0);
@@ -316,6 +316,10 @@ public class Outtake {
 
     public boolean isSlidesAtSetpoint() {
         return MathFunctions.roughlyEquals(hardware.outtakeSlide1.getCurrentPosition(), vertPosition, OuttakeConstants.SLIDES_ACCURACY);
+    }
+
+    public boolean isSlidesAboveTransfer() {
+        return hardware.outtakeSlide1.getCurrentPosition() > OuttakeConstants.SLIDES_CLEAR_INTAKE;
     }
 
     public void setHanging(boolean hanging) {
