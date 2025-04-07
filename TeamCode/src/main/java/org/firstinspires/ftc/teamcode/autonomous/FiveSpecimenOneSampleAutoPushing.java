@@ -20,7 +20,7 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "5 + 1", group = "autonomous specimens", preselectTeleOp = "Master Tele-op")
+@Autonomous(name = "5 + 1 / 5 + 0 no preload", group = "autonomous specimens", preselectTeleOp = "Master Tele-op")
 public class FiveSpecimenOneSampleAutoPushing extends OpMode {
     private static final double SLOW_ZERO_POWER_ACCEL = 1.5;
     private static final double COLLECT_ZERO_POWER_ACCEL = 1.4;

@@ -190,7 +190,7 @@ public class MasterTeleop extends OpMode {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
             } else if (gamepad2.b && !prevGp2B && (prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH))) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
-            } else if (gamepad2.a && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
+            } else if ((gamepad2.a || gamepad2.y) && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH); ///If misses scoring lower pivot
             } else if (gamepad2.b && !prevGp2B && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
