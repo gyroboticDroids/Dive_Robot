@@ -6,7 +6,6 @@ import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
-import com.pedropathing.util.Constants;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -131,8 +130,8 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
         scoreSample.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading(), 0.5);
         scoreSample.setZeroPowerAccelerationMultiplier(5);
 
-        park = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SPECIMEN_PARK2)));
-        park.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SPECIMEN_PARK2.getHeading(), 0.5);
+        park = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SPECIMEN_PARK)));
+        park.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SPECIMEN_PARK.getHeading(), 0.5);
         park.setZeroPowerAccelerationMultiplier(5);
     }
 
@@ -424,7 +423,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 17:
-                if(follower.getPose().getY() > AutoConstants.SAMPLE_SCORE.getY() - 5) {
+                if(follower.getPose().getY() > AutoConstants.SAMPLE_SCORE.getY() - 6) {
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(8);
@@ -562,6 +561,8 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
         outtake.setState(OuttakeConstants.SPEC_PRELOAD_START);
     }
 
+    boolean init = false;
+
     @Override
     public void init_loop()
     {
@@ -576,7 +577,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
         if (!intake.isBusy() && intake.getState().equals(IntakeConstants.RESET_POS))
         {
             intake.setState(IntakeConstants.TRANSFER);
-            telemetry.addLine("initialized!");
+            init = true;
         }
 
         if(gamepad1.dpad_left) {
@@ -586,6 +587,12 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
         }
 
         telemetry.addData("run with preload (g1 dpad left + right)", isScoreSample);
+
+        if(init) {
+            telemetry.addLine("initialized");
+        } else {
+            telemetry.addLine("NOT INITIALIZED");
+        }
         telemetry.update();
     }
 

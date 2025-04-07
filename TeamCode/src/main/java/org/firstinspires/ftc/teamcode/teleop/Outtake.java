@@ -153,7 +153,7 @@ public class Outtake {
                 break;
 
             case OuttakeConstants.SCORE_SPECIMEN_READY_HIGH:
-                if (specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.25) {
+                if (specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.2) {
                     vertPosition = OuttakeConstants.SLIDES_SPECIMEN_HIGH_SCORING;
                     specimenOnsSetState = false;
                 }
@@ -165,7 +165,7 @@ public class Outtake {
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SPECIMEN_READY);
                 }
 
-                if (actionTimer.getElapsedTimeSeconds() > 0.35 && isSlidesAtSetpoint()) {
+                if (actionTimer.getElapsedTimeSeconds() > 0.3 && isSlidesAtSetpoint()) {
                     isBusy = false;
                 }
                 break;
@@ -183,6 +183,10 @@ public class Outtake {
                 hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
 
                 if (actionTimer.getElapsedTimeSeconds() > 0.25) {
+                    vertPosition = OuttakeConstants.SLIDES_CLEAR_WALL;
+                }
+
+                if(hardware.outtakeSlide1.getCurrentPosition() > OuttakeConstants.SLIDES_CLEAR_WALL - 50) {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_RAISE);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
 
