@@ -10,7 +10,7 @@ public class AutoConstants {
     public static Pose SAMPLE_SCORE_OBS = new Pose(8, 128, Math.toRadians(-80));
     public static Pose SAMPLE_SCORE_RIGHT = new Pose(16, 133, Math.toRadians(-24));
     public static Pose SAMPLE_SCORE_CENTER = new Pose(18.5, 136, Math.toRadians(-13));
-    public static Pose SAMPLE_SCORE_LEFT = new Pose(18.25, 136, Math.toRadians(-8));
+    public static Pose SAMPLE_SCORE_LEFT = new Pose(18, 136, Math.toRadians(-8));
     public static Pose SAMPLE_OBS = new Pose(12, 55, Math.toRadians(-90));
     public static Pose SAMPLE_ALLIANCE_PARTNER = new Pose(5.5, 107, Math.toRadians(-90));
     public static Pose SAMPLE_RIGHT = new Pose(19, 131.5, Math.toRadians(-24));
@@ -52,7 +52,7 @@ public class AutoConstants {
     public static Point SPECIMEN_PUSHING_CONTROL_POINT6 = new Point(56, 16);
     public static Point SPECIMEN_PUSHING_CONTROL_POINT7 = new Point(14, 7);
 
-    public static Point SPECIMEN_SCORING_CONTROL_POINT1 = new Point(30, 55);
+    public static Point SPECIMEN_SCORING_CONTROL_POINT1 = new Point(30, 58);
     public static Point SPECIMEN_SCORING_CONTROL_POINT2 = new Point(30, 37);
     public static Point SPECIMEN_SCORING_CONTROL_POINT3 = new Point(15, 70);
 }

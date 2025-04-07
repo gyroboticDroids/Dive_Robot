@@ -112,12 +112,12 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
         grabSampleReady.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
         grabSampleReady.setZeroPowerAccelerationMultiplier(1.3);
 
-        scoreSample = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SPECIMEN_GRAB.getX() + 5, AutoConstants.SPECIMEN_GRAB.getY() + 7), new Point(AutoConstants.SAMPLE_SCORE_OBS)));
-        scoreSample.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SAMPLE_SCORE_OBS.getHeading(), 0.5);
+        scoreSample = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SAMPLE_SCORE)));
+        scoreSample.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading(), 0.5);
         scoreSample.setZeroPowerAccelerationMultiplier(5);
 
-        park = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_OBS), new Point(AutoConstants.SPECIMEN_PARK2)));
-        park.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_OBS.getHeading(), AutoConstants.SPECIMEN_PARK2.getHeading(), 0.5);
+        park = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SPECIMEN_PARK2)));
+        park.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SPECIMEN_PARK2.getHeading(), 0.5);
         park.setZeroPowerAccelerationMultiplier(5);
     }
 
