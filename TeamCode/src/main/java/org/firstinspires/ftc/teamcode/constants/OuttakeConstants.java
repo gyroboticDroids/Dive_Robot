@@ -39,12 +39,13 @@ public class OuttakeConstants {
     public static double WRIST_START = 0.268;//
     public static double WRIST_RAISE = 0.599;//
 
-    public static double CLAW_OPEN = 0.083;
-    public static double CLAW_CLOSED = 0.690;
-    public static double CLAW_CLOSED_PRELOAD = 0.768;
+    public static double CLAW_OPEN = 0.224;
+    public static double CLAW_CLOSED = 0.698;
+    public static double CLAW_CLOSED_PRELOAD = 0.88;
 
     //States
     public static final String START = "start";
+    public static final String SPEC_PRELOAD_START = "spec preload start";
     public static final String RESET_POS = "reset pos";
     public static final String TRANSFER_INTAKE_READY = "transfer intake ready";
     public static final String TRANSFER_INTAKE = "transfer intake";

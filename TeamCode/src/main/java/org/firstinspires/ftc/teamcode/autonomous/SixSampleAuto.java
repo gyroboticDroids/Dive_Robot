@@ -84,24 +84,24 @@ public class SixSampleAuto extends OpMode {
         scoreSampleLeft = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_LEFT), new Point(AutoConstants.SAMPLE_SCORE_LEFT)));
         scoreSampleLeft.setLinearHeadingInterpolation(AutoConstants.SAMPLE_LEFT.getHeading(), AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), 0.8);
 
-        collectSampleSub1 = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_LEFT), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(xSubPos1, AutoConstants.SAMPLE_SUB.getY())));
+        collectSampleSub1 = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_LEFT), AutoConstants.SAMPLE_COLLECT_CONTROL, new Point(xSubPos1, AutoConstants.SAMPLE_SUB.getY())));
         collectSampleSub1.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), AutoConstants.SAMPLE_SUB.getHeading());
         collectSampleSub1.setZeroPowerAccelerationMultiplier(3);
 
-        scoreSampleSub1 = new Path(new BezierCurve(new Point(xSubPos1, AutoConstants.SAMPLE_SUB.getY()), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE_LEFT)));
-        scoreSampleSub1.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SUB.getHeading(), AutoConstants.SAMPLE_SCORE_LEFT.getHeading());
+        scoreSampleSub1 = new Path(new BezierCurve(new Point(xSubPos1, AutoConstants.SAMPLE_SUB.getY()), AutoConstants.SAMPLE_COLLECT_CONTROL, new Point(AutoConstants.SAMPLE_SCORE)));
+        scoreSampleSub1.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SUB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
         scoreSampleSub1.setZeroPowerAccelerationMultiplier(3);
 
         toNext = new Path(new BezierCurve(new Point(xSubPos1, AutoConstants.SAMPLE_SUB.getY()), new Point((xSubPos1 + xSubPos2) / 2, AutoConstants.SAMPLE_SUB.getY() + 5), new Point(xSubPos2, AutoConstants.SAMPLE_SUB.getY())));
         toNext.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SUB.getHeading(), AutoConstants.SAMPLE_SUB.getHeading());
         toNext.setZeroPowerAccelerationMultiplier(2);
 
-        collectSampleSub2 = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_LEFT), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(xSubPos2, AutoConstants.SAMPLE_SUB.getY())));
-        collectSampleSub2.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), AutoConstants.SAMPLE_SUB.getHeading());
+        collectSampleSub2 = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), AutoConstants.SAMPLE_COLLECT_CONTROL, new Point(xSubPos2, AutoConstants.SAMPLE_SUB.getY())));
+        collectSampleSub2.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_SUB.getHeading());
         collectSampleSub2.setZeroPowerAccelerationMultiplier(3);
 
-        scoreSampleSub2 = new Path(new BezierCurve(new Point(xSubPos2, AutoConstants.SAMPLE_SUB.getY()), new Point(AutoConstants.SAMPLE_SUB.getX(), AutoConstants.SAMPLE_SCORE.getY()), new Point(AutoConstants.SAMPLE_SCORE_LEFT)));
-        scoreSampleSub2.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SUB.getHeading(), AutoConstants.SAMPLE_SCORE_LEFT.getHeading());
+        scoreSampleSub2 = new Path(new BezierCurve(new Point(xSubPos2, AutoConstants.SAMPLE_SUB.getY()), AutoConstants.SAMPLE_COLLECT_CONTROL, new Point(AutoConstants.SAMPLE_SCORE)));
+        scoreSampleSub2.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SUB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading());
         scoreSampleSub2.setZeroPowerAccelerationMultiplier(3);
 
         turnAndTouch = follower.pathBuilder()
@@ -113,8 +113,8 @@ public class SixSampleAuto extends OpMode {
                 .setZeroPowerAccelerationMultiplier(2)
                 .build();
 
-        touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE_LEFT), new Point(AutoConstants.SAMPLE_PARK.getX(), AutoConstants.SAMPLE_SCORE_LEFT.getY()), new Point(AutoConstants.SAMPLE_PARK)));
-        touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_LEFT.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
+        touchBar = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), AutoConstants.SAMPLE_COLLECT_CONTROL, new Point(AutoConstants.SAMPLE_PARK)));
+        touchBar.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SAMPLE_PARK.getHeading());
         touchBar.setZeroPowerAccelerationMultiplier(2);
 
         builtPaths = true;
@@ -138,7 +138,7 @@ public class SixSampleAuto extends OpMode {
                 if (robotInPos) {
                     if (actionState == -1) {
                         if(onsScoreState) {
-                            slideRangeSubtract = 150;
+                            slideRangeSubtract = 50;
                             setActionState(5);
                             onsScoreState = false;
                         }
@@ -164,7 +164,7 @@ public class SixSampleAuto extends OpMode {
                 if (robotInPos) {
                     if (actionState == -1) {
                         if(onsScoreState) {
-                            slideRangeSubtract = 450;
+                            slideRangeSubtract = 400;
                             setActionState(5);
                             onsScoreState = false;
                         }
@@ -224,12 +224,10 @@ public class SixSampleAuto extends OpMode {
                             onsScoreState = false;
                         }
                     }else if (actionState == 11) {
-                        if(onsMoveState) {
-                            currentPath = collectSampleSub1;
-                            currentHeading = currentPath.getHeadingGoal(1);
-                            follower.followPath(currentPath, true);
-                            setPathState(5);
-                        }
+                        currentPath = collectSampleSub1;
+                        currentHeading = currentPath.getHeadingGoal(1);
+                        follower.followPath(currentPath, true);
+                        setPathState(5);
                     }
                 }
                 break;
@@ -265,12 +263,10 @@ public class SixSampleAuto extends OpMode {
                             onsScoreState = false;
                         }
                     }else if (actionState == 11) {
-                        if(onsMoveState) {
-                            currentPath = collectSampleSub2;
-                            currentHeading = currentPath.getHeadingGoal(1);
-                            follower.followPath(currentPath, true);
-                            setPathState(7);
-                        }
+                        currentPath = collectSampleSub2;
+                        currentHeading = currentPath.getHeadingGoal(1);
+                        follower.followPath(currentPath, true);
+                        setPathState(7);
                     }
                 }
                 break;
@@ -326,7 +322,7 @@ public class SixSampleAuto extends OpMode {
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
-                if(!outtake.isBusy()) {
+                if(!outtake.isBusy() && MathFunctions.distance(follower.getPose(), currentPath.getLastControlPoint()) < 50) {
                     if(outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE) || outtake.getState().equals(OuttakeConstants.START)) {
                         outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
                     }
@@ -457,7 +453,7 @@ public class SixSampleAuto extends OpMode {
                         intake.horizontalSlidesManual(25);
                     }
 
-                    if(actionTimer.getElapsedTimeSeconds() > 2 || intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3))
+                    if(actionTimer.getElapsedTimeSeconds() > 2.5 || intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3))
                     {
                         if(intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3)) {
                             intake.setState(IntakeConstants.TRANSFER);

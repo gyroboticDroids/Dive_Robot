@@ -21,6 +21,8 @@ public class AutoConstants {
 
     public static Pose SAMPLE_SCORE = new Pose(14, 129, Math.toRadians(-45));
 
+    public static Point SAMPLE_COLLECT_CONTROL = new Point(60, 115);
+
     //Poses in SpecimenAuto
     public static Pose SPECIMEN_START = new Pose(7.125, 65.5, Math.toRadians(0));
     public static Pose SPECIMEN_START_NO_PRELOAD = new Pose(7.125, 54, Math.toRadians(0));

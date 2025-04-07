@@ -62,6 +62,21 @@ public class Outtake {
                 }
                 break;
 
+            case OuttakeConstants.SPEC_PRELOAD_START:
+                if (onsSetState) {
+                    vertPosition = OuttakeConstants.SLIDES_START;
+                }
+
+                hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED_PRELOAD);
+
+                hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_START);
+                hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_START);
+
+                if (actionTimer.getElapsedTimeSeconds() > 0.25 && isSlidesAtSetpoint()) {
+                    isBusy = false;
+                }
+                break;
+
             case IntakeConstants.RESET_POS:
                 if (onsSetState) {
                     hardware.outtakeSlide1.setPower(-0.3);
