@@ -186,7 +186,7 @@ public class Outtake {
                     vertPosition = OuttakeConstants.SLIDES_CLEAR_WALL;
                 }
 
-                if(hardware.outtakeSlide1.getCurrentPosition() > OuttakeConstants.SLIDES_CLEAR_WALL - 50) {
+                if(hardware.outtakeSlide1.getCurrentPosition() > OuttakeConstants.SLIDES_CLEAR_WALL - 100) {
                     hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_RAISE);
                     hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_RAISE);
 
