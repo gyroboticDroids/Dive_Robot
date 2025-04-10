@@ -241,6 +241,7 @@ public class MasterTeleop extends OpMode {
 
     //Variables used for intakeUpdate
     private String prevIntakeState = IntakeConstants.START;
+    private boolean prevIntakeOut = false;
 
     void intakeUpdate()
     {
@@ -264,8 +265,6 @@ public class MasterTeleop extends OpMode {
             } else if (gamepad2.left_bumper || (gamepad2.b || gamepad2.x) && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY)) && !prevIntakeState.equals(IntakeConstants.TRANSFER)) {
                 intake.setState(IntakeConstants.TRANSFER);
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);/*Outtake*/
-            } else if ((gamepad2.right_bumper || gamepad1.right_bumper) && (prevIntakeState.equals(IntakeConstants.TRANSFER) || prevIntakeState.equals(IntakeConstants.START) || prevIntakeState.equals(IntakeConstants.HALFWAY))) {
-                intake.setState(IntakeConstants.INTAKE_SUB_READY);
             } else if (gamepad2.dpad_down && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT)
                     || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
                 intake.setState(IntakeConstants.INTAKE);
@@ -279,6 +278,10 @@ public class MasterTeleop extends OpMode {
         }
         else if(gamepad2.dpad_right && !prevIntakeState.equals(IntakeConstants.RESET_POS)){
             intake.setState(IntakeConstants.HALFWAY);
+        }
+
+        if ((gamepad2.right_bumper || (gamepad1.right_bumper && !prevIntakeOut)) && (prevIntakeState.equals(IntakeConstants.TRANSFER) || prevIntakeState.equals(IntakeConstants.START) || prevIntakeState.equals(IntakeConstants.HALFWAY))) {
+            intake.setState(IntakeConstants.INTAKE_SUB_READY);
         }
 
         if (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT)) {
@@ -301,6 +304,7 @@ public class MasterTeleop extends OpMode {
 
         //Previous intake state
         prevIntakeState = intake.getState();
+        prevIntakeOut = gamepad1.right_bumper;
     }
 
     void hangUpdate()
@@ -319,7 +323,7 @@ public class MasterTeleop extends OpMode {
                 intake.setState(IntakeConstants.START);
             } else if (gamepad1.start && hang.getState().equals(HangConstants.HANG_READY)) {
                 hang.setState(HangConstants.LVL_2);
-            } else if (gamepad1.start && hang.getState().equals(HangConstants.LVL_2)) {
+            } else if (hang.getState().equals(HangConstants.LVL_2)) {
                 hang.setState(HangConstants.LVL_3);
             }
         }

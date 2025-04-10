@@ -87,6 +87,10 @@ public class Hang {
                 {
                     outtake.setVertPosition(OuttakeConstants.SLIDES_START);
                 }
+
+                if(outtake.isSlidesAtSetpoint()) {
+                    isBusy = false;
+                }
                 break;
 
             case HangConstants.TOUCH_BAR:

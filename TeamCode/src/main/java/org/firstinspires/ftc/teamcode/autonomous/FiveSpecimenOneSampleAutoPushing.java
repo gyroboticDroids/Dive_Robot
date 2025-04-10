@@ -126,13 +126,13 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
         grabSampleReady.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
         grabSampleReady.setZeroPowerAccelerationMultiplier(COLLECT_ZERO_POWER_ACCEL);
 
-        scoreSample = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SAMPLE_SCORE)));
+        scoreSample = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SAMPLE_SCORE.getX(), AutoConstants.SPECIMEN_GRAB.getY() + 20), new Point(AutoConstants.SAMPLE_SCORE)));
         scoreSample.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SAMPLE_SCORE.getHeading(), 0.5);
-        scoreSample.setZeroPowerAccelerationMultiplier(5);
+        scoreSample.setZeroPowerAccelerationMultiplier(4);
 
         park = new Path(new BezierCurve(new Point(AutoConstants.SAMPLE_SCORE), new Point(AutoConstants.SPECIMEN_PARK)));
         park.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE.getHeading(), AutoConstants.SPECIMEN_PARK.getHeading(), 0.5);
-        park.setZeroPowerAccelerationMultiplier(5);
+        park.setZeroPowerAccelerationMultiplier(4);
     }
 
     public void autonomousPathUpdate() {
@@ -170,6 +170,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 if(follower.getPose().getY() < 26) {
                     currentPath = pushing0;
                     follower.followPath(currentPath, true);
+                    intake.setState(IntakeConstants.INTAKE_SUB_READY);
                     setPathState(3);
                 }
                 break;
@@ -202,6 +203,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 if(follower.getPose().getY() < 8) {
                     currentPath = pushing4;
                     follower.followPath(currentPath, true);
+                    intake.setState(IntakeConstants.START);
                     setPathState(7);
                 }
                 break;

@@ -17,8 +17,6 @@ public class Intake {
     private boolean isBusy = false;
     private boolean intakeWheelsKeepSpinning = false;
 
-    private double timerOffset = 0;
-
     private double horizontalPosition = 0;
     private int intakeSlideHomeOffset = 0;
     private String state;
@@ -42,10 +40,12 @@ public class Intake {
 
                 intakeSpeed(IntakeConstants.INTAKE_STOP);
 
-                if (onsSetState)
+                if (onsIntakeState && actionTimer.getElapsedTimeSeconds() > 0.4)
                 {
                     horizontalPosition = IntakeConstants.SLIDES_START;
+                    onsIntakeState = false;
                 }
+
                 if(actionTimer.getElapsedTimeSeconds() > 1 && MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset, horizontalPosition, IntakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
@@ -70,9 +70,12 @@ public class Intake {
                 break;
 
             case IntakeConstants.INTAKE_SUB_READY:
-                if (onsSetState && !(horizontalPosition > IntakeConstants.SLIDES_OUT - 10))
-                {
-                    horizontalPosition = IntakeConstants.SLIDES_OUT;
+                if (onsSetState) {
+                    if(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset < IntakeConstants.SLIDES_OUT - 10) {
+                        horizontalPosition = IntakeConstants.SLIDES_OUT;
+                    } else {
+                        horizontalPosition = hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset;
+                    }
                 }
 
                 if(horizontalPosition > IntakeConstants.SLIDES_OUT - 10)
@@ -201,7 +204,6 @@ public class Intake {
         isBusy = true;
         actionTimer.resetTimer();
         state = s;
-        //Update();
     }
 
     public void horizontalSlidesManual(double position)
