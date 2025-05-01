@@ -35,7 +35,11 @@ public class Vision {
         List<LLResultTypes.DetectorResult> detections = result.getDetectorResults();
 
         for (LLResultTypes.DetectorResult detection : detections) {
-            samples.add(new SampleData(detection.getClassName(), detection.getTargetXDegrees(), detection.getTargetYDegrees(), 0));
+            double y = VisionConstants.CAMERA_HEIGHT * Math.tan(Math.toRadians(90 + detection.getTargetYDegrees() - VisionConstants.CAMERA_ANGLE)) - VisionConstants.Y_OFFSET;
+            double x = y / Math.sin(Math.toRadians(90 + detection.getTargetYDegrees() - VisionConstants.CAMERA_ANGLE)) * Math.tan(Math.toRadians(detection.getTargetXDegrees())) - VisionConstants.X_OFFSET;
+            double h = 0;
+            double ratio = Math.abs(detection.getTargetCorners().get(0).get(0) - detection.getTargetCorners().get(1).get(0)) / Math.abs(detection.getTargetCorners().get(0).get(1) - detection.getTargetCorners().get(3).get(1));
+            samples.add(new SampleData(detection.getClassName(), x, y, h, ratio));
         }
 
         return samples;
@@ -48,43 +52,19 @@ public class Vision {
             return null;
         }
 
-        int id = -1;
-        double bestNum = 100;
-
-        int count = 0;
+        SampleData bestSample = null;
+        double bestNum = 1000;
 
         for (SampleData sample : allSamples) {
             boolean correctColor = sample.name.equals(VisionConstants.YELLOW) || ((isAllianceRed) ? sample.name.equals(VisionConstants.RED) : sample.name.equals(VisionConstants.BLUE));
-            boolean correctHeading = MathFunctions.roughlyEquals(sample.heading, VisionConstants.IDEAL_HEADING, VisionConstants.ERROR);
+            double sum = Math.abs(sample.x) + Math.abs(sample.y);
 
-            if (correctColor && correctHeading) {
-                if (Math.abs(sample.tx) + Math.abs(sample.ty) + Math.abs(sample.heading) < bestNum) {
-                    bestNum = Math.abs(sample.tx) + Math.abs(sample.ty) + Math.abs(sample.heading);
-                    id = count;
-                }
+            if (correctColor && sum < bestNum) {
+                bestNum = sum;
+                bestSample = sample;
             }
-
-            count++;
         }
 
-        if (id == -1) {
-            return null;
-        } else {
-            return allSamples.get(id);
-        }
-    }
-
-    public Pose getBestSamplePosition(boolean isAllianceRed) {
-        SampleData sample = getBestSample(isAllianceRed);
-
-        if(sample == null) {
-            return null;
-        }
-
-        double y = VisionConstants.CAMERA_HEIGHT * Math.tan(Math.toRadians(90 - (sample.ty + VisionConstants.CAMERA_ANGLE)));
-        double x = y / Math.sin(Math.toRadians(sample.ty)) * Math.tan(Math.toRadians(sample.tx));
-        double h = sample.heading;
-
-        return new Pose(x, y, h);
+        return bestSample;
     }
 }

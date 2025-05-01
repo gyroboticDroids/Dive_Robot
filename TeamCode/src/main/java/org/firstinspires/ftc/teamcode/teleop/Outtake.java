@@ -20,8 +20,6 @@ public class Outtake {
     private boolean specimenOnsSetState = false;
     private boolean vertOneShot = true;
 
-    private boolean fromTransfer = true;
-
     private boolean hanging = false;
 
     private double vertPosition = 0;

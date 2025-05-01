@@ -239,7 +239,7 @@ public class SixSampleAuto extends OpMode {
                             setActionState(15);
                             onsScoreState = false;
                         }
-                    }else if (actionState == 17 && !intake.isBusy()) {
+                    }else if (actionState == 17 && actionTimer.getElapsedTimeSeconds() > 0.5) {
                         if(!missed) {
                             currentPath = scoreSampleSub1;
                             currentHeading = currentPath.getHeadingGoal(1);
@@ -249,7 +249,7 @@ public class SixSampleAuto extends OpMode {
                             currentPath = toNext;
                             currentHeading = currentPath.getHeadingGoal(1);
                             follower.followPath(currentPath, true);
-                            setPathState(7);
+                            setPathState(200);
                         }
                     }
                 }
@@ -271,6 +271,12 @@ public class SixSampleAuto extends OpMode {
                 }
                 break;
 
+            case 200:
+                if (actionState == -1) {
+                    setPathState(7);
+                }
+                break;
+
             case 7:
                 if (robotInPos) {
                     if (actionState == -1) {
@@ -279,7 +285,7 @@ public class SixSampleAuto extends OpMode {
                             setActionState(15);
                             onsScoreState = false;
                         }
-                    }else if (actionState == 17 && !intake.isBusy()) {
+                    }else if (actionState == 17 && actionTimer.getElapsedTimeSeconds() > 0.5) {
                         if(!missed) {
                             currentPath = scoreSampleSub2;
                             currentHeading = currentPath.getHeadingGoal(1);
@@ -450,7 +456,7 @@ public class SixSampleAuto extends OpMode {
                         onsTimerState = false;
                     }
                     else {
-                        intake.horizontalSlidesManual(25);
+                        intake.horizontalSlidesManual(22);
                     }
 
                     if(actionTimer.getElapsedTimeSeconds() > 2.5 || intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3))
@@ -471,16 +477,10 @@ public class SixSampleAuto extends OpMode {
 
             case 17:
                 if (!intake.isBusy()) {
-                    if (onsTimerState) {
-                        actionTimer.resetTimer();
-                        onsTimerState = false;
+                    if(intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3)) {
+                        outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
                     }
-                    if (actionTimer.getElapsedTimeSeconds() > 0.0) {
-                        if(intake.getSampleColor() == 1 || intake.getSampleColor() == ((allianceColorRed)? 2:3)) {
-                            outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
-                        }
-                        setActionState(0);
-                    }
+                    setActionState(0);
                 }
                 break;
 
