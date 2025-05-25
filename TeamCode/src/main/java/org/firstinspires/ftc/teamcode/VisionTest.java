@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.teleop.Vision;
 
 @TeleOp(name = "Vision Test", group = "Vision")
 public class VisionTest extends OpMode {
+    //Variables
     private static final double SENSITIVITY = 0.001;
     private Vision vision;
     private boolean sampleColor = true;
