@@ -295,7 +295,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
         }
         telemetry.addData("robot in pos", follower.atParametricEnd());
     }
-//TODO: Teleport to autoActionUpdate
+
     public void autonomousActionUpdate() {
         switch (actionState) {
             case 0:
