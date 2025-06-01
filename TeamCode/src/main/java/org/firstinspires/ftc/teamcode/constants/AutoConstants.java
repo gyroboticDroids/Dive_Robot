@@ -5,14 +5,10 @@ import com.pedropathing.pathgen.Point;
 
 public class AutoConstants {
     //Poses used in SampleAuto
-    public static Pose FIVE_SAMPLE_START = new Pose(7.125, 113.6, Math.toRadians(0));
-    public static Pose SIX_SAMPLE_START = new Pose(4.5, 111.6, Math.toRadians(-90));
-    public static Pose SAMPLE_SCORE_OBS = new Pose(8, 128, Math.toRadians(-80));
+    public static Pose SAMPLE_START = new Pose(7.125, 113.6, Math.toRadians(0));
     public static Pose SAMPLE_SCORE_RIGHT = new Pose(16, 133, Math.toRadians(-24));
     public static Pose SAMPLE_SCORE_CENTER = new Pose(18.5, 136, Math.toRadians(-13));
     public static Pose SAMPLE_SCORE_LEFT = new Pose(18, 136, Math.toRadians(-8));
-    public static Pose SAMPLE_OBS = new Pose(12, 55, Math.toRadians(-90));
-    public static Pose SAMPLE_ALLIANCE_PARTNER = new Pose(5.5, 107, Math.toRadians(-90));
     public static Pose SAMPLE_RIGHT = new Pose(19, 131.5, Math.toRadians(-24));
     public static Pose SAMPLE_CENTER = new Pose(20.5, 135.5, Math.toRadians(-13));
     public static Pose SAMPLE_LEFT = new Pose(19, 129.75, Math.toRadians(25));
@@ -26,7 +22,7 @@ public class AutoConstants {
     //Poses in SpecimenAuto
     public static Pose SPECIMEN_START = new Pose(7.125, 65.5, Math.toRadians(0));
     public static Pose SPECIMEN_START_NO_PRELOAD = new Pose(7.125, 54, Math.toRadians(0));
-    public static Pose SPECIMEN_SCORE = new Pose(41, 70, Math.toRadians(0));
+    public static Pose SPECIMEN_SCORE = new Pose(40.5, 70, Math.toRadians(0));
     public static Pose SPECIMEN_SCORE_PRELOAD = new Pose(41, 65.5, Math.toRadians(0));
 
     public static Pose SPECIMEN_GRAB_AFTER_PUSHING = new Pose(7.125, 13, Math.toRadians(0));

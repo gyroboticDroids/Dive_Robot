@@ -23,6 +23,7 @@ public class MasterTeleop extends OpMode {
 
     //Timer for automatic movements
     Timer teleopTimer;
+    Timer fpsTimer;
 
     //Keeps track of if the robot is about to hang
     private boolean isHanging = false;
@@ -32,6 +33,10 @@ public class MasterTeleop extends OpMode {
     private boolean rumble = false;
 
     Gamepad.RumbleEffect effect;
+
+    private double fps = 0;
+    private double minFps = 10000;
+    private double frames = 0;
 
     @Override
     public void init()
@@ -45,6 +50,7 @@ public class MasterTeleop extends OpMode {
 
         //Sets up timer
         teleopTimer = new Timer();
+        fpsTimer = new Timer();
 
         effect = new Gamepad.RumbleEffect.Builder()
                 .addStep(0.5, 0.5, 500)
@@ -64,6 +70,7 @@ public class MasterTeleop extends OpMode {
     {
         //Resets timer
         teleopTimer.resetTimer();
+        fpsTimer.resetTimer();
 
         //Sets all states to the starting states
         outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
@@ -76,6 +83,19 @@ public class MasterTeleop extends OpMode {
     @Override
     public void loop()
     {
+        //Fps
+        if (fpsTimer.getElapsedTimeSeconds() > 1) {
+            fps = frames;
+
+            if(fps < minFps) {
+                minFps = fps;
+            }
+
+            frames = 0;
+            fpsTimer.resetTimer();
+        }
+        frames++;
+
         if(120 - teleopTimer.getElapsedTimeSeconds() < 30 && !hooksUp && !isHanging) {
             hang.setState(HangConstants.HANG_HOOKS_UP);
 
@@ -103,7 +123,6 @@ public class MasterTeleop extends OpMode {
         outtakeUpdate();
         intakeUpdate();
         hangUpdate();
-        autoUpdate();
 
         //Updates classes
         outtake.update();
@@ -151,8 +170,9 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("hang busy", hang.isBusy());
         telemetry.addData("hanging", isHanging);
 
-        telemetry.addLine("-------------------Auto----------------------");
-
+        telemetry.addLine("-------------------FPS-----------------------");
+        telemetry.addData("fps", fps);
+        telemetry.addData("max fps", minFps);
         //Updates telemetry
         telemetry.update();
     }
@@ -327,13 +347,5 @@ public class MasterTeleop extends OpMode {
                 hang.setState(HangConstants.LVL_3);
             }
         }
-    }
-
-    void autoUpdate()
-    {
-        if(isHanging) {
-            return;
-        }
-
     }
 }

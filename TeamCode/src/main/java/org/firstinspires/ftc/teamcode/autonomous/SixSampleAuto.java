@@ -63,8 +63,8 @@ public class SixSampleAuto extends OpMode {
     private PathChain turnAndTouch;
 
     public void buildPaths() {
-        scorePreload = new Path(new BezierLine(new Point(AutoConstants.FIVE_SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE_RIGHT)));
-        scorePreload.setLinearHeadingInterpolation(AutoConstants.FIVE_SAMPLE_START.getHeading(), AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), 0.6);
+        scorePreload = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_START), new Point(AutoConstants.SAMPLE_SCORE_RIGHT)));
+        scorePreload.setLinearHeadingInterpolation(AutoConstants.SAMPLE_START.getHeading(), AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), 0.6);
 
         collectSampleRight = new Path(new BezierLine(new Point(AutoConstants.SAMPLE_SCORE_RIGHT), new Point(AutoConstants.SAMPLE_RIGHT)));
         collectSampleRight.setLinearHeadingInterpolation(AutoConstants.SAMPLE_SCORE_RIGHT.getHeading(), AutoConstants.SAMPLE_RIGHT.getHeading(), 0.8);
@@ -523,7 +523,7 @@ public class SixSampleAuto extends OpMode {
         actionTimer.resetTimer();
 
         follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
-        follower.setStartingPose(AutoConstants.FIVE_SAMPLE_START);
+        follower.setStartingPose(AutoConstants.SAMPLE_START);
         buildPaths();
 
         currentPath = scorePreload;
