@@ -32,11 +32,13 @@ public class MasterTeleop extends OpMode {
 
     private boolean rumble = false;
 
+    private boolean framerate = false;
+
     Gamepad.RumbleEffect effect;
 
-    private double fps = 0;
-    private double minFps = 10000;
-    private double frames = 0;
+    private double currentTime = 0;
+    private double maxTime = 0;
+    private double prevTime = 0;
 
     @Override
     public void init()
@@ -83,18 +85,14 @@ public class MasterTeleop extends OpMode {
     @Override
     public void loop()
     {
-        //Fps
-        if (fpsTimer.getElapsedTimeSeconds() > 1) {
-            fps = frames;
+        currentTime = time - prevTime;
+        prevTime = time;
 
-            if(fps < minFps) {
-                minFps = fps;
-            }
-
-            frames = 0;
-            fpsTimer.resetTimer();
+        if(currentTime > maxTime && framerate) {
+            maxTime = currentTime;
         }
-        frames++;
+
+        if(!framerate) framerate = true;
 
         if(120 - teleopTimer.getElapsedTimeSeconds() < 30 && !hooksUp && !isHanging) {
             hang.setState(HangConstants.HANG_HOOKS_UP);
@@ -171,8 +169,8 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("hanging", isHanging);
 
         telemetry.addLine("-------------------FPS-----------------------");
-        telemetry.addData("fps", fps);
-        telemetry.addData("max fps", minFps);
+        telemetry.addData("loop speed", currentTime * 1000);
+        telemetry.addData("min speed", maxTime * 1000);
         //Updates telemetry
         telemetry.update();
     }
@@ -216,7 +214,7 @@ public class MasterTeleop extends OpMode {
                 outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
             } else if (gamepad2.x && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE)) {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
-            }  else if (gamepad2.a && (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
+            }  else if ((gamepad2.a || gamepad1.left_bumper) && (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
                 outtake.setState(OuttakeConstants.SCORE_SAMPLE);
             } else if (gamepad2.x && (prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) ||
                     ((gamepad2.x || gamepad2.b) && prevOuttakeState.equals(OuttakeConstants.START)) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevOuttakeState.equals(OuttakeConstants.RESET_POS)) {
