@@ -68,7 +68,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         pushing3 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_PUSHING5), AutoConstants.SPECIMEN_PUSHING_CONTROL_POINT6 ,new Point(AutoConstants.SPECIMEN_PUSHING6)));
         pushing3.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_PUSHING5.getHeading(), AutoConstants.SPECIMEN_PUSHING6.getHeading());
-        pushing3.setZeroPowerAccelerationMultiplier(3.5);
+        pushing3.setZeroPowerAccelerationMultiplier(2.5);
 
         pushing4 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_PUSHING6), AutoConstants.SPECIMEN_PUSHING_CONTROL_POINT7, new Point(AutoConstants.SPECIMEN_PUSHING7)));
         pushing4.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_PUSHING6.getHeading(), AutoConstants.SPECIMEN_PUSHING7.getHeading());
