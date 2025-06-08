@@ -22,7 +22,7 @@ public class AutoConstants {
     //Poses in SpecimenAuto
     public static Pose SPECIMEN_START = new Pose(7.125, 65.5, Math.toRadians(0));
     public static Pose SPECIMEN_START_NO_PRELOAD = new Pose(7.125, 54, Math.toRadians(0));
-    public static Pose SPECIMEN_SCORE = new Pose(40.5, 70, Math.toRadians(0));
+    public static Pose SPECIMEN_SCORE = new Pose(41, 70, Math.toRadians(0));
     public static Pose SPECIMEN_SCORE_PRELOAD = new Pose(41, 65.5, Math.toRadians(0));
 
     public static Pose SPECIMEN_GRAB_AFTER_PUSHING = new Pose(7.125, 13, Math.toRadians(0));
@@ -49,7 +49,7 @@ public class AutoConstants {
     public static Point SPECIMEN_PUSHING_CONTROL_POINT6 = new Point(56, 16);
     public static Point SPECIMEN_PUSHING_CONTROL_POINT7 = new Point(14, 7);
 
-    public static Point SPECIMEN_SCORING_CONTROL_POINT1 = new Point(30, 58);
+    public static Point SPECIMEN_SCORING_CONTROL_POINT1 = new Point(32, 58);
     public static Point SPECIMEN_SCORING_CONTROL_POINT2 = new Point(30, 37);
     public static Point SPECIMEN_SCORING_CONTROL_POINT3 = new Point(15, 70);
 }

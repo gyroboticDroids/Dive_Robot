@@ -53,7 +53,7 @@ public class SixSampleAuto extends OpMode {
     private boolean builtPaths = false;
     private boolean intakeReady = true;
     private boolean missed = false;
-    private boolean robotInPos = false;
+    private boolean robotAtPosition = false;
 
     private Path scorePreload, collectSampleRight, scoreSampleRight, collectSampleCenter, scoreSampleCenter, collectSampleLeft, scoreSampleLeft,
             collectSampleSub1, scoreSampleSub1, collectSampleSub2, scoreSampleSub2, toNext, touchBar;
@@ -119,6 +119,7 @@ public class SixSampleAuto extends OpMode {
     }
 
     public void autonomousPathUpdate() {
+        boolean robotInPos = follower.getCurrentTValue() >= 0.99;
         switch (pathState) {
             case 0:
                 autoTimer.resetTimer();
@@ -128,8 +129,8 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 1:
-                if (follower.atParametricEnd() || robotInPos) {
-                    robotInPos = true;
+                if (robotInPos || robotAtPosition) {
+                    robotAtPosition = true;
                     if (actionState == -1) {
                         if(onsScoreState) {
                             slideRangeSubtract = 50;
@@ -144,7 +145,7 @@ public class SixSampleAuto extends OpMode {
                     } else if (outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                         if(onsMoveState) {
                             follower.followPath(collectSampleRight);
-                            robotInPos = false;
+                            robotAtPosition = false;
                             onsMoveState = false;
                         }
                     }
@@ -152,8 +153,8 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 2:
-                if (follower.atParametricEnd() || robotInPos) {
-                    robotInPos = true;
+                if (robotInPos || robotAtPosition) {
+                    robotAtPosition = true;
                     if (actionState == -1) {
                         if(onsScoreState) {
                             slideRangeSubtract = 400;
@@ -168,7 +169,7 @@ public class SixSampleAuto extends OpMode {
                     }else if (outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                         if(onsMoveState) {
                             follower.followPath(collectSampleCenter);
-                            robotInPos = false;
+                            robotAtPosition = false;
                             onsMoveState = false;
                         }
                     }
@@ -176,8 +177,8 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 3:
-                if (follower.atParametricEnd() || robotInPos) {
-                    robotInPos = true;
+                if (robotInPos || robotAtPosition) {
+                    robotAtPosition = true;
                     if (actionState == -1) {
                         if(onsScoreState) {
                             slideRangeSubtract = 200;
@@ -193,7 +194,7 @@ public class SixSampleAuto extends OpMode {
                     }else if (outtake.getState().equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
                         if(onsMoveState) {
                             follower.followPath(collectSampleLeft);
-                            robotInPos = false;
+                            robotAtPosition = false;
                             onsMoveState = false;
                         }
                         else {
@@ -204,8 +205,8 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 4:
-                if (follower.atParametricEnd() || robotInPos) {
-                    robotInPos = true;
+                if (robotInPos || robotAtPosition) {
+                    robotAtPosition = true;
                     if (actionState == -1) {
                         if(onsScoreState) {
                             setActionState(10);
@@ -219,8 +220,8 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 5:
-                if (follower.atParametricEnd() || robotInPos) {
-                    robotInPos = true;
+                if (robotInPos || robotAtPosition) {
+                    robotAtPosition = true;
                     if (actionState == -1) {
                         if(onsScoreState) {
                             setActionState(15);
@@ -239,8 +240,8 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 6:
-                if (follower.atParametricEnd() || robotInPos) {
-                    robotInPos = true;
+                if (robotInPos || robotAtPosition) {
+                    robotAtPosition = true;
                     if (actionState == -1) {
                         if(onsScoreState) {
                             setActionState(10);
@@ -260,8 +261,8 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 7:
-                if (follower.atParametricEnd() || robotInPos) {
-                    robotInPos = true;
+                if (robotInPos || robotAtPosition) {
+                    robotAtPosition = true;
                     if (actionState == -1) {
                         if(onsScoreState) {
                             hang.setState(HangConstants.TOUCH_BAR);
@@ -281,8 +282,8 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 8:
-                if (follower.atParametricEnd() || robotInPos) {
-                    robotInPos = true;
+                if (robotInPos || robotAtPosition) {
+                    robotAtPosition = true;
                     if (actionState == -1 || actionState == 11) {
                         if(onsScoreState){
                             setActionState(10);
@@ -296,11 +297,13 @@ public class SixSampleAuto extends OpMode {
                 break;
 
             case 10:
-                if (follower.atParametricEnd()) {
+                if (robotInPos) {
                     setPathState(-1);
                 }
                 break;
         }
+
+        telemetry.addData("robot in pos", robotInPos);
     }
 
     public void autonomousActionUpdate() {
@@ -475,7 +478,7 @@ public class SixSampleAuto extends OpMode {
         pathState = pState;
         onsScoreState = true;
         onsMoveState = true;
-        robotInPos = false;
+        robotAtPosition = false;
         pathTimer.resetTimer();
     }
 
@@ -624,7 +627,7 @@ public class SixSampleAuto extends OpMode {
         telemetry.addData("hori slide pos", intake.getHorizontalSlidePos());
         telemetry.addData("hori slide setpoint", intake.getHorizontalPosition());
         telemetry.addData("intake is busy", intake.isBusy());
-        telemetry.addData("robot in pos", follower.atParametricEnd());
+        telemetry.addData("At parametric end", follower.atParametricEnd());
         telemetry.addData("x", follower.getPose().getX());
         telemetry.addData("y", follower.getPose().getY());
         telemetry.addData("heading", follower.getPose().getHeading());

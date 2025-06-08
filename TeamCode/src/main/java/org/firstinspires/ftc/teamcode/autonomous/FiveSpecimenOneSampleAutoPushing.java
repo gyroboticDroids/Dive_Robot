@@ -23,12 +23,12 @@ import pedroPathing.constants.LConstants;
 @Autonomous(name = "5 + 1 / 5 + 0 no preload", group = "autonomous specimens", preselectTeleOp = "Master Tele-op")
 public class FiveSpecimenOneSampleAutoPushing extends OpMode {
     private static final double SLOW_ZERO_POWER_ACCEL = 1.5;
-    private static final double COLLECT_ZERO_POWER_ACCEL = 1.4;
+    private static final double COLLECT_ZERO_POWER_ACCEL = 1.6;
 
     private Follower follower;
     private Timer pathTimer;
     private Timer actionTimer;
-    private Timer inPosTimer;
+    private Timer runTimer;
     private Intake intake;
     private Outtake outtake;
     private int pathState = -1, actionState = -1;
@@ -90,14 +90,12 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 .addPath(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)))
                 .setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading())
                 .setZeroPowerAccelerationMultiplier(COLLECT_ZERO_POWER_ACCEL)
-                .setPathEndTValueConstraint(0.995)
                 .build();
 
         scoreSpecimen = follower.pathBuilder()
                 .addPath(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3, new Point(AutoConstants.SPECIMEN_SCORE)))
                 .setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading())
                 .setZeroPowerAccelerationMultiplier(SLOW_ZERO_POWER_ACCEL)
-                .setPathEndTValueConstraint(0.99)
                 .build();
 
         scoreSample = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SAMPLE_SCORE.getX(), AutoConstants.SPECIMEN_GRAB.getY() + 20), new Point(AutoConstants.SAMPLE_SCORE)));
@@ -110,6 +108,8 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
     }
 
     public void autonomousPathUpdate() {
+        boolean robotInPos = follower.getCurrentTValue() >= 0.985;
+
         switch (pathState) {
             case 100:
                 follower.followPath(startPushing);
@@ -124,7 +124,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 1:
-                if(follower.atParametricEnd() && actionState == -1) {
+                if(robotInPos && actionState == -1) {
                     follower.followPath(pushing);
                     setActionState(11);
                     setPathState(2);
@@ -132,7 +132,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 2:
-                if(follower.getPose().getY() < 26) {
+                if(robotInPos) {
                     follower.followPath(pushing0);
                     intake.setState(IntakeConstants.INTAKE_SUB_READY);
                     setPathState(3);
@@ -140,28 +140,28 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 3:
-                if(follower.atParametricEnd()) {
+                if(robotInPos) {
                     follower.followPath(pushing1);
                     setPathState(4);
                 }
                 break;
 
             case 4:
-                if(follower.getPose().getY() < 17) {
+                if(robotInPos) {
                     follower.followPath(pushing2);
                     setPathState(5);
                 }
                 break;
 
             case 5:
-                if(follower.atParametricEnd()) {
+                if(robotInPos) {
                     follower.followPath(pushing3);
                     setPathState(6);
                 }
                 break;
 
             case 6:
-                if(follower.getPose().getY() < 8) {
+                if(robotInPos) {
                     follower.followPath(pushing4);
                     intake.setState(IntakeConstants.START);
                     setPathState(7);
@@ -169,7 +169,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 7:
-                if(follower.atParametricEnd()) {
+                if(robotInPos) {
                     if(actionState == -1) {
                         follower.followPath(grabSpecimen1);
                         setPathState(8);
@@ -178,7 +178,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 8:
-                if(follower.atParametricEnd() || !ons) {
+                if(robotInPos || !ons) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.2) {
                         if(ons){
                             setActionState(0);
@@ -202,7 +202,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 9:
-                if(follower.atParametricEnd() || pathTimer.getElapsedTimeSeconds() > 3.5) {
+                if(robotInPos || pathTimer.getElapsedTimeSeconds() > 3.5) {
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(1);
@@ -218,7 +218,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 10:
-                if(follower.atParametricEnd() || !ons) {
+                if(robotInPos || !ons) {
                     if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.2) {
                         if(ons){
                             setActionState(0);
@@ -240,7 +240,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 15:
-                if(follower.atParametricEnd()) {
+                if(robotInPos) {
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(1);
@@ -262,7 +262,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 16:
-                if(follower.atParametricEnd() || !ons) {
+                if(robotInPos || !ons) {
                     if(actionState == -1) {
                         if (ons) {
                             setActionState(5);
@@ -290,10 +290,13 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                             setPathState(-1);
                         }
                     }
+                } else if(runTimer.getElapsedTimeSeconds() > 29.75) {
+                    setActionState(8);
+                    setPathState(-1);
                 }
                 break;
         }
-        telemetry.addData("robot in pos", follower.atParametricEnd());
+        telemetry.addData("robot in pos", robotInPos);
     }
 
     public void autonomousActionUpdate() {
@@ -320,10 +323,8 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
                 break;
 
             case 5:
-                if(actionTimer.getElapsedTimeSeconds() > 0) {
-                    outtake.setState(OuttakeConstants.GRAB_SAMPLE_OFF_WALL);
-                    setActionState(14);
-                }
+                outtake.setState(OuttakeConstants.GRAB_SAMPLE_OFF_WALL);
+                setActionState(14);
                 break;
 
             case 7:
@@ -393,7 +394,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
 
         pathTimer = new Timer();
         actionTimer = new Timer();
-        inPosTimer = new Timer();
+        runTimer = new Timer();
 
         follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(AutoConstants.SPECIMEN_START);
@@ -442,7 +443,7 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
     public void start() {
         pathTimer.resetTimer();
         actionTimer.resetTimer();
-        inPosTimer.resetTimer();
+        runTimer.resetTimer();
         intake.setState(IntakeConstants.START);
 
         if(isScoreSample) {
@@ -471,6 +472,8 @@ public class FiveSpecimenOneSampleAutoPushing extends OpMode {
         autonomousActionUpdate();
 
         // Feedback to Driver Hub
+        telemetry.addData("parametric end", follower.atParametricEnd());
+        telemetry.addData("t value", follower.getCurrentTValue());
         telemetry.addData("path state", pathState);
         telemetry.addData("action state", actionState);
         telemetry.addData("intake state", intake.getState());
