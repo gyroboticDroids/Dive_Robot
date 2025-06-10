@@ -18,7 +18,7 @@ public class Intake {
     private boolean intakeWheelsKeepSpinning = false;
 
     private double horizontalPosition = 0;
-    private int intakeSlideHomeOffset = 0;
+    private int intakeSlideHomeOffset;
     private String state;
 
     //Color sensor: 0 = none, 1 = yellow, 2 = red, 3 = blue
@@ -78,7 +78,7 @@ public class Intake {
                     }
                 }
 
-                if(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset > IntakeConstants.SLIDES_OUT - 10)
+                if(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset > IntakeConstants.SLIDES_OUT_CLEAR)
                 {
                     hardware.intakePivot.setPosition(IntakeConstants.PIVOT_INTERMEDIATE);
                     intakeSpeed(IntakeConstants.INTAKE_FORWARD);

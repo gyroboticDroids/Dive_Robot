@@ -96,7 +96,7 @@ public class SixSpec extends OpMode {
     }
 
     public void autonomousPathUpdate() {
-        boolean robotInPos = follower.getCurrentTValue() >= 0.985;
+        boolean robotInPos = follower.getCurrentTValue() >= 0.97;
 
         switch (pathState) {
             case 0:
@@ -116,9 +116,13 @@ public class SixSpec extends OpMode {
 
             case 2:
                 if(actionState == -1) {
-                    follower.followPath(intake1);
-                    setActionState(5);
-                    setPathState(3);
+                    if(ons) {
+                        follower.followPath(intake1);
+                        ons = false;
+                    } else if(follower.getCurrentTValue() > 0.5) {
+                        setActionState(5);
+                        setPathState(3);
+                    }
                 }
                 break;
 
@@ -298,7 +302,7 @@ public class SixSpec extends OpMode {
                 if(!outtake.isBusy()) {
                     if(pathState <= 4) {
                         intake.setState(IntakeConstants.INTAKE_SUB_READY);
-                        intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT + 500);
+                        intake.setHorizontalPosition(IntakeConstants.SLIDES_OUT + 300);
                     }
                     outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
                     setActionState(-1);
@@ -427,7 +431,7 @@ public class SixSpec extends OpMode {
         }
 
         x = MathFunctions.clamp(x, -7, 7);
-        y = MathFunctions.clamp(y, 0, (IntakeConstants.SLIDES_MAX - IntakeConstants.SLIDES_OUT) / IntakeConstants.SLIDES_TICKS_PER_INCH);
+        y = MathFunctions.clamp(y, 0, Math.floor((IntakeConstants.SLIDES_MAX - IntakeConstants.SLIDES_OUT) / IntakeConstants.SLIDES_TICKS_PER_INCH));
 
         telemetry.addLine("sample x: " + x + ", y: " + y + ", color: " + ((color == 2) ? "RED" : "BLUE"));
 

@@ -24,7 +24,7 @@ public class AutoConstants {
     public static Pose SPECIMEN_START_NO_PRELOAD = new Pose(7.125, 54, Math.toRadians(0));
     public static Pose SPECIMEN_SCORE = new Pose(41, 68.5, Math.toRadians(0));
     public static Pose SPECIMEN_SCORE1 = new Pose(41, 70, Math.toRadians(0));
-    //public static Pose SPECIMEN_SCORE_PRELOAD = new Pose(42, 65.5, Math.toRadians(0));
+    public static Pose SPECIMEN_SCORE_PRELOAD_OLD = new Pose(42, 65.5, Math.toRadians(0));
     public static Pose SPECIMEN_SCORE_PRELOAD = new Pose(42, 72, Math.toRadians(0));
 
     public static Pose SPECIMEN_GRAB_AFTER_PUSHING = new Pose(7.125, 13, Math.toRadians(0));
@@ -35,8 +35,8 @@ public class AutoConstants {
     public static Point SPECIMEN_CONTROL_POINT = new Point(12, 55);
     public static Point SPECIMEN_UNJAM_POINT = new Point(30, 35);
 
-    public static Pose SPECIMEN_INTAKE1 = new Pose(21, 23.5, Math.toRadians(0));
-    public static Pose SPECIMEN_INTAKE2 = new Pose(21, 13.5, Math.toRadians(0));
+    public static Pose SPECIMEN_INTAKE1 = new Pose(21, 24, Math.toRadians(0));
+    public static Pose SPECIMEN_INTAKE2 = new Pose(21, 14, Math.toRadians(0));
     public static Pose SPECIMEN_INTAKE3 = new Pose(22, 10.5, Math.toRadians(-18));
 
     public static Pose SPECIMEN_INTAKE_CONTROL_POINT = new Pose(21, 50, Math.toRadians(0));
@@ -59,6 +59,6 @@ public class AutoConstants {
     public static Point SPECIMEN_PUSHING_CONTROL_POINT7 = new Point(14, 7);
 
     public static Point SPECIMEN_SCORING_CONTROL_POINT1 = new Point(32, 58);
-    public static Point SPECIMEN_SCORING_CONTROL_POINT2 = new Point(30, 37);
+    public static Point SPECIMEN_SCORING_CONTROL_POINT2 = new Point(29, 37);
     public static Point SPECIMEN_SCORING_CONTROL_POINT3 = new Point(15, 70);
 }
