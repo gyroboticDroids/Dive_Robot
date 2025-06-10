@@ -38,7 +38,8 @@ public class SixSpec extends OpMode {
     private Path scorePreload, grabSpecimen1, scoreSpecimen1,
             intake1, intake2, intake3;
 
-    private PathChain[] grabSpecimenReady = new PathChain[4], scoreSpecimen = new PathChain[4];
+    //private PathChain[] grabSpecimenReady = new PathChain[4], scoreSpecimen = new PathChain[4];
+    private Path[] grabSpecimenReady = new Path[4], scoreSpecimen = new Path[4];
 
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE_PRELOAD)));
@@ -66,7 +67,7 @@ public class SixSpec extends OpMode {
         scoreSpecimen1.setZeroPowerAccelerationMultiplier(SCORE_ZERO_POWER_ACCEL);
 
         for (int i = 0; i < 4; i++) {
-            grabSpecimenReady[i] = follower.pathBuilder()
+/*            grabSpecimenReady[i] = follower.pathBuilder()
                     .addPath(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE.getX(), AutoConstants.SPECIMEN_SCORE.getY() + (i + 1) * 1.2),
                             AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, new Point(AutoConstants.SPECIMEN_GRAB)))
                     .setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading())
@@ -78,7 +79,17 @@ public class SixSpec extends OpMode {
                             new Point(AutoConstants.SPECIMEN_SCORE.getX(), AutoConstants.SPECIMEN_SCORE.getY() + (i + 1) * 1.2)))
                     .setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading())
                     .setZeroPowerAccelerationMultiplier(SCORE_ZERO_POWER_ACCEL)
-                    .build();
+                    .build();*/
+
+            grabSpecimenReady[i] = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE.getX(), AutoConstants.SPECIMEN_SCORE.getY() + (i + 1) * 1.2),
+                            AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, new Point(AutoConstants.SPECIMEN_GRAB)));
+            grabSpecimenReady[i].setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
+            grabSpecimenReady[i].setZeroPowerAccelerationMultiplier(COLLECT_ZERO_POWER_ACCEL);
+
+            scoreSpecimen[i] = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3,
+                            new Point(AutoConstants.SPECIMEN_SCORE.getX(), AutoConstants.SPECIMEN_SCORE.getY() + (i + 1) * 1.2)));
+            scoreSpecimen[i].setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
+            scoreSpecimen[i].setZeroPowerAccelerationMultiplier(SCORE_ZERO_POWER_ACCEL);
         }
     }
 
