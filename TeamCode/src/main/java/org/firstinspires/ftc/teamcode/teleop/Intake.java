@@ -71,14 +71,14 @@ public class Intake {
 
             case IntakeConstants.INTAKE_SUB_READY:
                 if (onsSetState) {
-                    if(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset < IntakeConstants.SLIDES_OUT - 10) {
+                    if(horizontalPosition < IntakeConstants.SLIDES_OUT - 10) {
                         horizontalPosition = IntakeConstants.SLIDES_OUT;
                     } else {
-                        horizontalPosition = hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset;
+                        //horizontalPosition = hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset;
                     }
                 }
 
-                if(horizontalPosition > IntakeConstants.SLIDES_OUT - 10)
+                if(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset > IntakeConstants.SLIDES_OUT - 10)
                 {
                     hardware.intakePivot.setPosition(IntakeConstants.PIVOT_INTERMEDIATE);
                     intakeSpeed(IntakeConstants.INTAKE_FORWARD);

@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
+import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.pathgen.Path;
-import com.pedropathing.pathgen.PathChain;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -23,7 +23,7 @@ import pedroPathing.constants.LConstants;
 @Autonomous(name = "6 + 0", group = "autonomous specimens", preselectTeleOp = "Master Tele-op")
 public class SixSpec extends OpMode {
     private static final double SCORE_ZERO_POWER_ACCEL = 1.4;
-    private static final double COLLECT_ZERO_POWER_ACCEL = 1.2;
+    private static final double COLLECT_ZERO_POWER_ACCEL = 1.3;
 
     private Follower follower;
     private Timer pathTimer;
@@ -35,14 +35,16 @@ public class SixSpec extends OpMode {
     private int loopCount;
     private boolean ons = false;
 
+    double x = 0, y = 0, color = 2;
+
     private Path scorePreload, grabSpecimen1, scoreSpecimen1,
             intake1, intake2, intake3;
 
     //private PathChain[] grabSpecimenReady = new PathChain[4], scoreSpecimen = new PathChain[4];
-    private Path[] grabSpecimenReady = new Path[4], scoreSpecimen = new Path[4];
+    private final Path[] grabSpecimenReady = new Path[4], scoreSpecimen = new Path[4];
 
     public void buildPaths() {
-        scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE_PRELOAD)));
+        scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE_PRELOAD.getX(), AutoConstants.SPECIMEN_SCORE_PRELOAD.getY() - x)));
         scorePreload.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_START.getHeading(), AutoConstants.SPECIMEN_SCORE_PRELOAD.getHeading());
         scorePreload.setZeroPowerAccelerationMultiplier(3.5);
 
@@ -58,12 +60,12 @@ public class SixSpec extends OpMode {
         intake3.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE2.getHeading(), AutoConstants.SPECIMEN_INTAKE3.getHeading());
         intake3.setZeroPowerAccelerationMultiplier(2);
 
-        grabSpecimen1 = new Path(new BezierLine(AutoConstants.SPECIMEN_INTAKE3, AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING));
-        grabSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE3.getHeading(), AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING.getHeading());
-        grabSpecimen1.setZeroPowerAccelerationMultiplier(2.5);
+        grabSpecimen1 = new Path(new BezierCurve(AutoConstants.SPECIMEN_INTAKE3, AutoConstants.SPECIMEN_GRAB_CONTROL_POINT, AutoConstants.SPECIMEN_GRAB));
+        grabSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE3.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading(), 0.3);
+        grabSpecimen1.setZeroPowerAccelerationMultiplier(1);
 
-        scoreSpecimen1 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING), AutoConstants.SPECIMEN_CONTROL_POINT, new Point(AutoConstants.SPECIMEN_SCORE)));
-        scoreSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB_AFTER_PUSHING.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
+        scoreSpecimen1 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3, new Point(AutoConstants.SPECIMEN_SCORE1)));
+        scoreSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE1.getHeading());
         scoreSpecimen1.setZeroPowerAccelerationMultiplier(SCORE_ZERO_POWER_ACCEL);
 
         for (int i = 0; i < 4; i++) {
@@ -81,13 +83,13 @@ public class SixSpec extends OpMode {
                     .setZeroPowerAccelerationMultiplier(SCORE_ZERO_POWER_ACCEL)
                     .build();*/
 
-            grabSpecimenReady[i] = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE.getX(), AutoConstants.SPECIMEN_SCORE.getY() + (i + 1) * 1.2),
-                            AutoConstants.SPECIMEN_SCORING_CONTROL_POINT1, new Point(AutoConstants.SPECIMEN_GRAB)));
+            grabSpecimenReady[i] = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE.getX(), AutoConstants.SPECIMEN_SCORE.getY() + (i + 1) * 0),
+                            AutoConstants.SPECIMEN_SCORING_CONTROL_POINT2, new Point(AutoConstants.SPECIMEN_GRAB)));
             grabSpecimenReady[i].setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
             grabSpecimenReady[i].setZeroPowerAccelerationMultiplier(COLLECT_ZERO_POWER_ACCEL);
 
             scoreSpecimen[i] = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3,
-                            new Point(AutoConstants.SPECIMEN_SCORE.getX(), AutoConstants.SPECIMEN_SCORE.getY() + (i + 1) * 1.2)));
+                            new Point(AutoConstants.SPECIMEN_SCORE.getX(), AutoConstants.SPECIMEN_SCORE.getY() + (i + 1) * 0)));
             scoreSpecimen[i].setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
             scoreSpecimen[i].setZeroPowerAccelerationMultiplier(SCORE_ZERO_POWER_ACCEL);
         }
@@ -170,7 +172,7 @@ public class SixSpec extends OpMode {
                     if(ons) {
                         pathTimer.resetTimer();
                         ons = false;
-                    } else if (pathTimer.getElapsedTimeSeconds() > 0.2) {
+                    } else if (pathTimer.getElapsedTimeSeconds() > 0.1) {
                         follower.followPath(grabSpecimen1);
                         setPathState(7);
                     }
@@ -180,7 +182,7 @@ public class SixSpec extends OpMode {
 
             case 7:
                 if(robotInPos || !ons) {
-                    if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.2) {
+                    if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.15) {
                         if(ons){
                             setActionState(0);
                             ons = false;
@@ -214,7 +216,7 @@ public class SixSpec extends OpMode {
 
             case 9:
                 if(robotInPos || !ons) {
-                    if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.2) {
+                    if(actionState == -1 || pathTimer.getElapsedTimeSeconds() > 0.1) {
                         if(ons){
                             setActionState(0);
                             ons = false;
@@ -278,7 +280,7 @@ public class SixSpec extends OpMode {
                 break;
 
             case 3:
-                if(intake.getSampleColor() == 2 || intake.isSlidesAtSetpoint()) {
+                if(intake.getSampleColor() == color || intake.isSlidesAtSetpoint()) {
                     intake.setState(IntakeConstants.TRANSFER_FAST);
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
                     setActionState(15);
@@ -307,6 +309,7 @@ public class SixSpec extends OpMode {
             case 7:
                 outtake.setState(OuttakeConstants.SCORE_SPECIMEN_PRELOAD_READY);
                 intake.setState(IntakeConstants.INTAKE_SUB_READY);
+                intake.setHorizontalPosition(y * IntakeConstants.SLIDES_TICKS_PER_INCH + IntakeConstants.SLIDES_OUT);
                 setActionState(14);
                 break;
 
@@ -324,12 +327,12 @@ public class SixSpec extends OpMode {
                     intake.setState(IntakeConstants.INTAKE);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() < 1.3 && intake.getSampleColor() != 2) {
+                if(actionTimer.getElapsedTimeSeconds() < 1.3 && intake.getSampleColor() != color) {
                     if(actionTimer.getElapsedTimeSeconds() > 0.3) {
                         intake.horizontalSlidesManual(10);
                     }
                 } else {
-                    intake.setState((intake.getSampleColor() == 2)? IntakeConstants.TRANSFER : IntakeConstants.TRANSFER_REJECT);
+                    intake.setState((intake.getSampleColor() == color)? IntakeConstants.TRANSFER : IntakeConstants.TRANSFER_REJECT);
                     setActionState(16);
                 }
                 break;
@@ -386,13 +389,14 @@ public class SixSpec extends OpMode {
 
         follower = new Follower(hardwareMap, FConstants.class, LConstants.class);
         follower.setStartingPose(AutoConstants.SPECIMEN_START);
-        buildPaths();
 
         intake.setState(IntakeConstants.START);
         outtake.setState(OuttakeConstants.SPEC_PRELOAD_START);
     }
 
     boolean init = false;
+
+    boolean g1Dpad = false;
 
     @Override
     public void init_loop()
@@ -411,6 +415,24 @@ public class SixSpec extends OpMode {
             init = true;
         }
 
+        if(!g1Dpad) {
+            x += ((gamepad1.dpad_right) ? 1 : -((gamepad1.dpad_left) ? 1 : 0)) / 2.0;
+            y += ((gamepad1.dpad_up) ? 1 : -((gamepad1.dpad_down) ? 1 : 0)) / 2.0;
+        }
+
+        if (gamepad1.circle) {
+            color = 2;
+        } else if (gamepad1.square) {
+            color = 3;
+        }
+
+        x = MathFunctions.clamp(x, -7, 7);
+        y = MathFunctions.clamp(y, 0, (IntakeConstants.SLIDES_MAX - IntakeConstants.SLIDES_OUT) / IntakeConstants.SLIDES_TICKS_PER_INCH);
+
+        telemetry.addLine("sample x: " + x + ", y: " + y + ", color: " + ((color == 2) ? "RED" : "BLUE"));
+
+        g1Dpad = gamepad1.dpad_down || gamepad1.dpad_up || gamepad1.dpad_left || gamepad1.dpad_right;
+
         if(init) {
             telemetry.addLine("initialized");
         } else {
@@ -421,6 +443,8 @@ public class SixSpec extends OpMode {
 
     @Override
     public void start() {
+        buildPaths();
+
         pathTimer.resetTimer();
         actionTimer.resetTimer();
         runTimer.resetTimer();
