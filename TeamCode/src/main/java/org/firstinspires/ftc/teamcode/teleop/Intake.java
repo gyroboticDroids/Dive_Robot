@@ -95,7 +95,7 @@ public class Intake {
 
                 hardware.intakePivot.setPosition(IntakeConstants.linearPivot(getHorizontalSlidePos()));
 
-                if((actionTimer.getElapsedTimeSeconds() > 0.5))
+                if((actionTimer.getElapsedTimeSeconds() > 0.3))
                 {
                     isBusy = false;
                 }
@@ -146,6 +146,31 @@ public class Intake {
                 if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset, horizontalPosition, IntakeConstants.SLIDES_ACCURACY))
                 {
                     isBusy = false;
+                }
+                break;
+
+            case IntakeConstants.TRANSFER_REJECT:
+                if(onsSetState && hardware.intakeSlide.getCurrentPosition() > IntakeConstants.SLIDES_OUT) {
+                    intakeSpeed(IntakeConstants.INTAKE_REVERSE);
+                }
+
+                hardware.intakePivot.setPosition(IntakeConstants.PIVOT_TRANSFER);
+
+                if(actionTimer.getElapsedTimeSeconds() > 0.4)
+                {
+                    if(!intakeWheelsKeepSpinning) {
+                        intakeSpeed(IntakeConstants.INTAKE_STOP);
+                    }
+                    else if ((hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset) < IntakeConstants.SLIDES_OUT){
+                        intakeSpeed(IntakeConstants.INTAKE_STOP);
+                    }
+
+                    horizontalPosition = IntakeConstants.SLIDES_TRANSFER;
+
+                    if(MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset, horizontalPosition, IntakeConstants.SLIDES_ACCURACY))
+                    {
+                        isBusy = false;
+                    }
                 }
                 break;
 
@@ -235,10 +260,6 @@ public class Intake {
         intakeWheelsKeepSpinning = val;
     }
 
-    public void setIntakeWheelsSpeed(double speed) {
-        intakeSpeed(speed);
-    }
-
     public void horizontalSlidesUpdate()
     {
         horizontalPosition = MathFunctions.clamp(horizontalPosition, 0, IntakeConstants.SLIDES_MAX);
@@ -251,13 +272,15 @@ public class Intake {
         hardware.intakeSlide.setPower(motorPower);
     }
 
-    public int getHorizontalSlidePos()
-    {
+    public int getHorizontalSlidePos() {
         return hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset;
     }
 
-    public boolean isBusy()
-    {
+    public boolean isSlidesAtSetpoint() {
+        return MathFunctions.roughlyEquals(hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset, horizontalPosition, IntakeConstants.SLIDES_ACCURACY);
+    }
+
+    public boolean isBusy() {
         return isBusy;
     }
 }
