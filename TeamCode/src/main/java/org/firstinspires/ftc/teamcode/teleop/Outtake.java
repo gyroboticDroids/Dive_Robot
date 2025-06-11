@@ -141,11 +141,11 @@ public class Outtake {
                 hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_OFF_WALL);
                 hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_OFF_WALL);
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.3) {
+                if(actionTimer.getElapsedTimeSeconds() > 0.5) {
                     hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_OPEN);
                 }
 
-                if (actionTimer.getElapsedTimeSeconds() > 0.4 && isSlidesAtSetpoint()) {
+                if (actionTimer.getElapsedTimeSeconds() > 0.6 && isSlidesAtSetpoint()) {
                     isBusy = false;
                 }
                 break;

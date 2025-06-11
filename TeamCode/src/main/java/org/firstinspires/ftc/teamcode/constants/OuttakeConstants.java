@@ -5,7 +5,7 @@ public class OuttakeConstants {
     public static int SLIDES_SAMPLE_LOW = 1550;//
     public static int SLIDES_SAMPLE_HIGH = 3600;//
     public static int SLIDES_SPECIMEN_COLLECT = 0;
-    public static int SLIDES_SPECIMEN_HIGH_SCORING = 1050;//
+    public static int SLIDES_SPECIMEN_HIGH_SCORING = 1075;//
     public static int SLIDES_SPECIMEN_SCORE_PRELOAD = 1250;//
     public static int SLIDES_TRANSFER_UP = 520;//
     public static int SLIDES_START = 0;
@@ -22,7 +22,7 @@ public class OuttakeConstants {
     public static double PIVOT_TRANSFER_READY = 0.889;//
     public static double PIVOT_TRANSFER = 0.997;//
     public static double PIVOT_SPECIMEN_READY = 0.952;//
-    public static double PIVOT_SPECIMEN_SCORE = 0.898;//
+    public static double PIVOT_SPECIMEN_SCORE = 0.901;//
     public static double PIVOT_SPECIMEN_SCORE_PRELOAD = 0.903;//
     public static double PIVOT_OFF_WALL = 0.1;//
     public static double PIVOT_SAMPLE = 0.35;//
@@ -32,7 +32,7 @@ public class OuttakeConstants {
     public static double WRIST_TRANSFER_READY = 0.073;//
     public static double WRIST_TRANSFER = 0;//
     public static double WRIST_SPECIMEN_READY = 0.396;//
-    public static double WRIST_SPECIMEN_SCORE = 0.492;//
+    public static double WRIST_SPECIMEN_SCORE = 0.496;//
     public static double WRIST_SPECIMEN_SCORE_PRELOAD = 0.349;//
     public static double WRIST_OFF_WALL = 0.952;//
     public static double WRIST_SAMPLE = 0.858;//

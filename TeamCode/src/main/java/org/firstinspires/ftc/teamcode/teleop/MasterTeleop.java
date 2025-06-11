@@ -27,7 +27,7 @@ public class MasterTeleop extends OpMode {
 
     //Keeps track of if the robot is about to hang
     private boolean isHanging = false;
-
+    private boolean halfway = false;
     private boolean hooksUp = false;
 
     private boolean rumble = false;
@@ -80,6 +80,7 @@ public class MasterTeleop extends OpMode {
         hang.setState(HangConstants.START);
 
         gamepad1.setLedColor(0, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        gamepad2.setLedColor(1, 1, 1, Gamepad.LED_DURATION_CONTINUOUS);
     }
 
     @Override
@@ -93,6 +94,13 @@ public class MasterTeleop extends OpMode {
         }
 
         if(!framerate) framerate = true;
+
+        if(120 - teleopTimer.getElapsedTimeSeconds() < 60 && !halfway) {
+            gamepad1.rumble(0.5, 0.5, 500);
+            gamepad2.rumble(0.5, 0.5, 500);
+
+            halfway = true;
+        }
 
         if(120 - teleopTimer.getElapsedTimeSeconds() < 30 && !hooksUp && !isHanging) {
             hang.setState(HangConstants.HANG_HOOKS_UP);
@@ -155,6 +163,7 @@ public class MasterTeleop extends OpMode {
         telemetry.addData("slide rate", outtake.getSlideRate());
 
         telemetry.addLine("-------------------Intake--------------------");
+        telemetry.addData("auto grab mode", mode);
         telemetry.addData("intake state", intake.getState());
         telemetry.addData("intake busy", intake.isBusy());
         telemetry.addData("horizontal spt pos", intake.getHorizontalPosition());
@@ -260,9 +269,44 @@ public class MasterTeleop extends OpMode {
     //Variables used for intakeUpdate
     private String prevIntakeState = IntakeConstants.START;
     private boolean prevIntakeOut = false;
+    private boolean gotSample = false;
+    private int mode = 0;
+    private boolean prevGp2Touchpad = false;
 
     void intakeUpdate()
     {
+        //Auto grab toggle
+        if(gamepad2.touchpad && !prevGp2Touchpad && mode == 0) {
+            mode = 1;
+        } else if(gamepad2.touchpad && !prevGp2Touchpad && mode == 1) {
+            mode = 2;
+        } else if (gamepad2.touchpad && !prevGp2Touchpad && mode == 2) {
+            mode = 0;
+        }
+
+        if(mode == 1) {
+            gamepad2.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
+            gotSample = intake.getSampleColor() == TransferConstants.allianceColor || intake.getSampleColor() == 1;
+        } else if(mode == 2) {
+            if(TransferConstants.allianceColor == 2) {
+                gamepad2.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+            } else {
+                gamepad2.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
+            }
+            gotSample = intake.getSampleColor() == TransferConstants.allianceColor;
+        } else {
+            gamepad2.setLedColor(1, 1, 1, Gamepad.LED_DURATION_CONTINUOUS);
+            gotSample = false;
+        }
+
+        if(gamepad1.dpad_left) {
+            TransferConstants.allianceColor = 2;
+        } else if(gamepad1.dpad_right) {
+            TransferConstants.allianceColor = 3;
+        }
+
+        prevGp2Touchpad = gamepad2.touchpad;
+
         //Stops the intake from interrupting hanging
         if (isHanging)
         {
@@ -280,7 +324,9 @@ public class MasterTeleop extends OpMode {
                     intake.setState(IntakeConstants.RESET_POS);
             } else if (prevIntakeState.equals(IntakeConstants.RESET_POS)) {
                 intake.setState(IntakeConstants.TRANSFER);
-            } else if (gamepad2.left_bumper || (gamepad2.b || gamepad2.x) && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY)) && !prevIntakeState.equals(IntakeConstants.TRANSFER)) {
+            } else if (gamepad2.left_bumper || (gamepad2.b || gamepad2.x || gotSample) && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) ||
+                    prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH)
+                    || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) && !prevIntakeState.equals(IntakeConstants.TRANSFER)) {
                 intake.setState(IntakeConstants.TRANSFER);
                 outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);/*Outtake*/
             } else if (gamepad2.dpad_down && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT)
@@ -308,16 +354,6 @@ public class MasterTeleop extends OpMode {
         } else if (prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB)) {
             intake.horizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
                     MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * 50); //Manual control for horizontal slides
-        }
-
-        if (intake.getSampleColor() == 1) {
-            gamepad2.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
-        } else if (intake.getSampleColor() == 2) {
-            gamepad2.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
-        } else if (intake.getSampleColor() == 3) {
-            gamepad2.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
-        } else {
-            gamepad2.setLedColor(1, 1, 1, Gamepad.LED_DURATION_CONTINUOUS);
         }
 
         //Previous intake state

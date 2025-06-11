@@ -607,7 +607,7 @@ public class SixSampleAuto extends OpMode {
         TransferConstants.horiSlidePos = intake.getHorizontalSlidePos();
         TransferConstants.heading = Math.toDegrees(follower.getPose().getHeading());
         TransferConstants.endPose = follower.getPose();
-        TransferConstants.isAllianceRed = allianceColorRed;
+        TransferConstants.allianceColor = (allianceColorRed) ? 2 : 3;
     }
 
     @Override
