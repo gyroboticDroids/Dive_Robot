@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.util.Timer;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -11,6 +12,8 @@ import org.firstinspires.ftc.teamcode.constants.HangConstants;
 import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
 import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
 import org.firstinspires.ftc.teamcode.constants.TransferConstants;
+
+import java.util.List;
 
 @TeleOp(name = "Master Tele-op", group = "Tele-op")
 public class MasterTeleop extends OpMode {
@@ -24,6 +27,9 @@ public class MasterTeleop extends OpMode {
     //Timer for automatic movements
     Timer teleopTimer;
     Timer fpsTimer;
+
+    //Bulk reading
+    List<LynxModule> allHubs;
 
     //Keeps track of if the robot is about to hang
     private boolean isHanging = false;
@@ -59,6 +65,13 @@ public class MasterTeleop extends OpMode {
                 .addStep(0.0, 0.0, 250)
                 .addStep(0.5, 0.5, 500)
                 .build();
+
+        //Bulk reading
+        allHubs = hardwareMap.getAll(LynxModule.class);
+
+        for (LynxModule hub : allHubs) {
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        }
     }
 
     @Override
@@ -70,6 +83,11 @@ public class MasterTeleop extends OpMode {
     @Override
     public void start()
     {
+        //Bulk reading
+        for (LynxModule hub : allHubs) {
+            hub.clearBulkCache();
+        }
+
         //Resets timer
         teleopTimer.resetTimer();
         fpsTimer.resetTimer();
@@ -86,6 +104,11 @@ public class MasterTeleop extends OpMode {
     @Override
     public void loop()
     {
+        //Bulk reading
+        for (LynxModule hub : allHubs) {
+            hub.clearBulkCache();
+        }
+
         currentTime = time - prevTime;
         prevTime = time;
 
