@@ -19,7 +19,7 @@ public class OuttakeConstants {
     public static double SLIDES_P_GAIN = 0.005;
     public static double SLIDES_HANGING_P_GAIN = 0.0077;
 
-    public static double PIVOT_TRANSFER_READY = 0.889;//
+    public static double PIVOT_TRANSFER_READY = 0.835;//
     public static double PIVOT_TRANSFER = 0.997;//
     public static double PIVOT_SPECIMEN_READY = 0.952;//
     public static double PIVOT_SPECIMEN_SCORE = 0.901;//
@@ -29,7 +29,7 @@ public class OuttakeConstants {
     public static double PIVOT_START = 0.861;//
     public static double PIVOT_RAISE = 0.52;//
 
-    public static double WRIST_TRANSFER_READY = 0.073;//
+    public static double WRIST_TRANSFER_READY = 0.104;//
     public static double WRIST_TRANSFER = 0;//
     public static double WRIST_SPECIMEN_READY = 0.396;//
     public static double WRIST_SPECIMEN_SCORE = 0.496;//

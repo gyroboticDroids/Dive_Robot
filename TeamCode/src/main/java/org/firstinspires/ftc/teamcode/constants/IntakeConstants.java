@@ -12,6 +12,9 @@ public class IntakeConstants {
     public static double SLIDES_TICKS_PER_INCH = 84.8;
     public static double SLIDES_OUT_CLEAR = 200;//
 
+    public static double SLIDE_SPEED_FAST = 75;//
+    public static double SLIDE_SPEED_SLOW = 30;//
+
     public static double PIVOT_START = 0.924;//
     public static double PIVOT_TRANSFER = 0.924;//
     public static double PIVOT_INTERMEDIATE = 0.532;//
