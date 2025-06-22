@@ -7,6 +7,7 @@ import com.pedropathing.pathgen.MathFunctions;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Timer;
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
@@ -17,13 +18,18 @@ import org.firstinspires.ftc.teamcode.constants.TransferConstants;
 import org.firstinspires.ftc.teamcode.teleop.Intake;
 import org.firstinspires.ftc.teamcode.teleop.Outtake;
 
+import java.util.List;
+
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
 @Autonomous(name = "6 + 0", group = "autonomous specimens", preselectTeleOp = "Master Tele-op")
 public class SixSpec extends OpMode {
-    private static final double SCORE_ZERO_POWER_ACCEL = 1.4;
-    private static final double COLLECT_ZERO_POWER_ACCEL = 1.3;
+    private static final double SCORE_ZERO_POWER_ACCEL = 2.2;
+    private static final double COLLECT_ZERO_POWER_ACCEL = 1.7;
+
+    //Bulk reading
+    List<LynxModule> allHubs;
 
     private Follower follower;
     private Timer pathTimer;
@@ -63,7 +69,7 @@ public class SixSpec extends OpMode {
 
         grabSpecimen1 = new Path(new BezierCurve(AutoConstants.SPECIMEN_INTAKE3, AutoConstants.SPECIMEN_GRAB_CONTROL_POINT, AutoConstants.SPECIMEN_GRAB));
         grabSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_INTAKE3.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading(), 0.3);
-        grabSpecimen1.setZeroPowerAccelerationMultiplier(0.9);
+        grabSpecimen1.setZeroPowerAccelerationMultiplier(0.8);
 
         scoreSpecimen1 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_GRAB), AutoConstants.SPECIMEN_SCORING_CONTROL_POINT3, new Point(AutoConstants.SPECIMEN_SCORE1)));
         scoreSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE1.getHeading());
@@ -315,12 +321,12 @@ public class SixSpec extends OpMode {
                     outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() > 0.1 && !intake.getState().equals(IntakeConstants.INTAKE)) {
+                if(!intake.getState().equals(IntakeConstants.INTAKE)) {
                     intake.setState(IntakeConstants.INTAKE);
                 }
 
-                if(actionTimer.getElapsedTimeSeconds() < 1.5 && intake.getSampleColor() != color) {
-                    if(actionTimer.getElapsedTimeSeconds() > 0.3) {
+                if(actionTimer.getElapsedTimeSeconds() < 1.7 && intake.getSampleColor() != color) {
+                    if(actionTimer.getElapsedTimeSeconds() > 0.5) {
                         intake.horizontalSlidesManual(10);
                     }
                 } else {
@@ -396,6 +402,13 @@ public class SixSpec extends OpMode {
 
         intake.setState(IntakeConstants.START);
         outtake.setState(OuttakeConstants.SPEC_PRELOAD_START);
+
+        //Bulk reading
+        allHubs = hardwareMap.getAll(LynxModule.class);
+
+        for (LynxModule hub : allHubs) {
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        }
     }
 
     boolean init = false;
@@ -405,6 +418,10 @@ public class SixSpec extends OpMode {
     @Override
     public void init_loop()
     {
+        for (LynxModule hub : allHubs) {
+            hub.clearBulkCache();
+        }
+
         //Resets intake pos
         intake.update();
         outtake.update();
@@ -455,6 +472,8 @@ public class SixSpec extends OpMode {
         intake.setIntakeWheelsKeepSpinning(true);
         intake.setState(IntakeConstants.START);
 
+        TransferConstants.allianceColor = color;
+
         loopCount = 4;
         setPathState(0);
     }
@@ -464,17 +483,38 @@ public class SixSpec extends OpMode {
         TransferConstants.horiSlidePos = intake.getHorizontalSlidePos();
         TransferConstants.heading = Math.toDegrees(follower.getPose().getHeading());
         TransferConstants.endPose = follower.getPose();
-        TransferConstants.allianceColor = color;
     }
+
+    private double maxTime = 0;
+    private double prevTime = 0;
+
+    private boolean framerate = false;
 
     @Override
     public void loop()
     {
+        for (LynxModule hub : allHubs) {
+            hub.clearBulkCache();
+        }
+
         follower.update();
         outtake.update();
         intake.update();
         autonomousPathUpdate();
         autonomousActionUpdate();
+
+        double currentTime = time - prevTime;
+        prevTime = time;
+
+        if(currentTime > maxTime && framerate) {
+            maxTime = currentTime;
+        }
+
+        if(!framerate) framerate = true;
+
+        telemetry.addLine("-------------------FPS-----------------------");
+        telemetry.addData("loop speed", currentTime * 1000);
+        telemetry.addData("min speed", maxTime * 1000);
 
         // Feedback to Driver Hub
         telemetry.addData("parametric end", follower.atParametricEnd());

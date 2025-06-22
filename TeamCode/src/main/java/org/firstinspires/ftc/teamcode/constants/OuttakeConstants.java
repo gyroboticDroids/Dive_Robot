@@ -39,9 +39,9 @@ public class OuttakeConstants {
     public static double WRIST_START = 0.268;//
     public static double WRIST_RAISE = 0.599;//
 
-    public static double CLAW_OPEN = 0.224;
-    public static double CLAW_CLOSED = 0.698;
-    public static double CLAW_CLOSED_PRELOAD = 0.88;
+    public static double CLAW_OPEN = 0.407;
+    public static double CLAW_CLOSED = 0.842;
+    public static double CLAW_CLOSED_PRELOAD = 1;
 
     //States
     public static final String START = "start";

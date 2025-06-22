@@ -73,8 +73,6 @@ public class Intake {
                 if (onsSetState) {
                     if(horizontalPosition < IntakeConstants.SLIDES_OUT - 10) {
                         horizontalPosition = IntakeConstants.SLIDES_OUT;
-                    } else {
-                        //horizontalPosition = hardware.intakeSlide.getCurrentPosition() - intakeSlideHomeOffset;
                     }
                 }
 
