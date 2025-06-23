@@ -11,7 +11,8 @@ public class AutoConstants {
     public static Pose SAMPLE_SCORE_LEFT = new Pose(18, 136, Math.toRadians(-8));
     public static Pose SAMPLE_RIGHT = new Pose(19, 131.5, Math.toRadians(-24));
     public static Pose SAMPLE_CENTER = new Pose(20.5, 135.5, Math.toRadians(-13));
-    public static Pose SAMPLE_LEFT = new Pose(19, 129.75, Math.toRadians(25));
+    public static Pose SAMPLE_LEFT = new Pose(21.5, 133.5, Math.toRadians(18));
+    //public static Pose SAMPLE_LEFT = new Pose(19, 129.75, Math.toRadians(25));
     public static Pose SAMPLE_SUB = new Pose(60, 93, Math.toRadians(-90));
     public static Pose SAMPLE_PARK = new Pose(60, 92.5, Math.toRadians(0));
 
@@ -35,7 +36,6 @@ public class AutoConstants {
     public static Point SPECIMEN_CONTROL_POINT = new Point(12, 55);
     public static Point SPECIMEN_UNJAM_POINT = new Point(30, 35);
 
-    //public static Pose SPECIMEN_INTAKE1 = new Pose(21, 24, Math.toRadians(0));
     public static Pose SPECIMEN_INTAKE1 = new Pose(21.5, 17.5, Math.toRadians(17.5));
     public static Pose SPECIMEN_INTAKE2 = new Pose(20.5, 14, Math.toRadians(0));
     public static Pose SPECIMEN_INTAKE3 = new Pose(21.5, 10.5, Math.toRadians(-18));

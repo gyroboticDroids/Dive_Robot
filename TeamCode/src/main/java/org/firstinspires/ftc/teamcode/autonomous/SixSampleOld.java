@@ -23,8 +23,8 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "0 + 6", group = "autonomous samples", preselectTeleOp = "Master Tele-op")
-public class SixSampleAuto extends OpMode {
+@Autonomous(name = "0 + 6 old", group = "autonomous samples", preselectTeleOp = "Master Tele-op")
+public class SixSampleOld extends OpMode {
     private int slideRangeSubtract = 0;
 
     private Follower follower;
