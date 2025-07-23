@@ -1,0 +1,409 @@
+package org.firstinspires.ftc.teamcode.teleop;
+
+import com.pedropathing.pathgen.MathFunctions;
+import com.pedropathing.util.Timer;
+import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Gamepad;
+
+import org.firstinspires.ftc.teamcode.constants.DriveConstants;
+import org.firstinspires.ftc.teamcode.constants.HangConstants;
+import org.firstinspires.ftc.teamcode.constants.IntakeConstants;
+import org.firstinspires.ftc.teamcode.constants.OuttakeConstants;
+import org.firstinspires.ftc.teamcode.constants.TransferConstants;
+
+import java.util.List;
+
+@TeleOp(name = "Master Tele-op Training", group = "training")
+public class MasterTeleopTrainingCourse extends OpMode {
+
+    //Defines classes
+    Drive drive;
+    OuttakeTrainingCourse outtake;
+    Intake intake;
+    HangTrainingCourse hang;
+
+    //Timer for automatic movements
+    Timer teleopTimer;
+    Timer fpsTimer;
+
+    //Bulk reading
+    List<LynxModule> allHubs;
+
+    //Keeps track of if the robot is about to hang
+    private boolean isHanging = false;
+    private boolean halfway = false;
+    private boolean hooksUp = false;
+
+    private boolean rumble = false;
+
+    private boolean framerate = false;
+
+    Gamepad.RumbleEffect effect;
+
+    private double currentTime = 0;
+    private double maxTime = 0;
+    private double prevTime = 0;
+
+    @Override
+    public void init()
+    {
+        //Sets up classes
+        drive = new Drive(hardwareMap, gamepad1);
+        outtake = new OuttakeTrainingCourse(hardwareMap);
+        intake = new Intake(hardwareMap);
+        intake.setIntakeWheelsKeepSpinning(true);
+        hang = new HangTrainingCourse(hardwareMap, outtake);
+
+        //Sets up timer
+        teleopTimer = new Timer();
+        fpsTimer = new Timer();
+
+        effect = new Gamepad.RumbleEffect.Builder()
+                .addStep(0.5, 0.5, 500)
+                .addStep(0.0, 0.0, 250)
+                .addStep(0.5, 0.5, 500)
+                .build();
+
+        //Bulk reading
+        allHubs = hardwareMap.getAll(LynxModule.class);
+
+        for (LynxModule hub : allHubs) {
+            hub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        }
+    }
+
+    @Override
+    public void stop()
+    {
+        TransferConstants.resetConstants();
+    }
+
+    @Override
+    public void start()
+    {
+        //Bulk reading
+        for (LynxModule hub : allHubs) {
+            hub.clearBulkCache();
+        }
+
+        //Resets timer
+        teleopTimer.resetTimer();
+        fpsTimer.resetTimer();
+
+        //Sets all states to the starting states
+        outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+        intake.setState(IntakeConstants.INTAKE_SUB_READY);
+        hang.setState(HangConstants.START);
+
+        gamepad1.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        gamepad2.setLedColor(1, 1, 1, Gamepad.LED_DURATION_CONTINUOUS);
+    }
+
+    @Override
+    public void loop()
+    {
+        //Bulk reading
+        for (LynxModule hub : allHubs) {
+            hub.clearBulkCache();
+        }
+
+        currentTime = time - prevTime;
+        prevTime = time;
+
+        if(currentTime > maxTime && framerate) {
+            maxTime = currentTime;
+        }
+
+        if(!framerate) framerate = true;
+
+        if(120 - teleopTimer.getElapsedTimeSeconds() < 60 && !halfway) {
+            gamepad1.rumble(0.5, 0.5, 500);
+            gamepad2.rumble(0.5, 0.5, 500);
+
+            halfway = true;
+        }
+
+        if(120 - teleopTimer.getElapsedTimeSeconds() < 30 && !hooksUp && !isHanging) {
+            hang.setState(HangConstants.HANG_HOOKS_UP);
+
+            gamepad1.rumble(0.5, 0.5, 500);
+            gamepad2.rumble(0.5, 0.5, 500);
+
+            hooksUp = true;
+        }
+
+        if(120 - teleopTimer.getElapsedTimeSeconds() < 15 && !rumble) {
+            gamepad1.runRumbleEffect(effect);
+            gamepad2.runRumbleEffect(effect);
+
+            rumble = true;
+        }
+
+        //Updates all classes
+        if(!(hang.getState().equals(HangConstants.LVL_2) || hang.getState().equals(HangConstants.LVL_3))){
+            drive.update();
+        }
+        else {
+            drive.resetPowers();
+        }
+
+        outtakeUpdate();
+        intakeUpdate();
+        hangUpdate();
+
+        //Updates classes
+        outtake.update();
+        intake.update();
+        hang.update();
+
+        //Updates telemetry
+        updateTelemetry();
+    }
+
+    private void updateTelemetry() {
+        //Time remaining in the match
+        telemetry.addData("time remaining", 120 - teleopTimer.getElapsedTimeSeconds());
+        telemetry.addLine();
+
+        //Telemetry
+        telemetry.addLine("-------------------Drive---------------------");
+        telemetry.addData("target heading", drive.targetHeading);
+        telemetry.addData("current heading", Math.toDegrees(drive.getBotHeading()));
+        telemetry.addData("is manual turning", drive.isManualTurning());
+        telemetry.addData("turn power", drive.getTurnPower());
+
+        telemetry.addLine("-------------------Outtake-------------------");
+        telemetry.addData("outtake state", outtake.getState());
+        telemetry.addData("outtake busy", outtake.isBusy());
+        telemetry.addData("vert spt pos", outtake.getVertPosition());
+        telemetry.addData("vert fdbk pos", outtake.getVertSlidePos());
+        telemetry.addData("drive back", outtake.isDriveBack());
+        telemetry.addData("is hanging", outtake.isHanging());
+        telemetry.addData("slide power", outtake.getSlidePower());
+        telemetry.addData("disable reject", disableReject);
+        telemetry.addData("slide rate", outtake.getSlideRate());
+
+        telemetry.addLine("-------------------Intake--------------------");
+        telemetry.addData("auto grab mode", mode);
+        telemetry.addData("intake state", intake.getState());
+        telemetry.addData("intake busy", intake.isBusy());
+        telemetry.addData("horizontal spt pos", intake.getHorizontalPosition());
+        telemetry.addData("horizontal fdbk pos", intake.getHorizontalSlidePos());
+        telemetry.addData("horizontal power", intake.getMotorPower());
+        telemetry.addData("sample color", intake.getSampleColor());
+        telemetry.addData("intake speed", intake.getIntakeSpeed());
+
+        telemetry.addLine("-------------------Hang----------------------");
+        telemetry.addData("hang state", hang.getState());
+        telemetry.addData("hang busy", hang.isBusy());
+        telemetry.addData("hanging", isHanging);
+
+        telemetry.addLine("-------------------FPS-----------------------");
+        telemetry.addData("loop speed", currentTime * 1000);
+        telemetry.addData("min speed", maxTime * 1000);
+        //Updates telemetry
+        telemetry.update();
+    }
+
+    //Variables used in outtakeUpdate class
+    private String prevOuttakeState = OuttakeConstants.START;
+    private boolean prevGp2Y = false;
+    private boolean prevGp2B = false;
+    private boolean disableReject = true;
+    private boolean prevGp1Touchpad = false;
+
+    void outtakeUpdate()
+    {
+        //Stops the outtake from interrupting hanging
+        if(isHanging)
+        {
+            return;
+        }
+
+        //If outtake is busy then don't receive any inputs
+        if(!outtake.isBusy())
+        {
+            //All buttons and statements that change outtake states
+            if (gamepad2.start && !(prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE))) {
+                outtake.setState(OuttakeConstants.START);
+            } else if (gamepad2.back && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.START) || prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY))) {
+                outtake.setState(OuttakeConstants.RESET_POS);
+            } else if ((gamepad2.x || gamepad2.b) && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) && intake.getState().equals(IntakeConstants.TRANSFER) && !intake.isBusy()) {
+                outtake.setState(OuttakeConstants.TRANSFER_INTAKE);
+            } else if (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) && intake.getSampleColor() > 0 && !disableReject && outtake.isSlidesAboveTransfer()) {
+                outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY); ///If transfer did not work run this code
+            } else if (gamepad2.b && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE) || prevOuttakeState.equals(OuttakeConstants.START))) {
+                outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
+            } else if (gamepad2.b && !prevGp2B && prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) && prevIntakeState.equals(IntakeConstants.TRANSFER)) {
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+            } else if (gamepad2.b && !prevGp2B && (prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH))) {
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
+            } else if ((gamepad2.a || gamepad2.y) && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH); ///If misses scoring lower pivot
+            } else if (gamepad2.b && !prevGp2B && prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) {
+                outtake.setState(OuttakeConstants.GRAB_SPECIMEN_READY);
+            } else if (gamepad2.x && prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE)) {
+                outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+            }  else if ((gamepad2.a || gamepad1.left_bumper) && (prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW))) {
+                outtake.setState(OuttakeConstants.SCORE_SAMPLE);
+            } else if (gamepad2.x && (prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN)) ||
+                    ((gamepad2.x || gamepad2.b) && prevOuttakeState.equals(OuttakeConstants.START)) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE) || prevOuttakeState.equals(OuttakeConstants.RESET_POS)) {
+                outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);
+            }
+        }
+
+        if(prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)
+                || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.START)
+                || prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY)
+                || prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY)) {
+            outtake.vertSlidesManual(-gamepad2.left_stick_y * 2); //Manual control for vert slides
+        }
+
+        if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_HIGH)) {
+            outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_LOW);
+        } else if (gamepad2.y && !prevGp2Y && prevOuttakeState.equals(OuttakeConstants.SCORE_SAMPLE_READY_LOW)) {
+            outtake.setState(OuttakeConstants.SCORE_SAMPLE_READY_HIGH);
+        }
+
+        //Makes robot drive back if collecting specimens off wall or scoring samples
+        if(outtake.isDriveBack()) {
+            drive.driveBack(DriveConstants.DRIVE_BACK_POWER);
+        } else {
+            drive.driveBack(0);
+        }
+
+        if(gamepad1.touchpad && !prevGp1Touchpad && !disableReject) {
+            disableReject = true;
+            gamepad1.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        } else if (gamepad1.touchpad && !prevGp1Touchpad && disableReject) {
+            disableReject = false;
+            gamepad1.setLedColor(0, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
+        }
+
+        //Previous states and button presses
+        prevOuttakeState = outtake.getState();
+        prevGp2Y = gamepad2.y;
+        prevGp2B = gamepad2.b;
+        prevGp1Touchpad = gamepad1.touchpad;
+    }
+
+    //Variables used for intakeUpdate
+    private String prevIntakeState = IntakeConstants.START;
+    private boolean prevIntakeOut = false;
+    private int mode = 0;
+    private boolean prevGp2Touchpad = false;
+
+    void intakeUpdate()
+    {
+        //Auto grab toggle
+        if(gamepad2.touchpad && !prevGp2Touchpad && mode == 0) {
+            mode = 1;
+        } else if(gamepad2.touchpad && !prevGp2Touchpad && mode == 1) {
+            mode = 2;
+        } else if (gamepad2.touchpad && !prevGp2Touchpad && mode == 2) {
+            mode = 0;
+        }
+
+        boolean gotSample;
+        if(mode == 1) {
+            gamepad2.setLedColor(1, 1, 0, Gamepad.LED_DURATION_CONTINUOUS);
+            gotSample = intake.getSampleColor() == TransferConstants.allianceColor || intake.getSampleColor() == 1;
+        } else if(mode == 2) {
+            if(TransferConstants.allianceColor == 2) {
+                gamepad2.setLedColor(1, 0, 0, Gamepad.LED_DURATION_CONTINUOUS);
+            } else {
+                gamepad2.setLedColor(0, 0, 1, Gamepad.LED_DURATION_CONTINUOUS);
+            }
+            gotSample = intake.getSampleColor() == TransferConstants.allianceColor;
+        } else {
+            gamepad2.setLedColor(1, 1, 1, Gamepad.LED_DURATION_CONTINUOUS);
+            gotSample = false;
+        }
+
+        if(gamepad1.dpad_left) {
+            TransferConstants.allianceColor = 2;
+        } else if(gamepad1.dpad_right) {
+            TransferConstants.allianceColor = 3;
+        }
+
+        prevGp2Touchpad = gamepad2.touchpad;
+
+        //Stops the intake from interrupting hanging
+        if (isHanging)
+        {
+            intake.horizontalSlidesUpdate();
+            return;
+        }
+
+        //If outtake is busy then don't receive any inputs
+        if(!intake.isBusy())
+        {
+            //All buttons and statements that change outtake states
+            if (gamepad2.start) {
+                intake.setState(IntakeConstants.START);
+            } else if (gamepad2.back && (prevIntakeState.equals(IntakeConstants.TRANSFER) || prevIntakeState.equals(IntakeConstants.START))) {
+                    intake.setState(IntakeConstants.RESET_POS);
+            } else if (prevIntakeState.equals(IntakeConstants.RESET_POS)) {
+                intake.setState(IntakeConstants.TRANSFER);
+            } else if (gamepad2.left_bumper || (gamepad2.b || gamepad2.x || gotSample && prevIntakeState.equals(IntakeConstants.INTAKE))
+                    && (prevOuttakeState.equals(OuttakeConstants.TRANSFER_INTAKE_READY) || prevOuttakeState.equals(OuttakeConstants.GRAB_SPECIMEN_READY)
+                    || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH) || prevOuttakeState.equals(OuttakeConstants.SCORE_SPECIMEN))
+                    && !prevIntakeState.equals(IntakeConstants.TRANSFER)) {
+                intake.setState(IntakeConstants.TRANSFER);
+                outtake.setState(OuttakeConstants.TRANSFER_INTAKE_READY);/*Outtake*/
+            } else if (gamepad2.dpad_down && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT)
+                    || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
+                intake.setState(IntakeConstants.INTAKE);
+            } else if (gamepad2.dpad_up && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
+                    || prevIntakeState.equals(IntakeConstants.CLEAR_SUB))) {
+                intake.setState(IntakeConstants.REJECT);
+            } else if ((gamepad2.dpad_left || gamepad2.dpad_right) && (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.INTAKE)
+                    || prevIntakeState.equals(IntakeConstants.REJECT))) {
+                intake.setState(IntakeConstants.CLEAR_SUB);
+            }
+        }
+//        else if(gamepad2.dpad_right && !prevIntakeState.equals(IntakeConstants.RESET_POS)){
+//            intake.setState(IntakeConstants.HALFWAY);
+//        }
+
+        if ((gamepad2.right_bumper || (gamepad1.right_bumper && !prevIntakeOut)) && (prevIntakeState.equals(IntakeConstants.TRANSFER) || prevIntakeState.equals(IntakeConstants.START) || prevIntakeState.equals(IntakeConstants.HALFWAY))) {
+            intake.setState(IntakeConstants.INTAKE_SUB_READY);
+        }
+
+        if (prevIntakeState.equals(IntakeConstants.INTAKE_SUB_READY) || prevIntakeState.equals(IntakeConstants.REJECT)) {
+            intake.horizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
+                    MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * IntakeConstants.SLIDE_SPEED_FAST); //Manual control for horizontal slides
+        } else if (prevIntakeState.equals(IntakeConstants.INTAKE) || prevIntakeState.equals(IntakeConstants.CLEAR_SUB)) {
+            intake.horizontalSlidesManual((MathFunctions.clamp(gamepad2.right_trigger + ((gamepad1.right_bumper)?1:0), 0, 1) -
+                    MathFunctions.clamp(gamepad2.left_trigger + ((gamepad1.left_bumper)?1:0), 0, 1)) * IntakeConstants.SLIDE_SPEED_SLOW); //Manual control for horizontal slides
+        }
+
+        //Previous intake state
+        prevIntakeState = intake.getState();
+        prevIntakeOut = gamepad1.right_bumper;
+    }
+
+    void hangUpdate()
+    {
+        //Sets if the robot is hanging
+        isHanging = !(hang.getState().equals(HangConstants.START) || hang.getState().equals(HangConstants.HANG_HOOKS_UP));
+
+        //Doesn't change states if the hang is busy
+        if(!hang.isBusy())
+        {
+            //All buttons and statements that change hang states
+            if (gamepad1.dpad_down) {
+                hang.setState(HangConstants.START);
+            } else if (gamepad1.dpad_up) {
+                hang.setState(HangConstants.HANG_READY);
+                intake.setState(IntakeConstants.START);
+            } else if (gamepad1.start && hang.getState().equals(HangConstants.HANG_READY)) {
+                hang.setState(HangConstants.LVL_2);
+            } else if (hang.getState().equals(HangConstants.LVL_2)) {
+                hang.setState(HangConstants.LVL_3);
+            }
+        }
+    }
+}
