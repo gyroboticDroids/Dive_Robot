@@ -67,8 +67,8 @@ public class AutoTrainingCourseGroup2 extends OpMode {
                 if(robotInPos && actionState == -1) {
                     //TODO: Make robot grab specimen and drive to bar
                      setActionState(3);
-                     if(pathTimer.getElapsedTimeSeconds() > 1){
-                   follower.followPath(driveToBar);
+                     if(pathTimer.getElapsedTimeSeconds() > 2.5){
+                         follower.followPath(driveToBar);
                      }
                 }
                 break;
