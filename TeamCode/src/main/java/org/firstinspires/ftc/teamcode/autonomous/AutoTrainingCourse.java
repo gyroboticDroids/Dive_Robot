@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.pedropathing.follower.Follower;
+import com.pedropathing.pathgen.BezierCurve;
 import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
@@ -29,7 +30,7 @@ public class AutoTrainingCourse extends OpMode {
     private int pathState = -1, actionState = -1;
 
 
-    private Path scorePreload, grabSpecimen1;
+    private Path scorePreload, grabSpecimen1,scorespecimen,grabsample1,pushsample1;
 
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE_PRELOAD)));
@@ -39,6 +40,18 @@ public class AutoTrainingCourse extends OpMode {
         grabSpecimen1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE_PRELOAD), new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE_PRELOAD.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
         grabSpecimen1.setZeroPowerAccelerationMultiplier(1.5);
+
+        scorespecimen = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SPECIMEN_SCORE)));
+        scorespecimen.setLinearHeadingInterpolation(0,0);
+        scorespecimen.setZeroPowerAccelerationMultiplier(1.5);
+
+        grabsample1 = new Path(new BezierCurve(new Point(AutoConstants.SPECIMEN_SCORE),new Point(16,62),new Point(24,36)));
+        grabsample1.setLinearHeadingInterpolation(0,0);
+        grabsample1.setZeroPowerAccelerationMultiplier(3.5);
+
+       pushsample1 = new Path(new BezierCurve(new Point(24,36),new Point(84,24),new Point(19,22)));
+        pushsample1.setLinearHeadingInterpolation(0,0);
+        pushsample1.setZeroPowerAccelerationMultiplier(3.5);
     }
 
     public void autonomousPathUpdate() {
@@ -61,12 +74,44 @@ public class AutoTrainingCourse extends OpMode {
 
             case 2:
                 if(robotInPos && actionState == -1) {
+                  setActionState(3);
+                  setPathState(3);
                     //TODO: Make robot grab specimen and drive to bar
                 }
                 break;
 
             case 3:
                 if(robotInPos && actionState == -1) {
+                    follower.followPath(scorespecimen);
+                    setPathState(4);
+
+                    //TODO: Make robot score specimen
+                }
+                break;
+
+            case 4:
+                if(robotInPos && actionState == -1) {
+                    setActionState(4);
+                    setPathState(5);
+                    //TODO: Make robot grab specimen and drive to bar
+                }
+                break;
+
+            case 5:
+                if(robotInPos && actionState == -1) {
+                    follower.followPath(grabsample1);
+                    setPathState(6);
+
+                    //TODO: Make robot score specimen
+                }
+                break;
+
+            case 6:
+                if(follower.getCurrentTValue() >= 0.93 && actionState == -1) {
+                    setActionState(2);
+                    follower.followPath(pushsample1);
+                    setPathState(7);
+
                     //TODO: Make robot score specimen
                 }
                 break;
@@ -96,10 +141,13 @@ public class AutoTrainingCourse extends OpMode {
                 break;
 
             case 3:
-                //TODO: Make robot grab specimen
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+                setActionState(14);
                 break;
 
             case 4:
+                outtake.setState(OuttakeConstants.SCORE_SPECIMEN);
+                setActionState(14);
                 //TODO: Make robot score specimen
                 break;
 
