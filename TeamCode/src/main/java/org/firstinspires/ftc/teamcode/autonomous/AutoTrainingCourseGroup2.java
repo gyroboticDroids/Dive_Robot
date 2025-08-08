@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Autonomous(name = "auto training", group = "training", preselectTeleOp = "Master Tele-op")
+@Autonomous(name = "auto training group 2", group = "training", preselectTeleOp = "Master Tele-op")
 public class AutoTrainingCourseGroup2 extends OpMode {
 
     private Follower follower;
@@ -62,6 +62,7 @@ public class AutoTrainingCourseGroup2 extends OpMode {
             case 2:
                 if(robotInPos && actionState == -1) {
                     //TODO: Make robot grab specimen and drive to bar
+                   follower.followPath(drive to bar);
                 }
                 break;
 
@@ -97,6 +98,10 @@ public class AutoTrainingCourseGroup2 extends OpMode {
 
             case 3:
                 //TODO: Make robot grab specimen
+                if(!outtake.isBusy()) {
+                    outtake.setState(OuttakeConstants.SCORE_SPECIMEN_READY_HIGH);
+                    setActionState(14);
+                }
                 break;
 
             case 4:
