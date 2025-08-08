@@ -29,7 +29,7 @@ public class AutoTrainingCourseGroup2 extends OpMode {
     private int pathState = -1, actionState = -1;
 
 
-    private Path scorePreload, grabSpecimen1;
+    private Path scorePreload, grabSpecimen1, driveToBar;
 
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE_PRELOAD)));
@@ -39,6 +39,10 @@ public class AutoTrainingCourseGroup2 extends OpMode {
         grabSpecimen1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE_PRELOAD), new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE_PRELOAD.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
         grabSpecimen1.setZeroPowerAccelerationMultiplier(1.5);
+
+        driveToBar = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_GRAB), new Point(AutoConstants.SPECIMEN_SCORE)));
+        driveToBar.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_GRAB.getHeading(), AutoConstants.SPECIMEN_SCORE.getHeading());
+        driveToBar.setZeroPowerAccelerationMultiplier(1.5);
     }
 
     public void autonomousPathUpdate() {
@@ -62,7 +66,10 @@ public class AutoTrainingCourseGroup2 extends OpMode {
             case 2:
                 if(robotInPos && actionState == -1) {
                     //TODO: Make robot grab specimen and drive to bar
-                   follower.followPath(drive to bar);
+                     setActionState(3);
+                     if(pathTimer.getElapsedTimeSeconds() > 1){
+                   follower.followPath(driveToBar);
+                     }
                 }
                 break;
 
