@@ -151,6 +151,21 @@ public class OuttakeTrainingCourse {
                 break;
 
             case OuttakeConstants.SCORE_SPECIMEN_READY_HIGH:
+
+
+                hardware.outtakeClaw.setPosition(OuttakeConstants.CLAW_CLOSED);
+
+                if (actionTimer.getElapsedTimeSeconds()>.5){
+                    vertPosition=OuttakeConstants.SLIDES_SPECIMEN_HIGH_SCORING;
+                }
+                if (actionTimer.getElapsedTimeSeconds()>1.5){
+                    hardware.outtakePivot.setPosition(OuttakeConstants.PIVOT_SPECIMEN_READY);
+                    hardware.outtakeWrist.setPosition(OuttakeConstants.WRIST_SPECIMEN_READY);
+                }
+                if (actionTimer.getElapsedTimeSeconds()>2.1){
+                    isBusy=false;
+                }
+
                 //TODO Code this state to get ready to score specimen
 
                 //if (specimenOnsSetState && actionTimer.getElapsedTimeSeconds() > 0.2) {

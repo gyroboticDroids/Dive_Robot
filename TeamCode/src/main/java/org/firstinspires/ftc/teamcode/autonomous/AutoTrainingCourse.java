@@ -6,7 +6,6 @@ import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
 import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.constants.AutoConstants;
@@ -19,7 +18,6 @@ import org.firstinspires.ftc.teamcode.teleop.Outtake;
 import pedroPathing.constants.FConstants;
 import pedroPathing.constants.LConstants;
 
-@Disabled
 @Autonomous(name = "auto training", group = "training", preselectTeleOp = "Master Tele-op")
 public class AutoTrainingCourse extends OpMode {
 
@@ -36,7 +34,7 @@ public class AutoTrainingCourse extends OpMode {
     public void buildPaths() {
         scorePreload = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_START), new Point(AutoConstants.SPECIMEN_SCORE_PRELOAD)));
         scorePreload.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_START.getHeading(), AutoConstants.SPECIMEN_SCORE_PRELOAD.getHeading());
-        scorePreload.setZeroPowerAccelerationMultiplier(4);
+        scorePreload.setZeroPowerAccelerationMultiplier(3);
 
         grabSpecimen1 = new Path(new BezierLine(new Point(AutoConstants.SPECIMEN_SCORE_PRELOAD), new Point(AutoConstants.SPECIMEN_GRAB)));
         grabSpecimen1.setLinearHeadingInterpolation(AutoConstants.SPECIMEN_SCORE_PRELOAD.getHeading(), AutoConstants.SPECIMEN_GRAB.getHeading());
